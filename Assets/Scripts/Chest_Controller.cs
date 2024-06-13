@@ -5,10 +5,16 @@ using UnityEngine;
 public class Chest_Controller : MonoBehaviour
 {
     public bool isOpen;
+    //public Animator animator;
+    
 
     public void OpenChest(){
         isOpen = true;
         Debug.Log("Chest Opened");
+        //animator.SetBool("IsOpen", isOpen);
+    }
+    public void TransformToMimic(){
+        
     }
 
 
