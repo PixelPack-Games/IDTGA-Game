@@ -18,21 +18,17 @@ public class jyj_playerBehavior : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (turnOff)
-        {
-            return;
-        }
         //if (Input.GetKeyDown(KeyCode.Space))
         // {
         //     Debug.Log(message);
         //  }
 
         //transform.Translate(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * speed, Space.World);
-        movePlayer(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0));
+        //movePlayer(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0));
     }
 
     public void movePlayer(Vector3 translation)
     {
-        transform.Translate(translation * speed, Space.World);
+        transform.Translate(translation * speed);
     }
 }
