@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using static jyj_playerBehavior;
 
 public class jyj_playerData : NetworkBehaviour
 {
     private NetworkVariable<PlayerData> data;
     [SerializeField] private bool serverAuth;
+    [SerializeField] private jyj_playerBehavior player;
 
     private struct PlayerData : INetworkSerializable
     {
@@ -45,6 +47,16 @@ public class jyj_playerData : NetworkBehaviour
         data = new NetworkVariable<PlayerData>(writePerm: perm);
     }
 
+    public override void OnNetworkSpawn()
+    {
+        if (IsOwner)
+        {
+            return;
+        }
+
+        player.turnOff = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -62,30 +74,32 @@ public class jyj_playerData : NetworkBehaviour
             else
             {
                 transmitDataServerRpc(temp);
-                //data.Value = temp;
             }
         }
         else
         {
-            transform.position = data.Value.pos;
+            Vector3 lagDist = data.Value.pos - transform.position;
+
+            if (lagDist.magnitude > 5f)
+            {
+                transform.position = data.Value.pos;
+                lagDist = Vector3.zero;
+            }
+
+            if (lagDist.magnitude < 0.11f)
+            {
+                player.movePlayer(Vector3.zero);
+            }
+            else
+            {
+                player.movePlayer(lagDist.normalized);
+            }
         }
     }
 
     [ServerRpc]
     private void transmitDataServerRpc(PlayerData temp)
     {
-        transmitDataClientRpc(temp);
-    }
-
-    [ClientRpc]
-    private void transmitDataClientRpc(PlayerData temp)
-    {
-        if (IsOwner)
-        {
-            return;
-        }
-         
-        //TODO: add interpolation for smoother connectivity
         data.Value = temp;
     }
 }
