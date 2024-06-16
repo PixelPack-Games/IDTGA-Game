@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using System;
 using static jyj_playerBehavior;
+using static Countdown;
+using static jyj_betterNetworkTransform;
 
 public class jyj_playerData : NetworkBehaviour
 {
@@ -18,33 +21,31 @@ public class jyj_playerData : NetworkBehaviour
     private CircularBuffer<PlayerInputData> clientInputBuffer;
     private PlayerData lastServerUpdate;
     private PlayerData lastProccessedData;
+    [SerializeField] private float extrapolationLimit = 0.5f;
+    [SerializeField] private float extrapolationMultiplier = 1.2f;
 
     //Server only
     CircularBuffer<PlayerData> serverDataBuffer;
     Queue<PlayerInputData> serverInputQueue;
 
     [SerializeField] private float reconciliationThreshold = 50f;
+    private Countdown cooldown;
+    [SerializeField] private float cooldownValue;
+    private jyj_betterNetworkTransform bnt;
+    private PlayerData extrapolationData;
+    private Countdown extrapolationCooldown;
 
     private struct PlayerData : INetworkSerializable
     {
-        private float x, y;
+        public Vector3 pos;
         public int tick;
-
-        internal Vector3 pos
-        {
-            get => new Vector3(x, y, 0);
-            set
-            {
-                x = value.x;
-                y = value.y;
-            }
-        }
+        public ulong objectId;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
-            serializer.SerializeValue(ref x);
-            serializer.SerializeValue(ref y);
+            serializer.SerializeValue(ref pos);
             serializer.SerializeValue(ref tick);
+            serializer.SerializeValue(ref objectId);
         }
     }
 
@@ -52,11 +53,17 @@ public class jyj_playerData : NetworkBehaviour
     {
         public int tick;
         public Vector3 input;
+        public DateTime timeStamp;
+        public ulong objectId;
+        public Vector3 pos;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref tick);
             serializer.SerializeValue(ref input);
+            serializer.SerializeValue(ref timeStamp);
+            serializer.SerializeValue(ref objectId);
+            serializer.SerializeValue(ref pos);
         }
     }
 
@@ -80,12 +87,39 @@ public class jyj_playerData : NetworkBehaviour
         clientInputBuffer = new CircularBuffer<PlayerInputData>(BUFFER_SIZE);
         serverDataBuffer = new CircularBuffer<PlayerData>(BUFFER_SIZE);
         serverInputQueue = new Queue<PlayerInputData>();
+        cooldown = new Countdown(cooldownValue);
+
+        cooldown.onTimerStart += () =>
+        {
+            extrapolationCooldown.stop();
+        };
+
+        bnt = GetComponent<jyj_betterNetworkTransform>();
+        extrapolationCooldown = new Countdown(extrapolationLimit);
+
+        extrapolationCooldown.onTimerStart += () =>
+        {
+            cooldown.stop();
+            bnt.authMode = AuthMode.SERVER;
+            bnt.SyncPositionX = false;
+            bnt.SyncPositionY = false;
+        };
+
+        extrapolationCooldown.onTimerStop += () =>
+        {
+            bnt.authMode = AuthMode.CLIENT;
+            bnt.SyncPositionX = true;
+            bnt.SyncPositionY = true;
+        };
     }
 
     // Update is called once per frame
     void Update()
     {
         timer.update(Time.deltaTime);
+        cooldown.tick(Time.deltaTime);
+        extrapolationCooldown.tick(Time.deltaTime);
+        extrapolate();
 
         /* if (IsOwner)
         {
@@ -141,6 +175,7 @@ public class jyj_playerData : NetworkBehaviour
         {
             tick = input.tick,
             pos = transform.position,
+            objectId = input.objectId
         };
     }
 
@@ -170,15 +205,15 @@ public class jyj_playerData : NetworkBehaviour
         PlayerInputData input = new PlayerInputData()
         {
             tick = currTick,
-            input = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0)
+            input = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0),
+            timeStamp = DateTime.Now,
+            objectId = NetworkObjectId,
+            pos = transform.position
         };
 
-        clientInputBuffer.add(input, bufferIndex);
-        //processMove(input);
-
-        transmitInputDataServerRpc(input);
-
         PlayerData playerData = processMove(input);
+        clientInputBuffer.add(input, bufferIndex);
+        transmitInputDataServerRpc(input);
         clientDataBuffer.add(playerData, bufferIndex);
         handleServerReconciliation();
     }
@@ -191,10 +226,11 @@ public class jyj_playerData : NetworkBehaviour
         }
 
         int bufferIndex = -1;
+        PlayerInputData input = default;
 
         while (serverInputQueue.Count > 0)
         {
-            PlayerInputData input = serverInputQueue.Dequeue();
+            input = serverInputQueue.Dequeue();
             bufferIndex = input.tick % BUFFER_SIZE;
             //PlayerData playerData = simulateMove(input);
             PlayerData playerData = processMove(input);
@@ -207,6 +243,33 @@ public class jyj_playerData : NetworkBehaviour
         }
 
         transmitDataClientRpc(serverDataBuffer.get(bufferIndex));
+        handleExtrapolation(serverDataBuffer.get(bufferIndex), calcLatency(input));
+    }
+
+    private void handleExtrapolation(PlayerData data, float latency)
+    {
+        if (latency < extrapolationLimit && latency > Time.fixedDeltaTime)
+        {
+            if (extrapolationData.pos != default)
+            {
+                data = extrapolationData;
+            }
+
+            Vector3 adjust = data.pos * (1 + latency * extrapolationMultiplier);
+            extrapolationData.pos = adjust;
+        }
+        else
+        {
+            extrapolationCooldown.stop();
+        }
+    }
+
+    private void extrapolate()
+    {
+        if (!IsServer && extrapolationCooldown.isRunning)
+        {
+            transform.position += extrapolationData.pos;
+        }
     }
 
     private void handleServerReconciliation()
@@ -233,6 +296,7 @@ public class jyj_playerData : NetworkBehaviour
         if (err > reconciliationThreshold)
         {
             reconcile(data);
+            cooldown.start();
         }
 
         lastProccessedData = lastServerUpdate;
@@ -243,7 +307,7 @@ public class jyj_playerData : NetworkBehaviour
         bool isNewData = !lastServerUpdate.Equals(default);
         bool isUndefinedOrDifferent = lastProccessedData.Equals(default) || !lastProccessedData.Equals(lastServerUpdate);
 
-        return (isNewData && isUndefinedOrDifferent);
+        return (isNewData && isUndefinedOrDifferent && !cooldown.isRunning && !extrapolationCooldown.isRunning);
     }
 
     private void reconcile(PlayerData data)
@@ -289,5 +353,10 @@ public class jyj_playerData : NetworkBehaviour
         }
 
         lastServerUpdate = playerData;
+    }
+
+    static float calcLatency(PlayerInputData input)
+    {
+        return (DateTime.Now - input.timeStamp).Milliseconds / 1000f;
     }
 }

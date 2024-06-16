@@ -5,7 +5,7 @@ using Unity.Netcode.Components;
 
 public class jyj_betterNetworkTransform : NetworkTransform
 {
-    [SerializeField] private AuthMode authMode = AuthMode.CLIENT;
+    [SerializeField] public AuthMode authMode = AuthMode.CLIENT;
     protected override bool OnIsServerAuthoritative()
     {
         return (authMode == AuthMode.SERVER);
