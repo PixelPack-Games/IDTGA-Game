@@ -217,7 +217,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
-  animator: {fileID: 0}
 --- !u!4 &714796544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: 18d62f8831da7e548a328e1f9e0dad57, type: 3}
