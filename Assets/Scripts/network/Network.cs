@@ -3,31 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class jyj_playerData : NetworkBehaviour
+public class Network : NetworkBehaviour
 {
     private NetworkVariable<PlayerData> data;
     [SerializeField] private bool serverAuth;
 
-    private struct PlayerData : INetworkSerializable
-    {
-        private float x, y;
-
-        internal Vector3 pos
-        {
-            get => new Vector3(x, y, 0);
-            set
-            {
-                x = value.x;
-                y = value.y;
-            }
-        }
-
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-        {
-            serializer.SerializeValue(ref x);
-            serializer.SerializeValue(ref y);
-        }
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -77,6 +57,12 @@ public class jyj_playerData : NetworkBehaviour
         transmitDataClientRpc(temp);
     }
 
+    [ServerRpc]
+    public void destroyActorServerRpc(Entity entity)
+    {
+        entity.die(GetComponent<NetworkObject>());
+    }
+
     [ClientRpc]
     private void transmitDataClientRpc(PlayerData temp)
     {
@@ -87,5 +73,26 @@ public class jyj_playerData : NetworkBehaviour
          
         //TODO: add interpolation for smoother connectivity
         data.Value = temp;
+    }
+}
+
+public struct PlayerData : INetworkSerializable
+{
+    private float x, y;
+
+    internal Vector3 pos
+    {
+        get => new Vector3(x, y, 0);
+        set
+        {
+            x = value.x;
+            y = value.y;
+        }
+    }
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        serializer.SerializeValue(ref x);
+        serializer.SerializeValue(ref y);
     }
 }
