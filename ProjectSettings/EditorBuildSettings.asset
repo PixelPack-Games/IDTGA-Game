@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/jyj_multiplayerTest.unity
     guid: ba463ebd845df6944bc4449a3265340d
+  - enabled: 1
+    path: Assets/Scenes/Dans_Test_Scene.unity
+    guid: 6fe636492dfb62942b9b3858fee89c72
+  - enabled: 1
+    path: Assets/Scenes/Jerry Test Scene.unity
+    guid: cb0256e4e2024f64a9a6a169249e5389
   m_configObjects: {}
