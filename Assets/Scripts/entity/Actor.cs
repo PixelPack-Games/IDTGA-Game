@@ -9,7 +9,7 @@ using Unity.Netcode;
 public class Actor : Entity
 {
     //Properties
-    private int currHealth, maxHealth, attack, defense, speed; //actor stats
+    protected int currHealth, maxHealth, attack, defense, speed, fleeRating; //actor stats
     private bool alive; //is this actor alive?
 
     //Contructors
@@ -18,13 +18,14 @@ public class Actor : Entity
     {
 
     }
-    public Actor(string name, string id, GameObject gameObject, int maxHealth, int attack, int defense, int speed) : base(name, id, gameObject)
+    public Actor(string name, string id, GameObject gameObject, int maxHealth, int attack, int defense, int speed, int fleeRating) : base(name, id, gameObject)
     {
         this.maxHealth = maxHealth;
         currHealth = maxHealth;
         this.attack = attack;
         this.defense = defense;
         this.speed = speed;
+        this.fleeRating = fleeRating;
         alive = true;
     }
 
@@ -41,7 +42,7 @@ public class Actor : Entity
     }
 
     //Functions
-    private void takeDamage(int damage)
+    public void takeDamage(int damage)
     {
         currHealth -= damage;
 
@@ -80,7 +81,7 @@ public class Actor : Entity
         return (attack);
     }
 
-    private int getDefense()
+    public int getDefense()
     {
         return (defense);
     }
@@ -93,6 +94,11 @@ public class Actor : Entity
     private bool getAlive()
     {
         return (alive);
+    }
+
+    public int getFleeRating()
+    {
+        return (fleeRating);
     }
 
     //Setters
@@ -124,5 +130,10 @@ public class Actor : Entity
     private void setAlive(bool alive)
     {
         this.alive = alive;
+    }
+
+    private void setFleeRating(int fleeRating)
+    {
+        this.fleeRating = fleeRating;
     }
 }

@@ -9,9 +9,9 @@ public class EntityTester : Network
     // Start is called before the first frame update
     void Start()
     {
-        entity = new Actor("Test", "test", this.gameObject, 5, 1, 1, 1);
-        Actor actor = (Actor)entity;
-        Debug.Log(actor.getName() + " created with " + actor.getCurrHealth() + " health");
+        entity = new Player("Test", "test", this.gameObject, 5, 1, 1, 1, 10);
+        Player player = (Player)entity;
+        Debug.Log(player.getName() + " created with " + player.getCurrHealth() + " health");
     }
 
     // Update is called once per frame
@@ -19,22 +19,22 @@ public class EntityTester : Network
     {
         if (Input.GetKeyDown(KeyCode.Space) && this.gameObject)
         {
-            //Actor actor = (Actor)entity;
-
             if (!IsOwner)
             {
                 return;
             }
 
-            if (IsClient)
+            /*if (IsClient)
             {
                
                 destroyActorServerRpc(entity);
                 return;
             }
 
-            //Actor actor = (Actor)entity;
-            entity.die(GetComponent<NetworkObject>());
+            entity.die(GetComponent<NetworkObject>());*/
+
+            Player player = (Player)entity;
+            player.increaseExp(50);
         }
     }
 }

@@ -613,6 +613,7 @@ PlayerSettings:
     PS5: 1
     QNX: 1
     Stadia: 1
+    Standalone: 0
     VisionOS: 1
     WebGL: 1
     Windows Store Apps: 1
@@ -630,8 +631,8 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: It's Dangerous to go Alone
-  metroPackageVersion: 
+  metroPackageName: ItsDangeroustogoAlone
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -639,7 +640,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: It's Dangerous to go Alone
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: It's Dangerous to go Alone
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
