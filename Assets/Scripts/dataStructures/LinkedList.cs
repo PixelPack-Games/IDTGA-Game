@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 /*
  * @brief a custom Linked List class and Node inner class
  */
-public class LinkedList<T>
+public class LinkedList<T> : INetworkSerializable
 {
 
     //Properties
@@ -17,12 +18,14 @@ public class LinkedList<T>
         head = null;
     }
 
-    //Functions
-    /*public void init()
+    //Implementations
+    public void NetworkSerialize<T1>(BufferSerializer<T1> serializer) where T1 : IReaderWriter
     {
-        head = null;
-    }*/
+        string head = this.head.ToString();
+        serializer.SerializeValue(ref head);
+    }
 
+    //Functions
     public void add(ref T data)
     {
         if (head == null)
@@ -126,7 +129,7 @@ public class LinkedList<T>
     }
 
     //Node
-    private class Node<E>
+    private class Node<E> : INetworkSerializable
     {
         public E data;
         public Node<E> next;
@@ -135,6 +138,13 @@ public class LinkedList<T>
         public Node(ref E data)
         {
             this.data = data;
+        }
+
+        //Implementations
+        public void NetworkSerialize<T1>(BufferSerializer<T1> serializer) where T1 : IReaderWriter
+        {
+            string data = this.data.ToString();
+            serializer.SerializeValue(ref data);
         }
     }
 }
