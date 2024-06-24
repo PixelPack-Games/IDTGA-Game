@@ -9,9 +9,11 @@ public class EntityTester : Network
     // Start is called before the first frame update
     void Start()
     {
-        entity = new Player("Test", "test", this.gameObject, 5, 1, 1, 1, 10);
-        Player player = (Player)entity;
+        entity = new Fighter("Test", "test", this.gameObject, 5, 1, 1, 1, 10);
+        Fighter player = (Fighter)entity;
         Debug.Log(player.getName() + " created with " + player.getCurrHealth() + " health");
+        LinkedList<Entity> weapons = player.getWeapons();
+        weapons.iterate();
     }
 
     // Update is called once per frame
@@ -33,8 +35,9 @@ public class EntityTester : Network
 
             entity.die(GetComponent<NetworkObject>());*/
 
-            Player player = (Player)entity;
-            player.increaseExp(50);
+            Fighter player = (Fighter)entity;
+            Debug.Log("Removing: " + player.getWeapons().remove("sword"));
+            player.getWeapons().iterate();
         }
     }
 }
