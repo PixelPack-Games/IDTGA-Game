@@ -10,12 +10,16 @@ public class Player : Actor
 {
     //Properties
     private int level, exp; //level and exp values; when exp reaches 100 level increases by 1
+    protected LinkedList<Entity> weapons; //list of weapons this player has; TODO: change Entity to a Weapon class when implemented
+    protected Entity armor; //amor this player has on
+    protected string description; //class description
 
     //Constructors
     public Player(string name, string id, GameObject gameObject, int maxHealth, int attack, int defense, int speed, int fleeRating) : base(name, id, gameObject, maxHealth, attack, defense, speed, fleeRating)
     {
         level = 1;
         exp = 0;
+        weapons = new LinkedList<Entity>();
     }
 
     public Player(string name, string id, GameObject gameObject, int maxHealth, int attack, int defense, int speed, int fleeRating, int level, int exp) : base(name, id, gameObject, maxHealth, attack, defense, speed, fleeRating)
@@ -30,6 +34,9 @@ public class Player : Actor
         base.NetworkSerialize<T>(serializer);
         serializer.SerializeValue(ref level);
         serializer.SerializeValue(ref exp);
+        serializer.SerializeValue(ref description);
+        serializer.SerializeValue(ref weapons);
+        serializer.SerializeValue(ref armor);
     }
 
     //Functions
@@ -103,7 +110,7 @@ public class Player : Actor
         speed++;
         level++;
         exp -= 100;
-        Debug.Log(getName() + " is now level " + getLevel());
+        Debug.Log(getName() + " is now level " + level);
     }
 
     //Getters
@@ -117,6 +124,21 @@ public class Player : Actor
         return (exp);
     }
 
+    public LinkedList<Entity> getWeapons()
+    {
+        return (weapons);
+    }
+
+    private Entity getarmor()
+    {
+        return (armor);
+    }
+
+    private string getDescription()
+    {
+        return (description);
+    }
+
     //Setters
     private void setLevel(int level)
     {
@@ -126,5 +148,20 @@ public class Player : Actor
     private void setExp(int exp)
     {
         this.exp = exp;
+    }
+
+    private void setWeapons(LinkedList<Entity> weapons)
+    {
+        this.weapons = weapons;
+    }
+
+    private void setArmor(Entity armor)
+    {
+        this.armor = armor;
+    }
+
+    private void setDescription(string description)
+    {
+        this.description = description;
     }
 }
