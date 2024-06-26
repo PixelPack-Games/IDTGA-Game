@@ -36,6 +36,11 @@ public class Entity : INetworkSerializable
         serializer.SerializeValue(ref name);
     }
 
+    public override string ToString()
+    {
+        return (id);
+    }
+
     //Functions
     public void die(NetworkObject net)
     {
