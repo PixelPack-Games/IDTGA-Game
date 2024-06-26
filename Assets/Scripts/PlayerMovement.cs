@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Player_Movement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody2D player;
     public float movementSpeed;
@@ -17,6 +17,11 @@ public class Player_Movement : MonoBehaviour
         {
             netObj.Spawn();
         }
+    float speed;
+    // Start is called before the first frame update
+    void Start()
+    {
+        speed = movementSpeed * 100 * Time.fixedDeltaTime;
     }
 
     // Update is called once per frame
@@ -45,6 +50,18 @@ public class Player_Movement : MonoBehaviour
             {
                 player.velocity = Vector2.zero;
             }
+    {   
+        if (Input.GetKey(KeyCode.A)){
+            player.velocity = Vector2.left * speed;
+        }
+        else if (Input.GetKey(KeyCode.D)){
+            player.velocity = Vector2.right * speed;
+        }
+        else if (Input.GetKey(KeyCode.W)){
+            player.velocity = Vector2.up * speed;
+        }
+        else if (Input.GetKey(KeyCode.S)){
+            player.velocity = Vector2.down * speed;
         }
         
     }
