@@ -7,12 +7,12 @@ using Unity.Netcode;
 public class BattleTrigger : NetworkBehaviour
 {
     public loadNextScene loadNextScene;
-    public Player_Movement player_Movement;
+    public PlayerMovement player_Movement;
     void Start()
     {
         // Find the loadNextScene script in the scene
         loadNextScene = FindObjectOfType<loadNextScene>();
-        player_Movement = GetComponent<Player_Movement>();
+        player_Movement = GetComponent<PlayerMovement>();
 
         if (loadNextScene == null)
         {
