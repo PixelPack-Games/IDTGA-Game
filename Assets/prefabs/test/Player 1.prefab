@@ -94,10 +94,10 @@ PrefabInstance:
       addedObject: {fileID: 4910696811091732647}
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: ea4e9415f9d8dd14f87bad441ad6fa28, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6792167505359411858}
+      addedObject: {fileID: 7301407851227071196}
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: ea4e9415f9d8dd14f87bad441ad6fa28, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7301407851227071196}
+      addedObject: {fileID: 6792167505359411858}
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: ea4e9415f9d8dd14f87bad441ad6fa28, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6856818756463223721}
@@ -168,7 +168,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.0038983822, y: 0.15457797}
@@ -198,21 +198,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 4883845380734884498}
   movementSpeed: 1
---- !u!114 &6792167505359411858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5375628041010218106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5911174e91b5fd46a68447e9e31f966, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transition: {fileID: 0}
-  transitionTime: 1
-  battleSceneName: Forest_Battle
+  netObj: {fileID: 0}
+  inBattle: 0
 --- !u!114 &7301407851227071196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4165871236
+  GlobalObjectIdHash: 490224122
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -234,6 +221,20 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &6792167505359411858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5375628041010218106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5911174e91b5fd46a68447e9e31f966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadNextScene: {fileID: 0}
+  player_Movement: {fileID: 0}
 --- !u!114 &6856818756463223721
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,60 +9,43 @@ public class PlayerMovement : MonoBehaviour
     public float movementSpeed;
     public NetworkObject netObj;
     public bool inBattle;
-    // Start is called before the first frame update
-    void Start()
-    {
-        netObj = GetComponent<NetworkObject>();
-        if(netObj.IsSpawned == false)
-        {
-            netObj.Spawn();
-        }
     float speed;
     // Start is called before the first frame update
     void Start()
     {
+        netObj = GetComponent<NetworkObject>();
+        if (netObj.IsSpawned == false)
+        {
+            netObj.Spawn();
+        }
+        
         speed = movementSpeed * 100 * Time.fixedDeltaTime;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!inBattle)
+        // Update is called once per frame
+        void Update()
         {
             if (Input.GetKey(KeyCode.A))
             {
-                player.velocity = Vector2.left * movementSpeed;
+                player.velocity = Vector2.left * speed;
             }
             else if (Input.GetKey(KeyCode.D))
             {
-                player.velocity = Vector2.right * movementSpeed;
+                player.velocity = Vector2.right * speed;
             }
             else if (Input.GetKey(KeyCode.W))
             {
-                player.velocity = Vector2.up * movementSpeed;
+                 player.velocity = Vector2.up * speed;
             }
             else if (Input.GetKey(KeyCode.S))
             {
-                player.velocity = Vector2.down * movementSpeed;
+                player.velocity = Vector2.down * speed;
             }
-
             else
             {
                 player.velocity = Vector2.zero;
             }
-    {   
-        if (Input.GetKey(KeyCode.A)){
-            player.velocity = Vector2.left * speed;
+
+                
+          
         }
-        else if (Input.GetKey(KeyCode.D)){
-            player.velocity = Vector2.right * speed;
-        }
-        else if (Input.GetKey(KeyCode.W)){
-            player.velocity = Vector2.up * speed;
-        }
-        else if (Input.GetKey(KeyCode.S)){
-            player.velocity = Vector2.down * speed;
-        }
-        
-    }
 }
