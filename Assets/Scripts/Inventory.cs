@@ -15,8 +15,16 @@ public class Inventory : MonoBehaviour
             Destroy(other.GameObject());
         }
     }
+    private void Update(){
+        if(Input.GetKeyDown(KeyCode.Space)){
+            inventory.Save();
+        }
+        if(Input.GetKeyDown(KeyCode.L)){
+            inventory.Load();
+        }
+    }
 
     private void OnApplicationQuit(){
-        //inventory.Container.Clear();
+        inventory.Container.Clear();
     }
 }
