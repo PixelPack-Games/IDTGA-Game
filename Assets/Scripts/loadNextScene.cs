@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 public class loadNextScene : MonoBehaviour
 {
     public Animator transition;
+    public GameObject player;
     public float transitionTime = 1f;
     // Start is called before the first frame update
-
 
     public void LoadNextLevel()
     {

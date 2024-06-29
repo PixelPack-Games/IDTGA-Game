@@ -101,6 +101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 3255863112586548993}
   movementSpeed: 5
+  netObj: {fileID: 0}
+  inBattle: 0
 --- !u!50 &3255863112586548993
 Rigidbody2D:
   serializedVersion: 4
