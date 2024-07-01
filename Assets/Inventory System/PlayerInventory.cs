@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
     public InventoryObject inventory;
+    public GameObject InventoryScreen;
     // Start is called before the first frame update
 
     public void OnTriggerEnter2D(Collider2D other)
@@ -20,6 +21,10 @@ public class PlayerInventory : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            InventoryScreen.SetActive(!InventoryScreen.activeSelf);
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             inventory.Save();
