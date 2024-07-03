@@ -267,8 +267,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfb6ce83dbe734c42b64fdfe12c6cd5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpawnPoint: {fileID: 2023828890}
-  enemySpawnPoint: {fileID: 1389873249}
+  player1SpawnPoint: {fileID: 2023828890}
+  player2SpawnPoint: {fileID: 349795243}
+  player3SpawnPoint: {fileID: 1390469775}
+  player4SpawnPoint: {fileID: 501636893}
+  enemy1SpawnPoint: {fileID: 1389873249}
+  enemy2SpawnPoint: {fileID: 509281437}
+  enemy3SpawnPoint: {fileID: 1454583626}
+  enemy4SpawnPoint: {fileID: 1839483718}
 --- !u!1001 &608898088
 PrefabInstance:
   m_ObjectHideFlags: 0

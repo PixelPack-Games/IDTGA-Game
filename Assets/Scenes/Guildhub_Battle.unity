@@ -188,7 +188,7 @@ Transform:
   m_GameObject: {fileID: 278586570}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -0.219, y: -0.24000011, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -270,8 +270,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfb6ce83dbe734c42b64fdfe12c6cd5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpawnPoint: {fileID: 1173824172}
-  enemySpawnPoint: {fileID: 991148440}
+  player1SpawnPoint: {fileID: 1173824172}
+  player2SpawnPoint: {fileID: 1224916100}
+  player3SpawnPoint: {fileID: 815579873}
+  player4SpawnPoint: {fileID: 1153148408}
+  enemy1SpawnPoint: {fileID: 991148440}
+  enemy2SpawnPoint: {fileID: 950348339}
+  enemy3SpawnPoint: {fileID: 517797760}
+  enemy4SpawnPoint: {fileID: 1714576445}
 --- !u!4 &605786550
 Transform:
   m_ObjectHideFlags: 0
@@ -8620,7 +8626,7 @@ Transform:
   m_GameObject: {fileID: 1604074515}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -0.219, y: -0.24000011, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
