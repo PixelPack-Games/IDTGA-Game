@@ -9,3 +9,18 @@ Features:
 4. Loot and Treasure: Find valuable treasures and items to enhance your party's abilities.
 5. Lore: Discover the lore of the world and uncover hidden secrets.
 
+Pre-Requisites:
+To play the game you will need to download Unity (version 2020.3 or later recommended) and have access to the repository on github.
+
+
+Installation:
+
+1. Clone the Repository
+  - Copy code
+   
+2. Open in Unity:
+  - Open Unity Hub.
+  - Click on the "Add" button and select the folder where the repository was cloned.
+  - Open the project in Unity.
+
+3. Press play 
