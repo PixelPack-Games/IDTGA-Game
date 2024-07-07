@@ -8,6 +8,7 @@ Features:
 3. Dynamic Battles: Engage in turn-based combat with a variety of monsters and powerful bosses.
 4. Loot and Treasure: Find valuable treasures and items to enhance your party's abilities.
 5. Lore: Discover the lore of the world and uncover hidden secrets.
+6. Classes: Choose from 4 characters to play as. Cleric, Fighter, Mage, Rougue.
 
 Pre-Requisites:
 To play the game you will need to download Unity (version 2020.3 or later recommended) and have access to the repository on github.
