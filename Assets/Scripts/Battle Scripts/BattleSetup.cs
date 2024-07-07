@@ -12,13 +12,13 @@ public class BattleSetup : MonoBehaviour
     public Transform enemy2SpawnPoint;
     public Transform enemy3SpawnPoint;
     public Transform enemy4SpawnPoint;
+    public GameObject player;
 
-
-    void Start()
+    void Awake()
     {
         Transform[] EnemyPositions = new Transform[] { enemy1SpawnPoint, enemy2SpawnPoint, enemy3SpawnPoint, enemy4SpawnPoint };
 
-        GameObject player = Instantiate(BattleManager.Instance.player, player1SpawnPoint.position, Quaternion.identity);
+        player = Instantiate(BattleManager.Instance.player, player1SpawnPoint.position, Quaternion.identity);
         //TODO: edit this to accomodate multiple players and stop more enemies from spawning when multiple players join
         //TODO: Edit the randomness to reflect how many players are in the current party
         for (int i = 0; i < Random.Range(1, 4); i++)

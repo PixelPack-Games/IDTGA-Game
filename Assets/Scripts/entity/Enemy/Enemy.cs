@@ -37,7 +37,7 @@ public class Enemy : Actor
     }
 
     //Functions
-    private void attackAction(Actor other)
+    public void attackAction(Actor other)
     {
         int damage = attack - other.getDefense();
 

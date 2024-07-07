@@ -21,11 +21,7 @@ public class PlayerMovement : MonoBehaviour
             netObj.Spawn();
         }
 
-        entity = new Rogue("Amir", "player1", this.gameObject, 10, 2, 1, 5, 10);
-        Rogue player = (Rogue)entity;
-        Debug.Log(player.getName() + " created with " + player.getCurrHealth() + " health");
-        LinkedList<Entity> weapons = player.getWeapons();
-        weapons.iterate();
+        
 
         speed = movementSpeed * 100 * Time.fixedDeltaTime;
     }

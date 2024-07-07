@@ -489,6 +489,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.19, y: 0.32}
   m_EdgeRadius: 0
+--- !u!114 &789963862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789963858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9befa50db218fa241877c9d103f51dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Training Dummy
+  Id: enemy1
+  MaxHealth: 10
+  attack: 1
+  defense: 1
+  speed: 1
+  fleeRating: 1
 --- !u!1 &854639654
 GameObject:
   m_ObjectHideFlags: 0
@@ -7286,6 +7305,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: 3bb39e023f80a14459267dfd0c51b334, type: 3}
       insertIndex: -1
       addedObject: {fileID: 789963859}
+    - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: 3bb39e023f80a14459267dfd0c51b334, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 789963862}
   m_SourcePrefab: {fileID: -8435245712485981826, guid: 3bb39e023f80a14459267dfd0c51b334, type: 3}
 --- !u!1 &1029905124
 GameObject:
@@ -9996,7 +10018,11 @@ PrefabInstance:
     - target: {fileID: 8045462081013488736, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
       propertyPath: NetworkConfig.PlayerPrefab
       value: 
-      objectReference: {fileID: 5375628041010218106, guid: 33524c616a7fe0f4b8a26842a4c7dd3f, type: 3}
+      objectReference: {fileID: 7349655241409246136, guid: a12ed15a43b64d442bedf0020381e95b, type: 3}
+    - target: {fileID: 8045462081013488736, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
+      propertyPath: NetworkConfig.ForceSamePrefabs
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
