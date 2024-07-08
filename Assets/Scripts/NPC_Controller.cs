@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC_Dialogue : MonoBehaviour
+public class NPC_Controller : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,5 +14,9 @@ public class NPC_Dialogue : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void interact(){
+        Debug.Log("Interacted with NPC");
     }
 }
