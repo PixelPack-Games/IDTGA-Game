@@ -6,11 +6,11 @@ using System.Xml.Linq;
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] private string Name = "playerName";
+    [SerializeField] public string Name = "playerName";
     [SerializeField] private string Id = "player1";
-    [SerializeField] private int MaxHealth = 10;
-    [SerializeField] private int attack = 1;
-    [SerializeField] private int defense = 1;
+    [SerializeField] public int MaxHealth = 10;
+    [SerializeField] public int attack = 1;
+    [SerializeField] public int defense = 1;
     [SerializeField] private int speed = 1;
     [SerializeField] private int fleeRating = 5;
     public Entity entity;

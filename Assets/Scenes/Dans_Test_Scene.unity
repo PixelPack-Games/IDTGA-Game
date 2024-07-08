@@ -10018,11 +10018,19 @@ PrefabInstance:
     - target: {fileID: 8045462081013488736, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
       propertyPath: NetworkConfig.PlayerPrefab
       value: 
-      objectReference: {fileID: 7349655241409246136, guid: a12ed15a43b64d442bedf0020381e95b, type: 3}
+      objectReference: {fileID: 6251762729390720956, guid: 8b0900a70d71a784482b1cd8f4ee78de, type: 3}
     - target: {fileID: 8045462081013488736, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
       propertyPath: NetworkConfig.ForceSamePrefabs
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8045462081013488736, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045462081013488736, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 884b0346f9712634895a722fbfd96128, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

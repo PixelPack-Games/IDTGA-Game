@@ -48,6 +48,7 @@ public class Actor : Entity
 
         if (currHealth <= 0)
         {
+            currHealth = 0;
             alive = false;
             //DO NOT die() immediately, as the actor may have special actions (like animations or dialogue) it needs to take before being destroyed
         }
@@ -76,7 +77,7 @@ public class Actor : Entity
         return (maxHealth);
     }
 
-    private int getAttack()
+    public int getAttack()
     {
         return (attack);
     }

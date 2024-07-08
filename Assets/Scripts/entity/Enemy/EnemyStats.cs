@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EnemyStats : MonoBehaviour
 {
-    [SerializeField] private string Name = "enemyname";
+    [SerializeField] public string Name = "enemyname";
     [SerializeField] private string Id = "enemy1";
-    [SerializeField] private int MaxHealth = 10;
-    [SerializeField] private int attack = 1;
-    [SerializeField] private int defense = 1;
+    [SerializeField] public int MaxHealth = 10;
+    [SerializeField] public int attack = 1;
+    [SerializeField] public int defense = 1;
     [SerializeField] private int speed = 1;
     [SerializeField] private int fleeRating = 1;
     private Entity entity;

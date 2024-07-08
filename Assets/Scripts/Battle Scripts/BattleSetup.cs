@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class BattleSetup : MonoBehaviour
+public class BattleSetup : NetworkBehaviour
 {
     public Transform player1SpawnPoint;
     public Transform player2SpawnPoint;
@@ -16,8 +17,9 @@ public class BattleSetup : MonoBehaviour
 
     void Awake()
     {
+        if (!IsOwner) return;
         Transform[] EnemyPositions = new Transform[] { enemy1SpawnPoint, enemy2SpawnPoint, enemy3SpawnPoint, enemy4SpawnPoint };
-
+        
         player = Instantiate(BattleManager.Instance.player, player1SpawnPoint.position, Quaternion.identity);
         //TODO: edit this to accomodate multiple players and stop more enemies from spawning when multiple players join
         //TODO: Edit the randomness to reflect how many players are in the current party
