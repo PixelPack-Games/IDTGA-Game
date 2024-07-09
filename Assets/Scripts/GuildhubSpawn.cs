@@ -10,6 +10,13 @@ public class GuildhubSpawn : MonoBehaviour
     void Start()
     {
         PlayerMovement = FindObjectOfType<PlayerMovement>();
+
+        if (PlayerMovement == null)
+        {
+            Debug.Log("Player not found");
+            return;
+        }
+
         player = PlayerMovement.gameObject;
         player.transform.position = this.transform.position;
     }
@@ -17,6 +24,20 @@ public class GuildhubSpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (player != null)
+        {
+            return;
+        }
+
+        PlayerMovement = FindObjectOfType<PlayerMovement>();
+
+        if (PlayerMovement == null)
+        {
+            Debug.Log("Player not found");
+            return;
+        }
+
+        player = PlayerMovement.gameObject;
+        player.transform.position = this.transform.position;
     }
 }
