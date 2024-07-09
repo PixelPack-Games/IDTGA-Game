@@ -30,24 +30,44 @@ public class BattleTrigger : NetworkBehaviour
         {
             if (IsOwner)
             {
-                checkIfEnemy(other);
                 PlayerData temp = new PlayerData()
                 {
-                    sceneIndex = loadNextScene.LoadNextLevel()
+                    pos = network.data.Value.pos,
+                    self = this.gameObject,
+                    enemy = other.gameObject
                 };
+
                 if (IsServer || !network.serverAuth)
                 {
-                   network.data.Value = temp;
+                    network.data.Value = temp;
+                    network.loadNextSceneAndPopulate(this.gameObject, other.gameObject);
                 }
                 else
                 {
-                    network.transmitDataServerRpc(temp);
+                    network.loadNextSceneServerRpc(temp);
                 }
             }
-            else
-            {
-                StartCoroutine(loadNextScene.LoadBattleScene(network.data.Value.sceneIndex));
-            }
+
+            //if (IsOwner)
+            //{
+                //checkIfEnemy(other);
+                //PlayerData temp = new PlayerData()
+                //{
+               //     sceneIndex = loadNextScene.LoadNextLevel()
+             //   };
+             //   if (IsServer || !network.serverAuth)
+            //    {
+              //     network.data.Value = temp;
+             //   }
+           //     else
+            //    {
+             //       network.transmitDataServerRpc(temp);
+             //   }
+          //  }
+         //   else
+           // {
+           //     StartCoroutine(loadNextScene.LoadBattleScene(network.data.Value.sceneIndex));
+           // }
         }
     }
 

@@ -7,6 +7,8 @@ public class Network : NetworkBehaviour
 {
     public NetworkVariable<PlayerData> data;
     [SerializeField] public bool serverAuth;
+    [SerializeField] private PlayerMovement moveScript;
+    private loadNextScene sceneScript;
 
     // Start is called before the first frame update
     void Start()
@@ -17,12 +19,14 @@ public class Network : NetworkBehaviour
         }
 
         Debug.Log("Server authority status: " + serverAuth);
+        sceneScript = FindObjectOfType<loadNextScene>();
     }
 
     private void Awake()
     {
         NetworkVariableWritePermission perm = serverAuth ? NetworkVariableWritePermission.Server : NetworkVariableWritePermission.Owner;
         data = new NetworkVariable<PlayerData>(writePerm: perm);
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame
@@ -47,8 +51,26 @@ public class Network : NetworkBehaviour
         }
         else
         {
+            if (moveScript.inBattle)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+
             transform.position = data.Value.pos;
         }
+    }
+
+    public void loadNextSceneAndPopulate(GameObject player, GameObject enemy)
+    {
+        BattleManager.Instance.SetBattleData(player, enemy);
+        //makes sure these objects can be referenced in other scenes
+        DontDestroyOnLoad(player);
+        DontDestroyOnLoad(enemy);
+        //make sure the player is inBattle now
+        moveScript.inBattle = true;
+        //this gets the next scene from the build settings
+        sceneScript.LoadNextLevel();
     }
 
     [ServerRpc]
@@ -63,6 +85,13 @@ public class Network : NetworkBehaviour
         entity.die(GetComponent<NetworkObject>());
     }
 
+    [ServerRpc]
+    public void loadNextSceneServerRpc(PlayerData temp)
+    {
+        //loadNextSceneAndPopulate(temp.self, temp.enemy);
+        loadNextSceneClientRpc(temp);
+    }
+
 
     [ClientRpc]
     private void transmitDataClientRpc(PlayerData temp)
@@ -75,12 +104,25 @@ public class Network : NetworkBehaviour
         //TODO: add interpolation for smoother connectivity
         data.Value = temp;
     }
+
+    [ClientRpc]
+    private void loadNextSceneClientRpc(PlayerData temp)
+    {
+        if (IsOwner)
+        {
+            return;
+        }
+
+        loadNextSceneAndPopulate(temp.self, temp.enemy);
+    }
 }
 
 public struct PlayerData : INetworkSerializable
 {
     private float x, y;
     public int sceneIndex;
+    public GameObject self;
+    public GameObject enemy;
 
     internal Vector3 pos
     {

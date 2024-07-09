@@ -423,7 +423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadNextScene: {fileID: 0}
-  player_Movement: {fileID: 0}
+  player_Movement: {fileID: -4415228440368770539}
+  network: {fileID: 403445287210795576}
 --- !u!114 &403445287210795576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,6 +438,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverAuth: 1
+  moveScript: {fileID: -4415228440368770539}
+  sceneScript: {fileID: 0}
 --- !u!61 &7519223226633787379
 BoxCollider2D:
   m_ObjectHideFlags: 0
