@@ -6,7 +6,23 @@ public class PlayerInventory : MonoBehaviour
 {
     public InventoryObject inventory;
     public GameObject InventoryScreen;
+    [SerializeField] private string inventoryObjectName;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        GameObject[] objects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
+
+        for (int bogus = 0; bogus < objects.Length; bogus++)
+        {
+            if (!objects[bogus].name.Equals(inventoryObjectName))
+            {
+                continue;
+            }
+
+            InventoryScreen = objects[bogus];
+        }
+    }
 
     public void OnTriggerEnter2D(Collider2D other)
     {

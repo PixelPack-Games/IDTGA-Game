@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 2640448658986344379}
   - component: {fileID: 2240887762096537961}
   - component: {fileID: 287727978812015761}
+  - component: {fileID: -5599259116495025471}
+  - component: {fileID: -6905116918845634731}
   m_Layer: 0
   m_Name: Test Player
   m_TagString: Player
@@ -188,3 +190,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: ba391aef18194db419840aa8245becc2, type: 2}
   InventoryScreen: {fileID: 0}
+  inventoryObjectName: InventoryScreen
+--- !u!114 &-5599259116495025471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201777888716941998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1467479413
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &-6905116918845634731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201777888716941998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491ed27fa481d554d9c818fccb4708e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverAuth: 1
