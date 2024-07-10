@@ -18,7 +18,8 @@ public class loadNextScene : NetworkBehaviour
     }
     public IEnumerator LoadBattleScene(int sceneIndex)
     {
-        transition.SetTrigger("Start");
+        if(transition !=null)
+            transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene(sceneIndex);
     }

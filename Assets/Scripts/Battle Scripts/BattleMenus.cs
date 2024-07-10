@@ -12,9 +12,18 @@ public class BattleMenus : MonoBehaviour
     public GameObject MainHUD;
     public GameObject ChoiceHUD;
     public GameObject AttackHUD;
+    public GameObject attackButtonOne;
+    public GameObject attackButtonTwo;
+    public GameObject attackButtonThree;
+    public GameObject attackButtonFour;
+    public GameObject[] buttonList;
 
-
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        buttonList = new GameObject[] { attackButtonOne, attackButtonTwo, attackButtonThree, attackButtonFour};
+        
+    }
+    
     public void ToggleMenu(GameObject Menu)
     {
         if(Menu.gameObject.activeInHierarchy) Menu.gameObject.SetActive(false);

@@ -7,11 +7,13 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
 using Unity.Netcode;
+using UnityEngine.SceneManagement;
 
 public enum BattleState { START, PLAYERTURN, ENEMY_ONE_TURN, ENEMY_TWO_TURN, ENEMY_THREE_TURN, ENEMY_FOUR_TURN, WON, LOST }
 public enum MenuState { START, PLAYER_OPTIONS, PLAYER_ATTACK, ENEMY_ACTION}
 public class BattleSystem : NetworkBehaviour
 {
+
     public GameObject playerOne;
     public GameObject playerTwo;
     public GameObject playerThree;
@@ -58,7 +60,13 @@ public class BattleSystem : NetworkBehaviour
     public int enemyCount;
 
 
+    public Camera BattleCam;
+    public Camera OverworldCam;
+
+
+
     //UI
+    public GameObject BattleUI;
     public BattleMenus BattleMenus;
     public BattleHUD playerOneHUD;
     public BattleHUD enemyOneHUD;
@@ -67,9 +75,12 @@ public class BattleSystem : NetworkBehaviour
     public BattleHUD enemyFourHUD;
     //
 
-    void Start()
+    public loadNextScene loadNextScene;
+
+    public void StartBattle()
     {
-        if (!IsOwner) return;
+        //if (!IsOwner) return;
+        BattleUI.SetActive(true);
         enemyCount = Random.Range(1,4);
 
         //this could be used to randomize the types of enemies in each battle
@@ -85,9 +96,12 @@ public class BattleSystem : NetworkBehaviour
 
     IEnumerator SetupBattle()
     {
+        OverworldCam.gameObject.SetActive(false);
+        BattleCam.gameObject.SetActive(true);
         
-        playerOne = Instantiate(BattleManager.Instance.player, player1SpawnPoint.position, Quaternion.identity);
-        BattleManager.Instance.player.SetActive(false);
+        playerOne = BattleManager.Instance.player;
+        playerOne.transform.position = player1SpawnPoint.position;
+        //BattleManager.Instance.player.SetActive(false);
         Debug.Log("player set to inactive");
         
         for (int i = 0; i < enemyCount; i++)
@@ -98,7 +112,7 @@ public class BattleSystem : NetworkBehaviour
             if (allEnemyStats[i] == null) Debug.Log($"{allEnemyStats[i]} is  null for some reason");
             enemyHUDlist[i].gameObject.SetActive(true);
             enemyHUDlist[i].SetEnemyHUD(allEnemyStats[i]);
-
+            BattleMenus.buttonList[i].SetActive(true);
         }
         BattleManager.Instance.enemy.SetActive(false);
 
@@ -114,11 +128,6 @@ public class BattleSystem : NetworkBehaviour
         if (allEnemyStats[0] == null) Debug.LogError("allEnemyStats[0] is null!");
 
         //
-        
-
-
-
-
 
         yield return new WaitForSeconds(2f);
         
@@ -139,14 +148,31 @@ public class BattleSystem : NetworkBehaviour
         
     }
 
-    void EndBattle()
+    IEnumerator EndBattle()
     {
         if(state == BattleState.WON)
         {
-            Debug.Log("player has won");
-        }else if (state == BattleState.LOST)
+            Debug.Log("Your party has won!");
+            BattleMenus.dialogueText.text = "Your party has won!";
+            Debug.Log("current scene index: " + SceneManager.GetActiveScene().buildIndex);
+            //StartCoroutine(loadNextScene.LoadBattleScene(SceneManager.GetActiveScene().buildIndex-1));
+        }
+        else if (state == BattleState.LOST)
         {
-            Debug.Log("player has lost");
+            Debug.Log("Your party lost...");
+            BattleMenus.dialogueText.text = "Your party lost...";
+        }
+        yield return new WaitForSeconds(2f);
+        playerOne.transform.position = BattleManager.Instance.playerOnePos;
+        BattleCam.gameObject.SetActive(false);
+        OverworldCam.gameObject.SetActive(true);
+        BattleUI.SetActive(false);
+        playerOne.GetComponent<PlayerMovement>().inBattle = false;
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            Destroy(enemyGameObjects[i]);
+            enemyHUDlist[i].gameObject.SetActive(false);
         }
     }
 
@@ -302,6 +328,7 @@ public class BattleSystem : NetworkBehaviour
 
     IEnumerator PlayerTurn()
     {
+        updatePlayerButtons();
         yield return new WaitForSeconds(1f);
         Debug.Log("playerturn");
         BattleMenus.dialogueText.text = "Choose an action: ";
@@ -325,7 +352,7 @@ public class BattleSystem : NetworkBehaviour
             return;
         BattleMenus.ToggleMenu(BattleMenus.AttackHUD);
         BattleMenus.ToggleMenu(BattleMenus.MainHUD);
-        StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[0], enemyOneHUD));
+        StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[0], 0));
     }
 
     public void AttackEnemyTwoButton()
@@ -334,7 +361,7 @@ public class BattleSystem : NetworkBehaviour
             return;
         BattleMenus.ToggleMenu(BattleMenus.AttackHUD);
         BattleMenus.ToggleMenu(BattleMenus.MainHUD);
-        StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[1], enemyTwoHUD));
+        StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[1], 1));
     }
 
     public void AttackEnemyThreeButton()
@@ -343,7 +370,7 @@ public class BattleSystem : NetworkBehaviour
             return;
         BattleMenus.ToggleMenu(BattleMenus.AttackHUD);
         BattleMenus.ToggleMenu(BattleMenus.MainHUD);
-        StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[2], enemyThreeHUD));
+        StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[2], 2));
     }
 
     public void AttackEnemyFourButton()
@@ -352,11 +379,18 @@ public class BattleSystem : NetworkBehaviour
             return;
         BattleMenus.ToggleMenu(BattleMenus.AttackHUD);
         BattleMenus.ToggleMenu(BattleMenus.MainHUD);
-        StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[3], enemyFourHUD));
+        StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[3], 3));
     }
     ////////////////
 
-    IEnumerator PlayerAttack(PlayerStats AttackingPlayer, EnemyStats DefendingEnemy, BattleHUD enemyHUD)
+    void updatePlayerButtons()
+    {
+        for (int i = 0; i < enemyCount; i++)
+        {
+            if (!allEnemyStats[i].enemy.getAlive()) BattleMenus.buttonList[i].SetActive(false);
+        }
+    }
+    IEnumerator PlayerAttack(PlayerStats AttackingPlayer, EnemyStats DefendingEnemy, int enemyIndex)
     {
         Debug.Log("Player Attacks!");
         BattleMenus.dialogueText.text = AttackingPlayer.Name + " attacks " + DefendingEnemy.Name;
@@ -368,7 +402,7 @@ public class BattleSystem : NetworkBehaviour
         Debug.Log($"{enemyName} health = " + DefendingEnemy.enemy.getCurrHealth());
 
         //TODO: make it so this function can work for any enemy
-        enemyHUD.SetHP(DefendingEnemy.enemy.getCurrHealth());
+        enemyHUDlist[enemyIndex].SetHP(DefendingEnemy.enemy.getCurrHealth());
         
         if (AllEnemiesAreDead())
         {
@@ -377,7 +411,7 @@ public class BattleSystem : NetworkBehaviour
 
             //for now its just win state
             state = BattleState.WON;
-            EndBattle();
+            StartCoroutine(EndBattle());
         }
         else
         {
@@ -415,18 +449,18 @@ public class BattleSystem : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E) && allEnemyStats[0].enemy.getAlive())
             {
-                StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[0], enemyOneHUD));
+                StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[0], 0));
             }else if(Input.GetKeyDown(KeyCode.R) && allEnemyStats[1].enemy.getAlive() && allEnemyStats[1].enemy != null)
             {
-                StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[1], enemyTwoHUD));
+                StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[1], 1));
             }
             else if (Input.GetKeyDown(KeyCode.T) && allEnemyStats[2].enemy.getAlive() && allEnemyStats[2].enemy != null)
             {
-                StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[2], enemyThreeHUD));
+                StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[2], 2));
             }
             else if (Input.GetKeyDown(KeyCode.Y) && allEnemyStats[3].enemy.getAlive() && allEnemyStats[3].enemy != null)
             {
-                StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[3], enemyFourHUD));
+                StartCoroutine(PlayerAttack(playerOneStats, allEnemyStats[3], 3));
             }
         }
     }

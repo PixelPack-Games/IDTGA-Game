@@ -422,8 +422,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5911174e91b5fd46a68447e9e31f966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BattleSystem: {fileID: 0}
   loadNextScene: {fileID: 0}
   player_Movement: {fileID: 0}
+  network: {fileID: 0}
+  OverworldLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &403445287210795576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,7 +500,7 @@ MonoBehaviour:
   Name: Amir
   Id: player_1
   MaxHealth: 10
-  attack: 9
+  attack: 11
   defense: 0
   speed: 1
   fleeRating: 5
