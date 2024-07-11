@@ -11,6 +11,11 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
+        findInventoryScreen();
+    }
+
+    private void findInventoryScreen()
+    {
         GameObject[] objects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
 
         for (int bogus = 0; bogus < objects.Length; bogus++)
@@ -37,6 +42,12 @@ public class PlayerInventory : MonoBehaviour
     }
     private void Update()
     {
+        if (InventoryScreen == null)
+        {
+            findInventoryScreen();
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.I))
         {
             InventoryScreen.SetActive(!InventoryScreen.activeSelf);
