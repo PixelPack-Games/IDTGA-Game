@@ -9,7 +9,7 @@ public class BattleSystemNetwork : NetworkBehaviour
     [SerializeField] public bool serverAuth;
     void Start()
     {
-        
+
     }
 
     private void Awake()
@@ -17,11 +17,31 @@ public class BattleSystemNetwork : NetworkBehaviour
         NetworkVariableWritePermission perm = serverAuth ? NetworkVariableWritePermission.Server : NetworkVariableWritePermission.Owner;
         data = new NetworkVariable<BattleData>(writePerm: perm);
     }
-    void Update()
+
+    [ServerRpc]
+    public void destroyActorServerRpc(Entity entity)
     {
-        
+        entity.die(GetComponent<NetworkObject>());
+    }
+
+    [ServerRpc]
+    public void transmitDataServerRpc(BattleData temp)
+    {
+        transmitDataClientRpc(temp);
+    }
+
+    [ClientRpc]
+    private void transmitDataClientRpc(BattleData temp)
+    {
+        if (IsOwner)
+        {
+            return;
+        }
+        data.Value = temp;
     }
 }
+
+
 
 public struct BattleData : INetworkSerializable
 {

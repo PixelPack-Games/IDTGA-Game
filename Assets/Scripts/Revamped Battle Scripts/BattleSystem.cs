@@ -85,6 +85,7 @@ public class BattleSystem : NetworkBehaviour
     //
 
     public loadNextScene loadNextScene;
+    public BattleSystemNetwork BS_Network;
     int playerIndex = 0;
     int playerCount = 0;
 
@@ -121,8 +122,12 @@ public class BattleSystem : NetworkBehaviour
 
     IEnumerator SetupBattle()
     {
-        OverworldCam.gameObject.SetActive(false);
-        BattleCam.gameObject.SetActive(true);
+        if(IsOwner)
+        {
+            OverworldCam.gameObject.SetActive(false);
+            BattleCam.gameObject.SetActive(true);
+        }
+        
         
         AddPlayer();
         //BattleManager.Instance.player.SetActive(false);
