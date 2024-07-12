@@ -52,7 +52,7 @@ public class BattleTrigger : NetworkBehaviour
             {
                 OverworldLocation = player_Movement.gameObject.transform.position;
                 checkIfEnemy(other);
-                /* PlayerData temp = new PlayerData()
+                 PlayerData temp = new PlayerData()
                  {
                      //sceneIndex = loadNextScene.LoadNextLevel()
                  };
@@ -63,7 +63,7 @@ public class BattleTrigger : NetworkBehaviour
                  else
                  {
                      network.transmitDataServerRpc(temp);
-                 }*/
+                 }
                 BattleSystem.StartBattle();
             }
             else

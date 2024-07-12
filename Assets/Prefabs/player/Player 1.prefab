@@ -425,7 +425,7 @@ MonoBehaviour:
   BattleSystem: {fileID: 0}
   loadNextScene: {fileID: 0}
   player_Movement: {fileID: 0}
-  network: {fileID: 0}
+  network: {fileID: 403445287210795576}
   OverworldLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &403445287210795576
 MonoBehaviour:
