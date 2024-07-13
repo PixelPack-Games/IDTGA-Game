@@ -11,12 +11,15 @@ public class FollowPlayerCam : NetworkBehaviour
     public CinemachineVirtualCamera vcam;
     public GameObject player;
     public Transform FollowTarget;
+    
     public bool isAttached = false;
+    BattleSystem battleSystem;
     GameObject[] players = new GameObject[4];
     // Start is called before the first frame update
     void Start()
     {
         var vcam = GetComponent<CinemachineVirtualCamera>();
+        battleSystem = FindAnyObjectByType<BattleSystem>();
     }
 
     void Update()
@@ -47,10 +50,10 @@ public class FollowPlayerCam : NetworkBehaviour
                 }*/
                 if(players.Length != 0)
                 {
-                    Debug.Log("Player[" + (players.Length-1) + "] name: ");
                     GameObject playerObj = players[players.Length-1].transform.root.gameObject;
                     Debug.Log("Player[" + (players.Length-1) + "] name: " + playerObj.name);
                     player  = players[players.Length-1];
+                    battleSystem.ClientId = players.Length-1;
                     isAttached = true;
                 }
                 

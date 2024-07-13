@@ -48,14 +48,14 @@ public struct BattleData : INetworkSerializable
     LinkedList<Player> playerList;
     //public Enemy[] enemyList;
     LinkedList<Enemy> enemyList;
-    public BattleState BattleState;
+    public BattleState battleState;
     public MenuState MenuState;
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref playerList);
         serializer.SerializeValue(ref enemyList);
-        serializer.SerializeValue(ref BattleState);
+        serializer.SerializeValue(ref battleState);
         serializer.SerializeValue(ref MenuState);
 
     }

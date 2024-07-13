@@ -86,11 +86,16 @@ public class BattleSystem : NetworkBehaviour
 
     public loadNextScene loadNextScene;
     public BattleSystemNetwork BS_Network;
+    public int ClientId;
     int playerIndex = 0;
-    int playerCount = 0;
-
     public void StartBattle()
     {
+        //gets a list of all the players
+        playerGameObjects = GameObject.FindGameObjectsWithTag("Player");
+        
+
+        
+        
         //if (!IsOwner) return;
         BattleUI.SetActive(true);
         enemyCount = Random.Range(1,4);
@@ -98,7 +103,6 @@ public class BattleSystem : NetworkBehaviour
         //this could be used to randomize the types of enemies in each battle
         enemyPrefabs = new GameObject[] { enemyOnePrefab, enemyTwoPrefab, enemyThreePrefab, enemyFourPrefab };
         //
-        playerGameObjects = new GameObject[] {playerOne, playerTwo, playerThree, playerFour};
         enemyGameObjects = new GameObject[] { enemyOne, enemyTwo, enemyThree, enemyFour };
         enemyPositions = new Transform[] { enemy1SpawnPoint, enemy2SpawnPoint, enemy3SpawnPoint, enemy4SpawnPoint };
         allEnemyStats = new EnemyStats[] { enemyOneStats, enemyTwoStats, enemyThreeStats, enemyFourStats };
@@ -106,30 +110,68 @@ public class BattleSystem : NetworkBehaviour
         playerPositions = new Transform[] {player1SpawnPoint, player2SpawnPoint, player3SpawnPoint, player4SpawnPoint};
         playerHUDlist = new BattleHUD[] {playerOneHUD, playerTwoHUD, playerThreeHUD, playerFourHUD};
         PlayerStats = new PlayerStats[] {playerOneStats, playerTwoStats, playerThreeStats, playerFourStats};
+
+
+        
+
         state = BattleState.START;
         StartCoroutine(SetupBattle());
     }
 
 //Sets up the instance of the player in their respective location with their HUD and stats
    void AddPlayer(){
-        playerGameObjects[playerCount] = BattleManager.Instance.player;
-        playerGameObjects[playerCount].transform.position = playerPositions[playerCount].position;
-        PlayerStats[playerCount] = playerGameObjects[playerCount].GetComponent<PlayerStats>();
-        playerHUDlist[playerCount].SetPlayerHUD(PlayerStats[playerCount]);
+        for(int i = 0; i < playerGameObjects.Length; i++) 
+            Debug.Log("PlayerObjectName: " + playerGameObjects[i].name );
+        Debug.Log("playerGameObjects length == " + playerGameObjects.Length );
+        Debug.Log("Index: " + ClientId );
+        playerGameObjects[ClientId].transform.position = playerPositions[ClientId].position;
+        PlayerStats[ClientId] = playerGameObjects[ClientId].GetComponent<PlayerStats>();
+        playerHUDlist[ClientId].SetPlayerHUD(PlayerStats[ClientId]);
+        playerHUDlist[ClientId].gameObject.SetActive(true);
 
-        playerCount++;
+    }
+
+    public void UpdateServer()
+    {
+        if (IsOwner)
+        {
+            
+            BattleData temp = new BattleData()
+            {
+                battleState = state,
+            };
+            //
+            if (IsServer || !BS_Network.serverAuth)
+            {
+                BS_Network.data.Value = temp;
+            }
+            else
+            {
+                //Update the server
+                BS_Network.transmitDataServerRpc(temp);
+                Debug.Log("Data sent to server");
+            }
+        }
+        else
+        {
+            //grab the correct info from the server
+           state = BS_Network.data.Value.battleState;
+        }
+        
     }
 
     IEnumerator SetupBattle()
     {
-        if(IsOwner)
-        {
+        //if(IsOwner)
+        //{
             OverworldCam.gameObject.SetActive(false);
             BattleCam.gameObject.SetActive(true);
-        }
+        //}
         
         
         AddPlayer();
+
+
         //BattleManager.Instance.player.SetActive(false);
         //Debug.Log("player set to inactive");
         
