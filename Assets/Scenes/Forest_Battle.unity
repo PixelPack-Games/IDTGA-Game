@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 349795242}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.365, y: -0.731, z: 0}
+  m_LocalPosition: {x: -1.365, y: -0.609, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -178,7 +178,7 @@ Transform:
   m_GameObject: {fileID: 501636892}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.201, y: 0.065, z: 0}
+  m_LocalPosition: {x: -1.201, y: 0.18699998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -224,6 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 582868905}
+  - component: {fileID: 582868907}
   - component: {fileID: 582868906}
   m_Layer: 0
   m_Name: Entity_PlaceHolders
@@ -267,8 +268,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfb6ce83dbe734c42b64fdfe12c6cd5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpawnPoint: {fileID: 2023828890}
-  enemySpawnPoint: {fileID: 1389873249}
+  player1SpawnPoint: {fileID: 2023828890}
+  player2SpawnPoint: {fileID: 349795243}
+  player3SpawnPoint: {fileID: 1390469775}
+  player4SpawnPoint: {fileID: 501636893}
+  enemy1SpawnPoint: {fileID: 1389873249}
+  enemy2SpawnPoint: {fileID: 509281437}
+  enemy3SpawnPoint: {fileID: 1454583626}
+  enemy4SpawnPoint: {fileID: 1839483718}
+  player: {fileID: 0}
+--- !u!114 &582868907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582868904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2335745284
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1001 &608898088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5986,7 +6015,7 @@ Transform:
   m_GameObject: {fileID: 1390469774}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.201, y: -1.05, z: 0}
+  m_LocalPosition: {x: -1.201, y: -0.928, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12072,7 +12101,7 @@ Transform:
   m_GameObject: {fileID: 2023828889}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.365, y: -0.258, z: 0}
+  m_LocalPosition: {x: -1.365, y: -0.136, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
