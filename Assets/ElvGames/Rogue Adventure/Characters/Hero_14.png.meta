@@ -3,7 +3,7 @@ guid: 7a4d9c3551dd0894c94e00557ce22322
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -20,11 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -63,6 +64,8 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -74,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -86,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -98,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -110,6 +116,20 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -1554,77 +1574,76 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Hero_14_56: -869592543
-      Hero_14_16: 2133313880
-      Hero_14_51: -1702100619
-      Hero_14_41: 1534053470
+      Hero_14_0: -1351683781
+      Hero_14_1: 1740267409
       Hero_14_10: -1686864960
+      Hero_14_11: -335722505
+      Hero_14_12: 909069929
+      Hero_14_13: -1352440402
+      Hero_14_14: 387238879
+      Hero_14_15: 986909414
+      Hero_14_16: 2133313880
+      Hero_14_17: -1521522518
+      Hero_14_18: -1976721079
+      Hero_14_19: -1885355088
+      Hero_14_2: 1850575836
+      Hero_14_20: -849189412
       Hero_14_21: 896707794
       Hero_14_22: -289979465
-      Hero_14_67: -209899306
-      Hero_14_17: -1521522518
-      Hero_14_24: -154015684
-      Hero_14_13: -1352440402
-      Hero_14_43: -2093182770
-      Hero_14_26: 370942455
-      Hero_14_9: 628177223
-      Hero_14_60: -1050594546
-      Hero_14_46: 1048454585
-      Hero_14_63: 1438730630
-      Hero_14_28: -725375210
-      Hero_14_59: 651219814
-      Hero_14_34: -372473180
-      Hero_14_31: 899457315
-      Hero_14_50: -344241363
-      Hero_14_3: -1754706276
-      Hero_14_7: 2097258334
-      Hero_14_19: -1885355088
-      Hero_14_29: -1106259348
-      Hero_14_39: 161355879
-      Hero_14_1: 1740267409
-      Hero_14_12: 909069929
-      Hero_14_36: -971895334
-      Hero_14_35: -1175395237
-      Hero_14_20: -849189412
-      Hero_14_25: -813395666
-      Hero_14_2: 1850575836
-      Hero_14_42: 783260439
-      Hero_14_0: -1351683781
-      Hero_14_14: 387238879
-      Hero_14_49: 678771855
-      Hero_14_6: 267819073
-      Hero_14_55: 283628312
       Hero_14_23: 1043451434
-      Hero_14_32: 931440246
-      Hero_14_58: 1498992310
-      Hero_14_54: -1417249918
-      Hero_14_5: -97590041
-      Hero_14_57: -1380589753
-      Hero_14_8: -1846032360
-      Hero_14_40: -1358759386
-      Hero_14_65: -2100052789
-      Hero_14_66: -1674335580
-      Hero_14_18: -1976721079
-      Hero_14_62: 248580766
-      Hero_14_48: 1420444424
-      Hero_14_47: -1465584385
-      Hero_14_33: -1102400376
+      Hero_14_24: -154015684
+      Hero_14_25: -813395666
+      Hero_14_26: 370942455
+      Hero_14_27: -1595146422
+      Hero_14_28: -725375210
+      Hero_14_29: -1106259348
+      Hero_14_3: -1754706276
       Hero_14_30: -2130625698
-      Hero_14_11: -335722505
+      Hero_14_31: 899457315
+      Hero_14_32: 931440246
+      Hero_14_33: -1102400376
+      Hero_14_34: -372473180
+      Hero_14_35: -1175395237
+      Hero_14_36: -971895334
       Hero_14_37: 2075430499
-      Hero_14_64: 772254341
-      Hero_14_15: 986909414
       Hero_14_38: 555752585
-      Hero_14_61: 628609149
-      Hero_14_45: 810877418
+      Hero_14_39: 161355879
       Hero_14_4: -2039472285
+      Hero_14_40: -1358759386
+      Hero_14_41: 1534053470
+      Hero_14_42: 783260439
+      Hero_14_43: -2093182770
       Hero_14_44: 1190222276
+      Hero_14_45: 810877418
+      Hero_14_46: 1048454585
+      Hero_14_47: -1465584385
+      Hero_14_48: 1420444424
+      Hero_14_49: 678771855
+      Hero_14_5: -97590041
+      Hero_14_50: -344241363
+      Hero_14_51: -1702100619
       Hero_14_52: -1572005190
       Hero_14_53: -1649307930
-      Hero_14_27: -1595146422
-  spritePackingTag: 
+      Hero_14_54: -1417249918
+      Hero_14_55: 283628312
+      Hero_14_56: -869592543
+      Hero_14_57: -1380589753
+      Hero_14_58: 1498992310
+      Hero_14_59: 651219814
+      Hero_14_6: 267819073
+      Hero_14_60: -1050594546
+      Hero_14_61: 628609149
+      Hero_14_62: 248580766
+      Hero_14_63: 1438730630
+      Hero_14_64: 772254341
+      Hero_14_65: -2100052789
+      Hero_14_66: -1674335580
+      Hero_14_67: -209899306
+      Hero_14_7: 2097258334
+      Hero_14_8: -1846032360
+      Hero_14_9: 628177223
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
