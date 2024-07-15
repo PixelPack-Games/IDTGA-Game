@@ -11,6 +11,7 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] public int defense = 1;
     [SerializeField] private int speed = 1;
     [SerializeField] private int fleeRating = 1;
+    [SerializeField] private int level = 1;
     private Entity entity;
     public Enemy enemy;
 
@@ -18,7 +19,7 @@ public class EnemyStats : MonoBehaviour
 
     void Awake()
     {
-        entity = new Enemy(Name, Id, this.gameObject, MaxHealth, attack, defense, speed, fleeRating);
+        entity = new Enemy(Name, Id, this.gameObject, MaxHealth, attack, defense, speed, fleeRating, level);
         enemy = (Enemy)entity;
         Debug.Log(enemy.getName() + " created with " + enemy.getCurrHealth() + " health");
        

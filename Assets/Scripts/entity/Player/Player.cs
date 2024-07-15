@@ -114,7 +114,7 @@ public class Player : Actor
     }
 
     //Getters
-    private int getLevel()
+    public int getLevel()
     {
         return (level);
     }

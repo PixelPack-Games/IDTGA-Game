@@ -13,13 +13,15 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] public int defense = 1;
     [SerializeField] private int speed = 1;
     [SerializeField] private int fleeRating = 5;
+    [SerializeField] public int level = 1;
+    [SerializeField] private int exp = 0;
     public Entity entity;
     public Player player;
 
 
     void Awake()
     {
-      entity = new Player(Name, Id, this.gameObject, MaxHealth, attack, defense, speed, fleeRating);
+      entity = new Player(Name, Id, this.gameObject, MaxHealth, attack, defense, speed, fleeRating, level, exp);
       player = (Player)entity;
       Debug.Log(player.getName() + " created with " + player.getCurrHealth() + " health");
       

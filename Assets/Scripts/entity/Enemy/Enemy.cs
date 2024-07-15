@@ -58,7 +58,7 @@ public class Enemy : Actor
 
    
     //Getters
-    private int getLevel()
+    public int getLevel()
     {
         return (level);
     }

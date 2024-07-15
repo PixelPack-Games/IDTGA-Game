@@ -2289,6 +2289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 35218203}
   hpSlider: {fileID: 411175874}
+  hpText: {fileID: 1394427584}
 --- !u!1001 &212188700
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23838,6 +23839,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 770566456}
   hpSlider: {fileID: 1840202406}
+  hpText: {fileID: 424248077}
 --- !u!1 &1016898665
 GameObject:
   m_ObjectHideFlags: 0
@@ -26999,6 +27001,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1179694994}
   hpSlider: {fileID: 1349230531}
+  hpText: {fileID: 1867920749}
 --- !u!1 &1248779102
 GameObject:
   m_ObjectHideFlags: 0
@@ -27449,6 +27452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1520355173}
   hpSlider: {fileID: 167317024}
+  hpText: {fileID: 166203290}
 --- !u!1 &1262682104
 GameObject:
   m_ObjectHideFlags: 0
@@ -27863,6 +27867,10 @@ PrefabInstance:
     - target: {fileID: 1681316260450843528, guid: f284bfed05739fb488cbed287285e989, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340596117253833535, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4414128507694286643, guid: f284bfed05739fb488cbed287285e989, type: 3}
       propertyPath: m_Pivot.x
@@ -29385,6 +29393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1870697540}
   hpSlider: {fileID: 1836749534}
+  hpText: {fileID: 130642424}
 --- !u!1 &1459693879
 GameObject:
   m_ObjectHideFlags: 0
@@ -29478,6 +29487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1016898667}
   hpSlider: {fileID: 1892902051}
+  hpText: {fileID: 1248811820}
 --- !u!1 &1485272038
 GameObject:
   m_ObjectHideFlags: 0
@@ -29785,6 +29795,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 296621321}
   hpSlider: {fileID: 1641360391}
+  hpText: {fileID: 1687021483}
 --- !u!1 &1507397836
 GameObject:
   m_ObjectHideFlags: 0
@@ -31283,6 +31294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1115938333}
   hpSlider: {fileID: 275193281}
+  hpText: {fileID: 1376025281}
 --- !u!1 &1785609806
 GameObject:
   m_ObjectHideFlags: 0

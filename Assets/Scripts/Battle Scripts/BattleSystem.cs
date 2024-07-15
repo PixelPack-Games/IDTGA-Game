@@ -128,6 +128,7 @@ public class BattleSystem : NetworkBehaviour
         PlayerStats[ClientId] = playerGameObjects[ClientId].GetComponent<PlayerStats>();
         playerHUDlist[ClientId].SetPlayerHUD(PlayerStats[ClientId]);
         playerHUDlist[ClientId].gameObject.SetActive(true);
+        playerHUDlist[ClientId].UpdatePlayerHPtext(PlayerStats[ClientId]);
 
     }
 
@@ -183,6 +184,7 @@ public class BattleSystem : NetworkBehaviour
             if (allEnemyStats[i] == null) Debug.Log($"{allEnemyStats[i]} is  null for some reason");
             enemyHUDlist[i].gameObject.SetActive(true);
             enemyHUDlist[i].SetEnemyHUD(allEnemyStats[i]);
+            enemyHUDlist[i].UpdateEnemyHPtext(allEnemyStats[i]);
             BattleMenus.buttonList[i].SetActive(true);
         }
         BattleManager.Instance.enemy.SetActive(false);
@@ -254,6 +256,7 @@ public class BattleSystem : NetworkBehaviour
             //update player hp
             Debug.Log("player health =" + PlayerStats[playerIndex].player.getCurrHealth());
             playerHUDlist[playerIndex].SetHP(PlayerStats[playerIndex].player.getCurrHealth());
+            playerOneHUD.UpdatePlayerHPtext(PlayerStats[playerIndex]);
 
             if (!(PlayerStats[playerIndex].player.getAlive()))
             {
@@ -291,8 +294,10 @@ public class BattleSystem : NetworkBehaviour
             yield return new WaitForSeconds(2f);
 
             //update player hp
+
             Debug.Log("player health =" + PlayerStats[playerIndex].player.getCurrHealth());
             playerOneHUD.SetHP(PlayerStats[playerIndex].player.getCurrHealth());
+            playerOneHUD.UpdatePlayerHPtext(PlayerStats[playerIndex]);
 
             if (!(PlayerStats[playerIndex].player.getAlive()))
             {
@@ -332,6 +337,7 @@ public class BattleSystem : NetworkBehaviour
             //update player hp
             Debug.Log("player health =" + PlayerStats[playerIndex].player.getCurrHealth());
             playerHUDlist[playerIndex].SetHP(PlayerStats[playerIndex].player.getCurrHealth());
+            playerOneHUD.UpdatePlayerHPtext(PlayerStats[playerIndex]);
 
             if (!(PlayerStats[playerIndex].player.getAlive()))
             {
@@ -369,6 +375,7 @@ public class BattleSystem : NetworkBehaviour
             //update player hp
             Debug.Log("player health =" + playerOneStats.player.getCurrHealth());
             playerOneHUD.SetHP(playerOneStats.player.getCurrHealth());
+            playerOneHUD.UpdatePlayerHPtext(PlayerStats[playerIndex]);
 
             if (!(playerOneStats.player.getAlive()))
             {
@@ -460,6 +467,7 @@ public class BattleSystem : NetworkBehaviour
         Debug.Log($"{enemyName} health = " + DefendingEnemy.enemy.getCurrHealth());
 
         enemyHUDlist[enemyIndex].SetHP(DefendingEnemy.enemy.getCurrHealth());
+        enemyHUDlist[enemyIndex].UpdateEnemyHPtext(allEnemyStats[enemyIndex]);
         
         if (AllEnemiesAreDead())
         {
