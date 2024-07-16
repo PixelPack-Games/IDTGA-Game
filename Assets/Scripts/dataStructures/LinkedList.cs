@@ -39,7 +39,7 @@ public class LinkedList<T> : INetworkSerializable
 
         while (true)
         {
-           if (node.next == null)
+            if (node.next == null)
             {
                 node.next = new Node<T>(ref data);
                 node.next.next = null;
@@ -50,14 +50,14 @@ public class LinkedList<T> : INetworkSerializable
         }
     }
 
-    public T remove(string name)
+    public T remove(T data)
     {
         if (head == null)
         {
             return default;
         }
 
-        if (head.data.ToString().Equals(name))
+        if (head.data.Equals(data))
         {
             Node<T> rem = head;
             head = head.next;
@@ -73,7 +73,7 @@ public class LinkedList<T> : INetworkSerializable
                 break;
             }
 
-            if (node.next.data.ToString().Equals(name))
+            if (node.next.data.Equals(data))
             {
                 Node<T> rem = node.next;
                 node.next = node.next.next;
@@ -108,6 +108,34 @@ public class LinkedList<T> : INetworkSerializable
             }
 
             node = node.next;
+        }
+    }
+
+    //Indexer
+    public T this[int index]
+    {
+        get
+        {
+            Node<T> curr = head;
+
+            for (int bogus = 0; bogus < index; bogus++)
+            {
+                curr = curr.next;
+            }
+
+            return (curr.data);
+        }
+
+        private set
+        {
+            Node<T> curr = head;
+
+            for (int bogus = 0; bogus < index; bogus++)
+            {
+                curr = curr.next;
+            }
+
+            curr.data = value;
         }
     }
 

@@ -36,7 +36,8 @@ public class EntityTester : Network
             entity.die(GetComponent<NetworkObject>());*/
 
             Rogue player = (Rogue)entity;
-            Debug.Log("Removing: " + player.getWeapons().remove("dagger"));
+            Entity dagger = new Entity("Dagger", "dagger", gameObject);
+            Debug.Log("Removing: " + player.getWeapons().remove(dagger));
             player.getWeapons().iterate();
         }
     }
