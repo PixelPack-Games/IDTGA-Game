@@ -53,8 +53,8 @@ public struct BattleData : INetworkSerializable
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
-        serializer.SerializeValue(ref playerList);
-        serializer.SerializeValue(ref enemyList);
+        //serializer.SerializeValue(ref playerList);
+        //serializer.SerializeValue(ref enemyList);
         serializer.SerializeValue(ref battleState);
         serializer.SerializeValue(ref MenuState);
 

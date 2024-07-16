@@ -9,6 +9,7 @@ using UnityEngine;
 using TMPro;
 using Unity.Netcode.Transports.UTP;
 using Unity.Netcode;
+using UnityEngine.SceneManagement;
 
 public class Relay : MonoBehaviour
 {
@@ -49,6 +50,5 @@ public class Relay : MonoBehaviour
         JoinAllocation alloc = await RelayService.Instance.JoinAllocationAsync(enterCode.text);
         transport.SetClientRelayData(alloc.RelayServer.IpV4, (ushort)alloc.RelayServer.Port, alloc.AllocationIdBytes, alloc.Key, alloc.ConnectionData, alloc.HostConnectionData);
         NetworkManager.Singleton.StartClient();
-
     }
 }
