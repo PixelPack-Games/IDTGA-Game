@@ -12,18 +12,19 @@ using Unity.Netcode;
 
 public class Relay : MonoBehaviour
 {
-    [SerializeField] private GameObject canavs;
+    [SerializeField] private GameObject buttons;
     [SerializeField] private int MAX_PLAYERS;
     [SerializeField] private TextMeshProUGUI joinCode;
     [SerializeField] private TMP_InputField enterCode;
+    [SerializeField] private GameObject startButton;
     private UnityTransport transport;
 
    private async void Awake()
     {
         transport = FindObjectOfType<UnityTransport>();
-        canavs.SetActive(false);
+        buttons.SetActive(false);
         await Authenticate();
-        canavs.SetActive(true);
+        buttons.SetActive(true);
     }
 
     private static async Task Authenticate()
@@ -34,16 +35,17 @@ public class Relay : MonoBehaviour
 
     public async void onCreateGame()
     {
-        canavs.SetActive(false);
+        buttons.SetActive(false);
         Allocation alloc = await RelayService.Instance.CreateAllocationAsync(MAX_PLAYERS);
         joinCode.text = await RelayService.Instance.GetJoinCodeAsync(alloc.AllocationId);
+        startButton.SetActive(true);
         transport.SetHostRelayData(alloc.RelayServer.IpV4, (ushort)alloc.RelayServer.Port, alloc.AllocationIdBytes, alloc.Key, alloc.ConnectionData);
         NetworkManager.Singleton.StartHost();
     }
 
     public async void onJoinGame()
     {
-        canavs.SetActive(false);
+        buttons.SetActive(false);
         JoinAllocation alloc = await RelayService.Instance.JoinAllocationAsync(enterCode.text);
         transport.SetClientRelayData(alloc.RelayServer.IpV4, (ushort)alloc.RelayServer.Port, alloc.AllocationIdBytes, alloc.Key, alloc.ConnectionData, alloc.HostConnectionData);
         NetworkManager.Singleton.StartClient();

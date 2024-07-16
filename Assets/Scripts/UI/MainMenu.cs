@@ -1,14 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : NetworkBehaviour
 {
-    [SerializeField] private int sceneIndex;
+    [SerializeField] private string sceneName;
+    [SerializeField] private Relay relayManager;
+    private GameType gameType;
 
     public void onClick()
     {
-        SceneManager.LoadScene(sceneIndex);
+        if (gameType == GameType.GAME_TYPE_HOST)
+        {
+            //SceneManager.LoadScene(sceneIndex);
+            NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        }
+        else if (gameType == GameType.GAME_TYPE_JOIN)
+        {
+            relayManager.onJoinGame();
+        }
     }
+
+    public void setGameType(int gameType)
+    {
+        this.gameType = (GameType)gameType;
+    }
+}
+
+public enum GameType
+{
+    GAME_TYPE_HOST,
+    GAME_TYPE_JOIN
+
 }
