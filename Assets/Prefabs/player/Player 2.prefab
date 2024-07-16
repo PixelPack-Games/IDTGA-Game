@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2352478760
+  GlobalObjectIdHash: 68469676
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491ed27fa481d554d9c818fccb4708e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverAuth: 0
+  serverAuth: 1
 --- !u!114 &4318234795764664075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,6 +287,8 @@ MonoBehaviour:
   defense: 1
   speed: 1
   fleeRating: 5
+  level: 1
+  exp: 0
 --- !u!1001 &6997866600808414213
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -357,7 +359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4400164498424060360, guid: 2a26d47e99bdd44499415d47f77739d5, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Player Interact Boxes
       objectReference: {fileID: 0}
     - target: {fileID: 7527089067816977663, guid: 2a26d47e99bdd44499415d47f77739d5, type: 3}
       propertyPath: m_Radius

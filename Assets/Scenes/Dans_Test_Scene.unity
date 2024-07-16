@@ -229,6 +229,7 @@ MonoBehaviour:
   defense: 1
   speed: 1
   fleeRating: 1
+  level: 1
 --- !u!1 &19235163
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,6 +464,7 @@ MonoBehaviour:
   defense: 1
   speed: 1
   fleeRating: 1
+  level: 1
 --- !u!1 &82244029
 GameObject:
   m_ObjectHideFlags: 0
@@ -2290,6 +2292,7 @@ MonoBehaviour:
   nameText: {fileID: 35218203}
   hpSlider: {fileID: 411175874}
   hpText: {fileID: 1394427584}
+  levelText: {fileID: 1069066567}
 --- !u!1001 &212188700
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3788,6 +3791,7 @@ MonoBehaviour:
   defense: 1
   speed: 1
   fleeRating: 1
+  level: 1
 --- !u!1 &560992709
 GameObject:
   m_ObjectHideFlags: 0
@@ -23840,6 +23844,7 @@ MonoBehaviour:
   nameText: {fileID: 770566456}
   hpSlider: {fileID: 1840202406}
   hpText: {fileID: 424248077}
+  levelText: {fileID: 1264281581}
 --- !u!1 &1016898665
 GameObject:
   m_ObjectHideFlags: 0
@@ -27002,6 +27007,7 @@ MonoBehaviour:
   nameText: {fileID: 1179694994}
   hpSlider: {fileID: 1349230531}
   hpText: {fileID: 1867920749}
+  levelText: {fileID: 145125494}
 --- !u!1 &1248779102
 GameObject:
   m_ObjectHideFlags: 0
@@ -27453,6 +27459,7 @@ MonoBehaviour:
   nameText: {fileID: 1520355173}
   hpSlider: {fileID: 167317024}
   hpText: {fileID: 166203290}
+  levelText: {fileID: 731166534}
 --- !u!1 &1262682104
 GameObject:
   m_ObjectHideFlags: 0
@@ -29394,6 +29401,7 @@ MonoBehaviour:
   nameText: {fileID: 1870697540}
   hpSlider: {fileID: 1836749534}
   hpText: {fileID: 130642424}
+  levelText: {fileID: 1323260519}
 --- !u!1 &1459693879
 GameObject:
   m_ObjectHideFlags: 0
@@ -29488,6 +29496,7 @@ MonoBehaviour:
   nameText: {fileID: 1016898667}
   hpSlider: {fileID: 1892902051}
   hpText: {fileID: 1248811820}
+  levelText: {fileID: 1386968617}
 --- !u!1 &1485272038
 GameObject:
   m_ObjectHideFlags: 0
@@ -29796,6 +29805,7 @@ MonoBehaviour:
   nameText: {fileID: 296621321}
   hpSlider: {fileID: 1641360391}
   hpText: {fileID: 1687021483}
+  levelText: {fileID: 170509892}
 --- !u!1 &1507397836
 GameObject:
   m_ObjectHideFlags: 0
@@ -30432,6 +30442,10 @@ PrefabInstance:
     - target: {fileID: -2253911629886400664, guid: 18d62f8831da7e548a328e1f9e0dad57, type: 3}
       propertyPath: m_Name
       value: Chest
+      objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: 18d62f8831da7e548a328e1f9e0dad57, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 18d62f8831da7e548a328e1f9e0dad57, type: 3}
       propertyPath: m_LocalScale.x
@@ -31295,6 +31309,7 @@ MonoBehaviour:
   nameText: {fileID: 1115938333}
   hpSlider: {fileID: 275193281}
   hpText: {fileID: 1376025281}
+  levelText: {fileID: 428477828}
 --- !u!1 &1785609806
 GameObject:
   m_ObjectHideFlags: 0

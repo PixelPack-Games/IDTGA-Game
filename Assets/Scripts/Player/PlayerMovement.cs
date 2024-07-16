@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
         {
             netObj.Spawn();
         }
-        
+        DontDestroyOnLoad(this.gameObject);
         speed = movementSpeed * 100 * Time.fixedDeltaTime;
     }
         // Update is called once per frame

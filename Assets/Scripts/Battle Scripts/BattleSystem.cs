@@ -9,7 +9,18 @@ using UnityEngine.UI;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
 
-public enum BattleState { START, PLAYER_ONE_TURN, PLAYER_TWO_TURN, PLAYER_THREE_TURN, PLAYER_FOUR_TURN, ENEMY_ONE_TURN, ENEMY_TWO_TURN, ENEMY_THREE_TURN, ENEMY_FOUR_TURN, WON, LOST }
+public enum BattleState { 
+    START,
+    PLAYER_ONE_TURN,
+    PLAYER_TWO_TURN,
+    PLAYER_THREE_TURN,
+    PLAYER_FOUR_TURN,
+    ENEMY_ONE_TURN,
+    ENEMY_TWO_TURN,
+    ENEMY_THREE_TURN,
+    ENEMY_FOUR_TURN,
+    WON,
+    LOST }
 public enum MenuState { START, PLAYER_OPTIONS, PLAYER_ATTACK, ENEMY_ACTION}
 public class BattleSystem : NetworkBehaviour
 {
@@ -481,9 +492,7 @@ public class BattleSystem : NetworkBehaviour
         else
         {
             //enemy turn
-            //IF THERE ARE MORE PLAYERS, MAKE THIS PLAYER TWO TURN
-            // also encapuls
-            //for now its just true PLEASE CHANGE
+            //for now its just true but will change in the future
             if(true)
             {
                 state = BattleState.ENEMY_ONE_TURN;

@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: ea4e9415f9d8dd14f87bad441ad6fa28, type: 3}
       propertyPath: m_FlipX
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: ea4e9415f9d8dd14f87bad441ad6fa28, type: 3}
       propertyPath: m_Sprite
@@ -233,8 +233,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5911174e91b5fd46a68447e9e31f966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BattleSystem: {fileID: 0}
   loadNextScene: {fileID: 0}
   player_Movement: {fileID: 0}
+  network: {fileID: 0}
+  OverworldLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &6856818756463223721
 MonoBehaviour:
   m_ObjectHideFlags: 0

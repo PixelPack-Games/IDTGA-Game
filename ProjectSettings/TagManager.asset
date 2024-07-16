@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - NPC
+  - Player Interact Boxes
   layers:
   - Default
   - TransparentFX
