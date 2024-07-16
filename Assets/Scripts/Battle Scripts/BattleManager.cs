@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class BattleManager : MonoBehaviour
 
     public GameObject player;
     public GameObject enemy;
+    public Vector3 playerOnePos;
+    public BattleTrigger battleTrigger;
 
     private void Awake()
     {
@@ -15,6 +18,7 @@ public class BattleManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            //check if we have exited scenes
         }
         else
         {
@@ -22,9 +26,18 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void SetBattleData(GameObject player, GameObject enemy)
+    //SUB PLAYER FOR PARTY
+    public void SetBattleData(GameObject player, GameObject enemy, Vector3 overworldPos)
     {
         this.player = player;
         this.enemy = enemy;
+        this.playerOnePos = overworldPos;
     }
+
+    public GameObject getBattlePlayer()
+    {
+        return this.player;
+    }
+    //get rid of sceneLoaded when destroying this obj
+
 }

@@ -12,7 +12,7 @@ public class Door_Controller : MonoBehaviour
     public void OpenDoor(){
         isOpen = true;
         Debug.Log("Door Opened");
-        SceneManager.LoadScene("Jerry Test Scene");
+        SceneManager.LoadScene("Forest");
       
     }
 

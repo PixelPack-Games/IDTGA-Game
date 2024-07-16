@@ -5,8 +5,8 @@ using Unity.Netcode;
 
 public class Network : NetworkBehaviour
 {
-    private NetworkVariable<PlayerData> data;
-    [SerializeField] private bool serverAuth;
+    public NetworkVariable<PlayerData> data;
+    [SerializeField] public bool serverAuth;
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +52,7 @@ public class Network : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void transmitDataServerRpc(PlayerData temp)
+    public void transmitDataServerRpc(PlayerData temp)
     {
         transmitDataClientRpc(temp);
     }

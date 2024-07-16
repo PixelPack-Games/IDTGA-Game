@@ -40,7 +40,7 @@ public class Player : Actor
     }
 
     //Functions
-    private void attackAction(Actor other)
+    public void attackAction(Actor other)
     {
         int damage = attack - other.getDefense();
 
@@ -114,7 +114,7 @@ public class Player : Actor
     }
 
     //Getters
-    private int getLevel()
+    public int getLevel()
     {
         return (level);
     }

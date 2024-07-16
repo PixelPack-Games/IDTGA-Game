@@ -18,11 +18,13 @@ public class PlayerMovement : MonoBehaviour
         {
             netObj.Spawn();
         }
-        
+        DontDestroyOnLoad(this.gameObject);
         speed = movementSpeed * 100 * Time.fixedDeltaTime;
     }
         // Update is called once per frame
         void Update()
+        {
+            if (!inBattle)
         {
             if (Input.GetKey(KeyCode.A))
             {
@@ -34,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (Input.GetKey(KeyCode.W))
             {
-                 player.velocity = Vector2.up * speed;
+                player.velocity = Vector2.up * speed;
             }
             else if (Input.GetKey(KeyCode.S))
             {
@@ -44,8 +46,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 player.velocity = Vector2.zero;
             }
-
+        }
+        else
+        {
+            player.velocity = Vector2.zero;
+        }
                 
-          
         }
 }

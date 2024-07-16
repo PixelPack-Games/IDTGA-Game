@@ -91,7 +91,7 @@ public class Actor : Entity
         return (speed);
     }
 
-    private bool getAlive()
+    public bool getAlive()
     {
         return (alive);
     }
