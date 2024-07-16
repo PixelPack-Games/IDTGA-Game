@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    public static DataManager _dataManager;
+    public static LinkedList<DataManager> _dataManager;
 
     private void Awake()
     {
-        if (_dataManager != null)
+        if (_dataManager == null)
         {
-            Destroy(gameObject);
-            return;
+            _dataManager = new LinkedList<DataManager>();
         }
 
-        _dataManager = this;
         DontDestroyOnLoad(gameObject);
+        DataManager data = this;
+        _dataManager.add(ref data);
+
     }
 }
