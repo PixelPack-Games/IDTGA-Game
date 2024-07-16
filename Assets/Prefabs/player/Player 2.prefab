@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 68469676
+  GlobalObjectIdHash: 2352478760
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -251,6 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: ba391aef18194db419840aa8245becc2, type: 2}
   InventoryScreen: {fileID: 0}
+  inventoryObjectName: InventoryScreen
 --- !u!114 &4377457122879499771
 MonoBehaviour:
   m_ObjectHideFlags: 0
