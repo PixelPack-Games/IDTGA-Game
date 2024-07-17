@@ -4129,7 +4129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: dialogue
-      value: Testing hello
+      value: Hello fellow guildmember
       objectReference: {fileID: 0}
     - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: DialogueScreen
