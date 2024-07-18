@@ -4129,12 +4129,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: dialogue
-      value: Testing hello
+      value: Hello fellow guildmember
       objectReference: {fileID: 0}
     - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: DialogueScreen
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1284566791}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -27963,6 +27963,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f284bfed05739fb488cbed287285e989, type: 3}
+--- !u!1 &1284566791 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7491238646475075546, guid: f284bfed05739fb488cbed287285e989, type: 3}
+  m_PrefabInstance: {fileID: 1284566790}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1309780869
 GameObject:
   m_ObjectHideFlags: 0
@@ -30693,6 +30698,10 @@ PrefabInstance:
     - target: {fileID: 118246143863740201, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
       propertyPath: m_Name
       value: networkManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 118246143863740201, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2323303113452397875, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
       propertyPath: m_LocalPosition.x
