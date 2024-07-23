@@ -139,6 +139,19 @@ public class LinkedList<T> : INetworkSerializable
         }
     }
 
+    //Copy Constructor
+    public void copy(ref LinkedList<T> dest, ref  LinkedList<T> src)
+    {
+        dest = new LinkedList<T>();
+        Node<T> temp = head;
+
+        while (temp!= null)
+        {
+            dest.add(ref temp.data);
+            temp = temp.next;
+        }
+    }
+
     //Debug
     public void iterate()
     {

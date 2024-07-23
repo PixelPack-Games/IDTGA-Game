@@ -143,7 +143,7 @@ public class BattleSystem : NetworkBehaviour
 
     }
 
-    public void UpdateServer()
+    /*public void UpdateServer()
     {
         if (IsOwner)
         {
@@ -170,7 +170,7 @@ public class BattleSystem : NetworkBehaviour
            state = BS_Network.data.Value.battleState;
         }
         
-    }
+    }*/
 
     IEnumerator SetupBattle()
     {
