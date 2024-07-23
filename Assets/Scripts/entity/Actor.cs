@@ -102,7 +102,7 @@ public class Actor : Entity
     }
 
     //Setters
-    private void setCurrhealth(int currHealth)
+    public void setCurrhealth(int currHealth)
     {
         this.currHealth = currHealth;
     }

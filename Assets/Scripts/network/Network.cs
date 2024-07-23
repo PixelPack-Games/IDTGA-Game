@@ -7,6 +7,8 @@ public class Network : NetworkBehaviour
 {
     public NetworkVariable<PlayerData> data;
     [SerializeField] public bool serverAuth;
+    public bool inBattle = false;
+    public BattleState state = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -28,11 +30,16 @@ public class Network : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (inBattle)
+        {
+            return;
+        }
+
         if (IsOwner)
         {
             PlayerData temp = new PlayerData()
             {
-                pos = transform.position
+                pos = transform.position,
             };
 
             if (IsServer || !serverAuth)
@@ -48,6 +55,42 @@ public class Network : NetworkBehaviour
         else
         {
             transform.position = data.Value.pos;
+        }
+    }
+
+    public void updateBattleState(ref Player player, ref Enemy enemy, BattleState state)
+    {
+        if (!inBattle)
+        {
+            return;
+        }
+
+        if (IsOwner)
+        {
+            PlayerData temp = new PlayerData()
+            {
+                pos = transform.position,
+                state = state,
+                playerHealth = player.getCurrHealth(),
+                enemyHeath = enemy.getCurrHealth()
+            };
+
+            if (IsServer || !serverAuth)
+            {
+                data.Value = temp;
+            }
+            else
+            {
+                transmitDataServerRpc(temp);
+            }
+        }
+        else
+        {
+            transform.position = data.Value.pos;
+            //TODO: make an actual state transfer in BattleSystem.cs
+            state = data.Value.state;
+            player.setCurrhealth(data.Value.playerHealth);
+            enemy.setCurrhealth(data.Value.enemyHeath);
         }
     }
 
@@ -79,6 +122,8 @@ public class Network : NetworkBehaviour
 public struct PlayerData : INetworkSerializable
 {
     private float x, y;
+    public BattleState state;
+    public int playerHealth, enemyHeath; //used when battle state is in a player attack or an enemy attack
 
     internal Vector3 pos
     {
@@ -94,5 +139,7 @@ public struct PlayerData : INetworkSerializable
     {
         serializer.SerializeValue(ref x);
         serializer.SerializeValue(ref y);
+        serializer.SerializeValue(ref state);
+        serializer.SerializeValue(ref playerHealth);
     }
 }
