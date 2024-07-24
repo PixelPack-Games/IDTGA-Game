@@ -4088,6 +4088,18 @@ PrefabInstance:
       value: NPC
       objectReference: {fileID: 0}
     - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.538
       objectReference: {fileID: 0}
@@ -27956,7 +27968,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6588857011799202385, guid: f284bfed05739fb488cbed287285e989, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
