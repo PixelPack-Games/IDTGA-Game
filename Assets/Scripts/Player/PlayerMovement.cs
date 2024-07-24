@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public NetworkObject netObj;
     public bool inBattle;
     float speed;
+    private SpriteRenderer sprite;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
         }
         DontDestroyOnLoad(this.gameObject);
         speed = movementSpeed * 100 * Time.fixedDeltaTime;
+        sprite = gameObject.GetComponent<SpriteRenderer>();
     }
         // Update is called once per frame
         void Update()
@@ -29,10 +32,16 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetKey(KeyCode.A))
             {
                 player.velocity = Vector2.left * speed;
+                if(!sprite.flipX){
+                    sprite.flipX = true;
+                }
             }
             else if (Input.GetKey(KeyCode.D))
             {
                 player.velocity = Vector2.right * speed;
+                if(sprite.flipX){
+                    sprite.flipX = false;
+                }
             }
             else if (Input.GetKey(KeyCode.W))
             {
