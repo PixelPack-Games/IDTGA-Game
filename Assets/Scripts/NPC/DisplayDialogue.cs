@@ -22,7 +22,7 @@ public class DisplayDialogue : MonoBehaviour
 
     void Update(){
         if(gameObject.activeSelf == true){
-            if(Input.GetMouseButtonDown(0)){
+            if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)){
                 if(textComponent.text == lines[index]){
                     NextLine();
                 }
@@ -32,7 +32,6 @@ public class DisplayDialogue : MonoBehaviour
                 }
             }
         }
-        
     }
 
     public void Instantiate(){

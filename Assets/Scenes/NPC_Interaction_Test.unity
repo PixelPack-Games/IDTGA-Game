@@ -815,6 +815,30 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
+--- !u!1 &2058085402 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 326002417946197530, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+  m_PrefabInstance: {fileID: 2638120731696565553}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &2058085405 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 1949654200776586783, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+  m_PrefabInstance: {fileID: 2638120731696565553}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2058085408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058085402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b16b2d11a5a1a3e4198ab76d05c2432f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2058085405}
+  movementSpeed: 1
 --- !u!1001 &1983752218971191342
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -925,6 +949,18 @@ PrefabInstance:
       value: NPC
       objectReference: {fileID: 0}
     - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.16
       objectReference: {fileID: 0}
@@ -975,7 +1011,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 326002417946197530, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2058085408}
   m_SourcePrefab: {fileID: 100100000, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
 --- !u!212 &2759555595726242191
 SpriteRenderer:
