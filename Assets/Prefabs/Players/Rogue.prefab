@@ -199,7 +199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27d42560d94f83c4fadf8bb0f49ba6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 9118211144272691733}
   movementSpeed: 0.5
   netObj: {fileID: 0}
   inBattle: 0
@@ -215,8 +214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2352478760
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 1660226631
+  InScenePlacedSourceGlobalObjectIdHash: 2352478760
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -249,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90dd1669498724d4d96cb73bc5189953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory: {fileID: 11400000, guid: ba391aef18194db419840aa8245becc2, type: 2}
+  inventory: {fileID: 11400000, guid: 4eac3f409d94fe949ab3bb33abab2eee, type: 2}
   InventoryScreen: {fileID: 0}
   inventoryObjectName: InventoryScreen
 --- !u!114 &4377457122879499771
