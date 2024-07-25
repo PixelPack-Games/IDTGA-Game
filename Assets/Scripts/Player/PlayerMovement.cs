@@ -69,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             player.velocity = Vector2.zero;
+            animator.SetFloat("Velocity", 0);
         }
     }
 }
