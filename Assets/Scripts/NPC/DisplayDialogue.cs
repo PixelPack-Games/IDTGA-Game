@@ -12,7 +12,6 @@ public class DisplayDialogue : MonoBehaviour
     public GameObject dialogueBox;
     public float textSpeed;
     public int charLimit;
-    private GameObject obj;
     private TextMeshProUGUI textComponent;
     private string[] lines;
     private int index;
@@ -35,8 +34,11 @@ public class DisplayDialogue : MonoBehaviour
     }
 
     public void Instantiate(){
-        gameObject.SetActive(true);
-        obj = Instantiate(dialogueBox, new Vector3(960,190,0), Quaternion.identity, transform);
+        if(!gameObject.activeSelf){
+            gameObject.SetActive(true);
+        }
+        var obj = Instantiate(dialogueBox,Vector3.zero, Quaternion.identity, transform);
+        obj.GetComponent<RectTransform>().localPosition = Vector3.zero;
         textComponent = obj.GetComponent<TextMeshProUGUI>();
         index = 0;
     }
