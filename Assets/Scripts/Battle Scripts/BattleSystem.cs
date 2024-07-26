@@ -24,15 +24,15 @@ public enum BattleState {
 public enum MenuState { START, PLAYER_OPTIONS, PLAYER_ATTACK, ENEMY_ACTION}
 public class BattleSystem : NetworkBehaviour
 {
-    public GameObject playerOne;
-    public GameObject playerTwo;
-    public GameObject playerThree;
-    public GameObject playerFour;
+    GameObject playerOne;
+    GameObject playerTwo;
+    GameObject playerThree;
+    GameObject playerFour;
 
-    public GameObject enemyOnePrefab;
-    public GameObject enemyTwoPrefab;
-    public GameObject enemyThreePrefab;
-    public GameObject enemyFourPrefab;
+    GameObject enemyOnePrefab;
+    GameObject enemyTwoPrefab;
+    GameObject enemyThreePrefab;
+    GameObject enemyFourPrefab;
 
     //public Transform playerBattleStation;
     //public Transform enemyBattleStation;
@@ -65,15 +65,15 @@ public class BattleSystem : NetworkBehaviour
 
     public BattleState state;
 
-    public GameObject[] enemyPrefabs;
-    public GameObject[] enemyGameObjects;
-    public Transform[] enemyPositions;
-    public GameObject[] playerGameObjects;
-    public Transform[] playerPositions;
-    public PlayerStats[] PlayerStats;
-    public EnemyStats[] allEnemyStats;
-    public BattleHUD[] enemyHUDlist;
-    public BattleHUD[] playerHUDlist;
+    GameObject[] enemyPrefabs;
+    GameObject[] enemyGameObjects;
+    Transform[] enemyPositions;
+    GameObject[] playerGameObjects;
+    Transform[] playerPositions;
+    PlayerStats[] PlayerStats;
+    EnemyStats[] allEnemyStats;
+    BattleHUD[] enemyHUDlist;
+    BattleHUD[] playerHUDlist;
     public int enemyCount;
 
 
@@ -132,7 +132,8 @@ public class BattleSystem : NetworkBehaviour
 //Sets up the instance of the player in their respective location with their HUD and stats
    void AddPlayer(){
         for(int i = 0; i < playerGameObjects.Length; i++) 
-            Debug.Log("PlayerObjectName: " + playerGameObjects[i].name );
+            playerGameObjects[i].name = "Player_" + (i+1).ToString();
+
         Debug.Log("playerGameObjects length == " + playerGameObjects.Length );
         Debug.Log("Index: " + ClientId );
         playerGameObjects[ClientId].transform.position = playerPositions[ClientId].position;
@@ -521,6 +522,7 @@ public class BattleSystem : NetworkBehaviour
 
     private void Update()
     {
+        /*
         if (state == BattleState.PLAYER_ONE_TURN)
         {
             if (Input.GetKeyDown(KeyCode.E) && allEnemyStats[0].enemy.getAlive())
@@ -539,6 +541,7 @@ public class BattleSystem : NetworkBehaviour
                 StartCoroutine(PlayerAttack(PlayerStats[playerIndex], allEnemyStats[3], 3));
             }
         }
+        */
     }
 }
 
