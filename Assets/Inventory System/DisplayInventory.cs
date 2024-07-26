@@ -30,9 +30,11 @@ public class DisplayInventory : MonoBehaviour
     }
     public void CreateSlots()
     {
+        Debug.Log("Creating Inventory Slots");
         itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
         for (int i = 0; i < inventory.Container.Items.Length; i++)
         {
+            Debug.Log("Slot Created");
             var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
 

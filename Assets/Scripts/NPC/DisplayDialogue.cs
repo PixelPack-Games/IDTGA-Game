@@ -12,7 +12,6 @@ public class DisplayDialogue : MonoBehaviour
     public GameObject dialogueBox;
     public float textSpeed;
     public int charLimit;
-    private GameObject obj;
     private TextMeshProUGUI textComponent;
     private string[] lines;
     private int index;
@@ -22,7 +21,7 @@ public class DisplayDialogue : MonoBehaviour
 
     void Update(){
         if(gameObject.activeSelf == true){
-            if(Input.GetMouseButtonDown(0)){
+            if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E)){
                 if(textComponent.text == lines[index]){
                     NextLine();
                 }
@@ -32,35 +31,20 @@ public class DisplayDialogue : MonoBehaviour
                 }
             }
         }
-        
     }
 
     public void Instantiate(){
-        gameObject.SetActive(true);
-        obj = Instantiate(dialogueBox, new Vector3(960,190,0), Quaternion.identity, transform);
+        if(!gameObject.activeSelf){
+            gameObject.SetActive(true);
+        }
+        var obj = Instantiate(dialogueBox,Vector3.zero, Quaternion.identity, transform);
+        obj.GetComponent<RectTransform>().localPosition = Vector3.zero;
         textComponent = obj.GetComponent<TextMeshProUGUI>();
         index = 0;
     }
 
-    public void SetDialogue(string dialogue){
-        int arraySize = (dialogue.Length + (charLimit-1)) / charLimit;
-        lines = new string[arraySize];
-
-        string[] words = dialogue.Split(' ');
-        StringBuilder sb = new StringBuilder();
-        int i = 0;
-        for(int word = 0; word < words.Length; word++){
-            sb.Append(words[word]);
-            sb.Append(' ');
-            if (sb.Length >= charLimit){
-                lines[i] = sb.ToString();
-                sb.Clear();
-                i++;
-            }
-        }
-        if(sb.Length > 0){
-            lines[i] = sb.ToString();
-        }
+    public void SetDialogue(string[] dialogue){
+        lines = dialogue;
     }
 
     public void StartDialogue(){

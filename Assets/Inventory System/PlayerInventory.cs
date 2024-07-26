@@ -50,6 +50,7 @@ public class PlayerInventory : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.I))
         {
+            Debug.Log("Inventory Opened");
             InventoryScreen.SetActive(!InventoryScreen.activeSelf);
         }
         if (Input.GetKeyDown(KeyCode.Space))
