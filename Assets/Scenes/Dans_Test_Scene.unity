@@ -4085,7 +4085,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 326002417946197530, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: m_Name
-      value: NPC
+      value: NPC1
       objectReference: {fileID: 0}
     - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: m_LocalScale.x
@@ -4101,11 +4101,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.538
+      value: 1.826
       objectReference: {fileID: 0}
     - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.165
+      value: -0.252
       objectReference: {fileID: 0}
     - target: {fileID: 766871558313269886, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4141,17 +4141,57 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: dialogue
-      value: Hello fellow guildmember! Welcome to our hall. We have training dummies
-        here if you need to practice your skills. Simply walk into the dummies!
+      value: Hey there fellow guildmember, welcome to our hall! We have training
+        dummies here if you need to practice your skills. You can never be too prepared
+        when it comes to adventuring. Give it a try!
       objectReference: {fileID: 0}
     - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
       propertyPath: DialogueScreen
       value: 
       objectReference: {fileID: 1284566791}
+    - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: dialogue.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: dialogue.Array.data[0]
+      value: Hey there fellow guildmember, welcome to our hall!
+      objectReference: {fileID: 0}
+    - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: dialogue.Array.data[1]
+      value: We have training dummies here if you need to practice your skills.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: dialogue.Array.data[2]
+      value: It's always a good idea to be prepared when it comes to adventuring.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: dialogue.Array.data[3]
+      value: Give it a try!
+      objectReference: {fileID: 0}
+    - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: dialogue.Array.data[4]
+      value: Give it a try!
+      objectReference: {fileID: 0}
+    - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: dialogue.Array.data[5]
+      value: Give it a try!
+      objectReference: {fileID: 0}
+    - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: dialogue.Array.data[6]
+      value: Give it a try!
+      objectReference: {fileID: 0}
+    - target: {fileID: 6961719395229529633, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      propertyPath: dialogue.Array.data[7]
+      value: Give it a try!
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 326002417946197530, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 910404222}
   m_SourcePrefab: {fileID: 100100000, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
 --- !u!1 &690176917
 GameObject:
@@ -23096,6 +23136,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 907928040}
   m_CullTransparentMesh: 1
+--- !u!1 &910404216 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 326002417946197530, guid: 81056a9721a74d941b60a919528a59d2, type: 3}
+  m_PrefabInstance: {fileID: 620798650}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &910404222
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910404216}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6eb78c3fe6a1c734c82d9200e3c1b7e0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &931287573
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27823,6 +27889,72 @@ PrefabInstance:
       propertyPath: m_ReferenceResolution.y
       value: 1080
       objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_text
+      value: 'INVENTORY
+
+        (I)'
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 190b0ebb5bc22134aa4c992e7febdfa2, type: 2}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_fontColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_lineSpacing
+      value: 40.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8109534283933356048, guid: 190b0ebb5bc22134aa4c992e7febdfa2, type: 2}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 457411933139846994, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 504614906208981707, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 504614906208981707, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1385191096533711508, guid: accb0c3f76428ab488a840ceb67df6a0, type: 3}
     - target: {fileID: 1681316260450843528, guid: f284bfed05739fb488cbed287285e989, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -27857,8 +27989,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2832661168297141191, guid: f284bfed05739fb488cbed287285e989, type: 3}
       propertyPath: charLimit
-      value: 105
+      value: 140
       objectReference: {fileID: 0}
+    - target: {fileID: 2832661168297141191, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: textSpeed
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 2832661168297141191, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: dialogueBox
+      value: 
+      objectReference: {fileID: 2651850105511174661, guid: d57b5819a9ab9ae4da6a6fa413f76f63, type: 3}
+    - target: {fileID: 3250488354968031663, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1385191096533711508, guid: accb0c3f76428ab488a840ceb67df6a0, type: 3}
     - target: {fileID: 3340596117253833535, guid: f284bfed05739fb488cbed287285e989, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -28023,6 +28167,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8689183988500967906, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689183988500967906, guid: f284bfed05739fb488cbed287285e989, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1385191096533711508, guid: accb0c3f76428ab488a840ceb67df6a0, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

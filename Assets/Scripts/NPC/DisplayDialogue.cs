@@ -43,25 +43,8 @@ public class DisplayDialogue : MonoBehaviour
         index = 0;
     }
 
-    public void SetDialogue(string dialogue){
-        int arraySize = (dialogue.Length + (charLimit-1)) / charLimit;
-        lines = new string[arraySize];
-
-        string[] words = dialogue.Split(' ');
-        StringBuilder sb = new StringBuilder();
-        int i = 0;
-        for(int word = 0; word < words.Length; word++){
-            sb.Append(words[word]);
-            sb.Append(' ');
-            if (sb.Length >= charLimit){
-                lines[i] = sb.ToString();
-                sb.Clear();
-                i++;
-            }
-        }
-        if(sb.Length > 0){
-            lines[i] = sb.ToString();
-        }
+    public void SetDialogue(string[] dialogue){
+        lines = dialogue;
     }
 
     public void StartDialogue(){
