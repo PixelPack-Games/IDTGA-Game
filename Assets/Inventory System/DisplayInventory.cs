@@ -125,11 +125,6 @@ public class DisplayInventory : MonoBehaviour
     {
         return new Vector3(X_START + (X_SPACE_BETWEEN_ITEM * (i % NUMBER_OF_COLUMN)), Y_START + (-Y_SPACE_BETWEEN_ITEMS * (i / NUMBER_OF_COLUMN)), 0f);
     }
-    private void OnApplicationQuit()
-    {
-        Debug.Log("Application Quit");
-        inventory.Container.Items = new InventorySlot[28];
-    }
 }
 public class MouseItem
 {
