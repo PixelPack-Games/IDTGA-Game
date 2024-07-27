@@ -17,4 +17,28 @@ public class Cleric : Player
     }
 
     //TODO: Add functions based on skills; make them override generic player skills; maybe make it a skills class?
+
+    //Functions
+    public override bool singleAidSkill(Player target)
+    {
+        if (!base.singleAidSkill(target))
+        {
+            return false;
+        }
+
+        //TODO: make sure not healing an enemy
+        target.restoreHealth(defense * 2);
+        return true;
+    }
+
+    public override bool singleHarmSkill(Enemy target)
+    {
+        if (!base.singleHarmSkill(target))
+        {
+            return false;
+        }
+
+        target.takeDamage(attack + target.getDefense());
+        return true;
+    }
 }

@@ -18,4 +18,20 @@ public class Fighter : Player
     }
 
     //TODO: Add functions based on skills; make them override generic player skills; maybe make it a skills class?
+
+    //Functions
+    public override void selfAidSkill()
+    {
+        restoreHealth(defense);
+    }
+    public override bool singleHarmSkill(Enemy target)
+    {
+        if (!base.singleHarmSkill(target))
+        {
+            return false;
+        }
+
+        target.takeDamage(attack * 4);
+        return true;
+    }
 }

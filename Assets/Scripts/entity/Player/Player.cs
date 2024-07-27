@@ -12,6 +12,7 @@ public class Player : Actor
     private int level, exp; //level and exp values; when exp reaches 100 level increases by 1
     protected LinkedList<Entity> weapons; //list of weapons this player has; TODO: change Entity to a Weapon class when implemented
     protected Entity armor; //amor this player has on
+    protected Inventory inventory;
     protected string description; //class description
 
     //Constructors
@@ -20,6 +21,7 @@ public class Player : Actor
         level = 1;
         exp = 0;
         weapons = new LinkedList<Entity>();
+        inventory = gameObject.GetComponent<PlayerInventory>().inventory.Container;
     }
 
     public Player(string name, string id, GameObject gameObject, int maxHealth, int attack, int defense, int speed, int fleeRating, int level, int exp) : base(name, id, gameObject, maxHealth, attack, defense, speed, fleeRating)
@@ -28,7 +30,7 @@ public class Player : Actor
         this.exp = exp;
     }
 
-    //Implementtations
+    //Implementations
     public new void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         base.NetworkSerialize<T>(serializer);
@@ -111,6 +113,33 @@ public class Player : Actor
         level++;
         exp -= 100;
         Debug.Log(getName() + " is now level " + level);
+    }
+
+    public virtual bool singleAidSkill(Player target)
+    {
+        return (target != null);
+    }
+
+    public virtual bool singleHarmSkill(Enemy target)
+    {
+        return (target != null);
+    }
+
+    public virtual void selfAidSkill()
+    {
+        
+    }
+
+    public virtual int multiHarmSkill(ref LinkedList<Enemy> enemies)
+    {
+        int bogus = 0;
+
+        while (enemies[bogus] != null)
+        {
+            bogus++;
+        }
+
+        return (bogus + 1);
     }
 
     //Getters
