@@ -14,7 +14,39 @@ public class Cleric : Player
         weapons.add(ref staff);
         weapons.add(ref magic);
         armor = new Entity("Heavy Armor", "heavyArmor", gameObject);
+        string skillName = "Heal Ally";
+        SkillType type = SkillType.SINGLE_AID;
+        skillNames.add(ref skillName);
+        skillTypeList.add(ref type);
+        skillName = "Smite The Non-believer!";
+        type = SkillType.SINGLE_HARM;
+        skillNames.add(ref skillName);
+        skillTypeList.add(ref type);
     }
 
     //TODO: Add functions based on skills; make them override generic player skills; maybe make it a skills class?
+
+    //Functions
+    public override bool singleAidSkill(Player target)
+    {
+        if (!base.singleAidSkill(target))
+        {
+            return false;
+        }
+
+        //TODO: make sure not healing an enemy
+        target.restoreHealth(defense * 2);
+        return true;
+    }
+
+    public override bool singleHarmSkill(Enemy target)
+    {
+        if (!base.singleHarmSkill(target))
+        {
+            return false;
+        }
+
+        target.takeDamage(attack + target.getDefense());
+        return true;
+    }
 }

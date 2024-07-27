@@ -31114,6 +31114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverAuth: 0
+  tester: {fileID: 0}
 --- !u!1001 &1573564360
 PrefabInstance:
   m_ObjectHideFlags: 0

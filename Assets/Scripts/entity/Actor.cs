@@ -53,7 +53,7 @@ public class Actor : Entity
         }
     }
 
-    private void restoreHealth(int heal)
+    public void restoreHealth(int heal)
     {
         currHealth += heal;
 
