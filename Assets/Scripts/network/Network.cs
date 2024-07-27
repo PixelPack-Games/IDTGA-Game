@@ -8,7 +8,10 @@ public class Network : NetworkBehaviour
     public NetworkVariable<PlayerData> data;
     [SerializeField] public bool serverAuth;
     public bool inBattle = false;
+
+    
     public BattleState state = 0;
+    private int clientId;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +19,14 @@ public class Network : NetworkBehaviour
         if (!IsOwner)
         {
             return;
+        }
+
+        if(IsServer)
+        {
+            clientId = 0;
+        }else
+        {
+            
         }
 
         Debug.Log("Server authority status: " + serverAuth);
@@ -32,6 +43,7 @@ public class Network : NetworkBehaviour
     {
         if (inBattle)
         {
+
             return;
         }
 
@@ -92,6 +104,17 @@ public class Network : NetworkBehaviour
             player.setCurrhealth(data.Value.playerHealth);
             enemy.setCurrhealth(data.Value.enemyHeath);
         }
+    }
+
+    public void StartPositions(Vector3 playerPos)
+    {
+        PlayerData temp = new PlayerData()
+        {
+            pos = transform.position,
+            state = BattleState.START,
+        };
+
+        transmitDataServerRpc(temp);
     }
 
     [ServerRpc]

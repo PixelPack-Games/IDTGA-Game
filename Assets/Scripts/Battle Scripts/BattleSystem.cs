@@ -50,6 +50,11 @@ public class BattleSystem : NetworkBehaviour
     GameObject enemyThree;
     GameObject enemyFour;
 
+    Transform player1OverworldPos;
+    public Transform player2OverworldPos;
+    Transform player3OverworldPos;
+    Transform player4OverworldPos;
+
     public Transform player1SpawnPoint;
     public Transform player2SpawnPoint;
     public Transform player3SpawnPoint;
@@ -74,6 +79,8 @@ public class BattleSystem : NetworkBehaviour
     EnemyStats[] allEnemyStats;
     BattleHUD[] enemyHUDlist;
     BattleHUD[] playerHUDlist;
+
+    Vector3[] playerOverworldPositions;
     public int enemyCount;
 
 
@@ -96,21 +103,32 @@ public class BattleSystem : NetworkBehaviour
     //
 
     public loadNextScene loadNextScene;
-    public BattleSystemNetwork BS_Network;
+    public Network network;
     public int ClientId;
-    int playerIndex = 0;
+    public int currentPlayerIndex;
+    public int currentEnemyIndex;
+    int attackedPlayerIndex;
+    int playerCount;
     public void StartBattle()
     {
+        ClientId = (int)NetworkManager.Singleton.LocalClientId;
         //gets a list of all the players
         playerGameObjects = GameObject.FindGameObjectsWithTag("Player");
-        
+        playerCount = playerGameObjects.Length;
+        playerOverworldPositions = new Vector3[playerGameObjects.Length];
+        for(int i = 0; i< playerGameObjects.Length; i++)
+        {
+            playerOverworldPositions[i] = playerGameObjects[i].transform.position;
+        }
+        currentPlayerIndex = -1;
+        currentEnemyIndex = -1;
 
         
         
         //if (!IsOwner) return;
         BattleUI.SetActive(true);
-        enemyCount = Random.Range(1,4);
-
+        //enemyCount = Random.Range(1,4);
+        enemyCount = 4;
         //this could be used to randomize the types of enemies in each battle
         enemyPrefabs = new GameObject[] { enemyOnePrefab, enemyTwoPrefab, enemyThreePrefab, enemyFourPrefab };
         //
@@ -121,8 +139,8 @@ public class BattleSystem : NetworkBehaviour
         playerPositions = new Transform[] {player1SpawnPoint, player2SpawnPoint, player3SpawnPoint, player4SpawnPoint};
         playerHUDlist = new BattleHUD[] {playerOneHUD, playerTwoHUD, playerThreeHUD, playerFourHUD};
         PlayerStats = new PlayerStats[] {playerOneStats, playerTwoStats, playerThreeStats, playerFourStats};
-
-
+        
+        Debug.Log("THE ACTUAL CLIENT ID OF THE FIRST CLIENT IS: " + NetworkManager.Singleton.LocalClientId);
         
 
         state = BattleState.START;
@@ -130,18 +148,32 @@ public class BattleSystem : NetworkBehaviour
     }
 
 //Sets up the instance of the player in their respective location with their HUD and stats
-   void AddPlayer(){
-        for(int i = 0; i < playerGameObjects.Length; i++) 
+   void AddPlayers(){
+        for(int i = 0; i < playerCount; i++) 
+        {
             playerGameObjects[i].name = "Player_" + (i+1).ToString();
+            playerGameObjects[i].GetComponent<PlayerMovement>().inBattle = true;
+            //NEEDS THE SERVER TO UPDATE THE PLAYER POSITIONS
+            playerGameObjects[i].transform.position = playerPositions[i].position;
+            playerGameObjects[i].GetComponent<Network>().StartPositions(playerPositions[i].position);
+            PlayerStats[i] = playerGameObjects[i].GetComponent<PlayerStats>();
+            playerHUDlist[i].SetPlayerHUD(PlayerStats[i]);
+            playerHUDlist[i].gameObject.SetActive(true);
+            playerHUDlist[i].UpdatePlayerHPtext(PlayerStats[i]);
+            Debug.Log("Placed: " + playerGameObjects[i].name );
 
-        Debug.Log("playerGameObjects length == " + playerGameObjects.Length );
+        }
+            
+
+        Debug.Log("playerGameObjects length == " + playerCount );
         Debug.Log("Index: " + ClientId );
+    /*
         playerGameObjects[ClientId].transform.position = playerPositions[ClientId].position;
         PlayerStats[ClientId] = playerGameObjects[ClientId].GetComponent<PlayerStats>();
         playerHUDlist[ClientId].SetPlayerHUD(PlayerStats[ClientId]);
         playerHUDlist[ClientId].gameObject.SetActive(true);
         playerHUDlist[ClientId].UpdatePlayerHPtext(PlayerStats[ClientId]);
-
+        */
     }
 
     /*public void UpdateServer()
@@ -182,7 +214,7 @@ public class BattleSystem : NetworkBehaviour
         //}
         
         
-        AddPlayer();
+        AddPlayers();
 
 
         //BattleManager.Instance.player.SetActive(false);
@@ -214,7 +246,7 @@ public class BattleSystem : NetworkBehaviour
         
         yield return new WaitForSeconds(1f);
         state = BattleState.PLAYER_ONE_TURN;
-        StartCoroutine(PlayerTurn());
+        StartCoroutine(PlayerOneTurn());
         
     }
 
@@ -234,11 +266,16 @@ public class BattleSystem : NetworkBehaviour
             BattleMenus.dialogueText.text = "Your party lost...";
         }
         yield return new WaitForSeconds(2f);
-        PlayerStats[playerIndex].transform.position = BattleManager.Instance.playerOnePos;
+        for(int i = 0; i < playerCount; i++)
+        {
+            PlayerStats[i].transform.position = playerOverworldPositions[i];
+            PlayerStats[i].GetComponent<PlayerMovement>().inBattle = false;
+        }
+        
         BattleCam.gameObject.SetActive(false);
         OverworldCam.gameObject.SetActive(true);
         BattleUI.SetActive(false);
-        PlayerStats[playerIndex].GetComponent<PlayerMovement>().inBattle = false;
+        
 
         for (int i = 0; i < enemyCount; i++)
         {
@@ -247,177 +284,104 @@ public class BattleSystem : NetworkBehaviour
         }
     }
 
-    IEnumerator EnemyOneTurn()
+    IEnumerator EnemyTurn()
     {
         //TODO: create some enemy ai logic
         //for now it just attacks the player
 
         //Skips dead enemy's turn
-        if (!allEnemyStats[0].enemy.getAlive())
-        {
-            state = BattleState.ENEMY_TWO_TURN;
-            StartCoroutine(EnemyTwoTurn());
-        }
-        else
-        {
-            Debug.Log("enemy 1 is attacking");
-            BattleMenus.dialogueText.text = allEnemyStats[0].enemy.getName() + "1 attacked " + PlayerStats[playerIndex].player.getName() + "!";
-            allEnemyStats[0].enemy.attackAction(PlayerStats[playerIndex].player);
-            yield return new WaitForSeconds(2f);
-
-            //update player hp
-            Debug.Log("player health =" + PlayerStats[playerIndex].player.getCurrHealth());
-            playerHUDlist[playerIndex].SetHP(PlayerStats[playerIndex].player.getCurrHealth());
-            playerOneHUD.UpdatePlayerHPtext(PlayerStats[playerIndex]);
-
-            if (!(PlayerStats[playerIndex].player.getAlive()))
+        currentEnemyIndex++;
+        if(currentEnemyIndex == 4) currentEnemyIndex = 0;
+        switch(currentEnemyIndex) 
             {
-                state = BattleState.LOST;
-                EndBattle();
-            }
-            else
-            {
+            case 0:
+                state = BattleState.ENEMY_ONE_TURN;
+                break;
+            case 1:
                 state = BattleState.ENEMY_TWO_TURN;
-                StartCoroutine(EnemyTwoTurn());
-            }
-        }
-        
-    }
-
-    IEnumerator EnemyTwoTurn()
-    {
-        //TODO: create some enemy ai logic
-        //for now it just attacks the player
-        if (allEnemyStats[1] == null)
-        {
-            state = BattleState.ENEMY_THREE_TURN;
-            StartCoroutine(EnemyThreeTurn());
-        }
-        else if (!allEnemyStats[1].enemy.getAlive() || allEnemyStats[1].enemy == null)
-        {
-            state = BattleState.ENEMY_THREE_TURN;
-            StartCoroutine(EnemyThreeTurn());
-        }
-        else
-        {
-            Debug.Log("enemy 2 is attacking");
-            BattleMenus.dialogueText.text = allEnemyStats[1].enemy.getName() + "2 attacked " + PlayerStats[playerIndex].player.getName() + "!";
-            allEnemyStats[1].enemy.attackAction(PlayerStats[playerIndex].player);
-            yield return new WaitForSeconds(2f);
-
-            //update player hp
-
-            Debug.Log("player health =" + PlayerStats[playerIndex].player.getCurrHealth());
-            playerOneHUD.SetHP(PlayerStats[playerIndex].player.getCurrHealth());
-            playerOneHUD.UpdatePlayerHPtext(PlayerStats[playerIndex]);
-
-            if (!(PlayerStats[playerIndex].player.getAlive()))
-            {
-                state = BattleState.LOST;
-                EndBattle();
-            }
-            else
-            {
-                //change this battle state to enemy 3
+                break;
+            case 2:
                 state = BattleState.ENEMY_THREE_TURN;
-                StartCoroutine(EnemyThreeTurn());
+                break;
+            case 3:
+                state = BattleState.ENEMY_FOUR_TURN;
+                break;
             }
+        Debug.Log("We in enemy turny");
+        if(allEnemyStats[currentEnemyIndex] == null)
+        {
+            if(currentEnemyIndex == 3)
+                StartCoroutine(PlayerOneTurn());
+            else
+                StartCoroutine(EnemyTurn());
         }
-        
-    }
-
-    IEnumerator EnemyThreeTurn()
-    {
-        //TODO: create some enemy ai logic
-        //for now it just attacks the player
-        if(allEnemyStats[2] == null)
+        else if (!allEnemyStats[currentEnemyIndex].enemy.getAlive())
         {
-            state = BattleState.ENEMY_FOUR_TURN;
-            StartCoroutine(EnemyFourTurn());
-        }
-        else if (!allEnemyStats[2].enemy.getAlive())
-        {
-            state = BattleState.ENEMY_FOUR_TURN;
-            StartCoroutine(EnemyFourTurn());
-        }else
-        {
-            Debug.Log("enemy 3 is attacking");
-            BattleMenus.dialogueText.text = allEnemyStats[2].enemy.getName() + "3 attacked " + PlayerStats[playerIndex].player.getName() + "!";
-            allEnemyStats[2].enemy.attackAction(PlayerStats[playerIndex].player);
-            yield return new WaitForSeconds(2f);
-
-            //update player hp
-            Debug.Log("player health =" + PlayerStats[playerIndex].player.getCurrHealth());
-            playerHUDlist[playerIndex].SetHP(PlayerStats[playerIndex].player.getCurrHealth());
-            playerOneHUD.UpdatePlayerHPtext(PlayerStats[playerIndex]);
-
-            if (!(PlayerStats[playerIndex].player.getAlive()))
+            Debug.Log("This person is dead: enemy " + currentEnemyIndex);
+            if(currentEnemyIndex == 3)
             {
-                state = BattleState.LOST;
-                EndBattle();
-            }
+                Debug.Log("player turn now ig on: enemy " + currentEnemyIndex);
+                StartCoroutine(PlayerOneTurn());
+                
+            }  
             else
             {
-                state = BattleState.ENEMY_FOUR_TURN;
-                StartCoroutine(EnemyFourTurn());
+                StartCoroutine(EnemyTurn());
+                Debug.Log("emeney " + currentEnemyIndex);
             }
-        }
-    }
-    IEnumerator EnemyFourTurn()
-    {
-        //TODO: create some enemy ai logic
-        //for now it just attacks the player
-        if (allEnemyStats[3] == null)
-        {
-            state = BattleState.PLAYER_ONE_TURN;
-            StartCoroutine(PlayerTurn());
-        }
-        else if (!allEnemyStats[3].enemy.getAlive())
-        {
-            state = BattleState.PLAYER_ONE_TURN;
-            StartCoroutine(PlayerTurn());
+                
         }
         else
         {
-            Debug.Log("enemy 4 is attaacking");
-            BattleMenus.dialogueText.text = allEnemyStats[3].enemy.getName() + "4 attacked " + playerOneStats.player.getName() + "!";
-            allEnemyStats[3].enemy.attackAction(playerOneStats.player);
+            Debug.Log("enemy " + currentEnemyIndex + " is attacking");
+            attackedPlayerIndex = Random.Range(0,playerCount-1);
+            int enemyNumber = currentEnemyIndex +1;
+            BattleMenus.dialogueText.text = allEnemyStats[currentEnemyIndex].enemy.getName() + " " + enemyNumber + " attacked " + PlayerStats[attackedPlayerIndex].player.getName() + "!";
+            allEnemyStats[currentEnemyIndex].enemy.attackAction(PlayerStats[attackedPlayerIndex].player);
             yield return new WaitForSeconds(2f);
 
             //update player hp
-            Debug.Log("player health =" + playerOneStats.player.getCurrHealth());
-            playerOneHUD.SetHP(playerOneStats.player.getCurrHealth());
-            playerOneHUD.UpdatePlayerHPtext(PlayerStats[playerIndex]);
+            Debug.Log("player health =" + PlayerStats[attackedPlayerIndex].player.getCurrHealth());
+            playerHUDlist[attackedPlayerIndex].SetHP(PlayerStats[attackedPlayerIndex].player.getCurrHealth());
+            playerOneHUD.UpdatePlayerHPtext(PlayerStats[attackedPlayerIndex]);
 
-            if (!(playerOneStats.player.getAlive()))
+            if (AllPlayersAreDead())
             {
                 state = BattleState.LOST;
-                EndBattle();
+                StartCoroutine(EndBattle());
             }
             else
             {
-                state = BattleState.PLAYER_ONE_TURN;
-                StartCoroutine(PlayerTurn());
+                switch(currentEnemyIndex) 
+                {
+                case 0:
+                    state = BattleState.ENEMY_TWO_TURN;
+                    StartCoroutine(EnemyTurn());
+                    break;
+                case 1:
+                    state = BattleState.ENEMY_THREE_TURN;
+                    StartCoroutine(EnemyTurn());
+                    break;
+                case 2:
+                    state = BattleState.ENEMY_FOUR_TURN;
+                    StartCoroutine(EnemyTurn());
+                    break;
+                case 3:
+                    state = BattleState.PLAYER_ONE_TURN;
+                    StartCoroutine(PlayerOneTurn());
+                    break;
+                }
             }
-        } 
+        }
+
+        
     }
 
-    IEnumerator PlayerTurn()
-    {
-        //SOMETHING HAS TO HAPPEN HERE TO FIND WHICH CHARACTER IS WHICH
-        updatePlayerButtons();
-        yield return new WaitForSeconds(1f);
-        Debug.Log("playerONEturn");
-        BattleMenus.dialogueText.text = "Choose an action: ";
-        BattleMenus.MainHUD.SetActive(false);
-        BattleMenus.ChoiceHUD.SetActive(true);
-        //onAttackButton();  
-    }
-    
+
     //UI BUTTONS//
     public void onAttackButton()
     {
-        if (state != BattleState.PLAYER_ONE_TURN)
+        if (currentPlayerIndex != ClientId)
             return;
         BattleMenus.ToggleMenu(BattleMenus.ChoiceHUD);
         BattleMenus.ToggleMenu(BattleMenus.AttackHUD);
@@ -425,38 +389,38 @@ public class BattleSystem : NetworkBehaviour
 
     public void AttackEnemyOneButton()
     {
-        if (state != BattleState.PLAYER_ONE_TURN || !allEnemyStats[0].enemy.getAlive())
+        if (currentPlayerIndex != ClientId)
             return;
         BattleMenus.ToggleMenu(BattleMenus.AttackHUD);
         BattleMenus.ToggleMenu(BattleMenus.MainHUD);
-        StartCoroutine(PlayerAttack(PlayerStats[playerIndex], allEnemyStats[0], 0));
+        StartCoroutine(PlayerAttack(PlayerStats[currentPlayerIndex], allEnemyStats[0], 0));
     }
 
     public void AttackEnemyTwoButton()
     {
-        if (state != BattleState.PLAYER_ONE_TURN || !allEnemyStats[1].enemy.getAlive())
+        if (currentPlayerIndex != ClientId)
             return;
         BattleMenus.ToggleMenu(BattleMenus.AttackHUD);
         BattleMenus.ToggleMenu(BattleMenus.MainHUD);
-        StartCoroutine(PlayerAttack(PlayerStats[playerIndex], allEnemyStats[1], 1));
+        StartCoroutine(PlayerAttack(PlayerStats[currentPlayerIndex], allEnemyStats[1], 1));
     }
 
     public void AttackEnemyThreeButton()
     {
-        if (state != BattleState.PLAYER_ONE_TURN || !allEnemyStats[2].enemy.getAlive())
+        if (currentPlayerIndex != ClientId)
             return;
         BattleMenus.ToggleMenu(BattleMenus.AttackHUD);
         BattleMenus.ToggleMenu(BattleMenus.MainHUD);
-        StartCoroutine(PlayerAttack(PlayerStats[playerIndex], allEnemyStats[2], 2));
+        StartCoroutine(PlayerAttack(PlayerStats[currentPlayerIndex], allEnemyStats[2], 2));
     }
 
     public void AttackEnemyFourButton()
     {
-        if (state != BattleState.PLAYER_ONE_TURN || !allEnemyStats[3].enemy.getAlive())
+        if (currentPlayerIndex != ClientId)
             return;
         BattleMenus.ToggleMenu(BattleMenus.AttackHUD);
         BattleMenus.ToggleMenu(BattleMenus.MainHUD);
-        StartCoroutine(PlayerAttack(PlayerStats[playerIndex], allEnemyStats[3], 3));
+        StartCoroutine(PlayerAttack(PlayerStats[currentPlayerIndex], allEnemyStats[3], 3));
     }
     ////////////////
 
@@ -466,6 +430,53 @@ public class BattleSystem : NetworkBehaviour
         {
             if (!allEnemyStats[i].enemy.getAlive()) BattleMenus.buttonList[i].SetActive(false);
         }
+    }
+
+        IEnumerator PlayerOneTurn()
+    {
+        //SOMETHING HAS TO HAPPEN HERE TO FIND WHICH CHARACTER IS WHICH
+        currentPlayerIndex++;
+        if(currentPlayerIndex == 4) 
+            currentPlayerIndex = 0;
+        switch(currentPlayerIndex) 
+            {
+            case 0:
+                state = BattleState.PLAYER_ONE_TURN;
+                break;
+            case 1:
+                state = BattleState.PLAYER_TWO_TURN;
+                break;
+            case 2:
+                state = BattleState.PLAYER_THREE_TURN;
+                break;
+            case 3:
+                state = BattleState.PLAYER_FOUR_TURN;
+                break;
+            }
+        
+        if(PlayerStats[currentPlayerIndex] == null)
+        {
+            if(currentPlayerIndex == 3)
+                StartCoroutine(EnemyTurn());
+            else
+                StartCoroutine(PlayerOneTurn());
+        }   
+        else if(!PlayerStats[currentPlayerIndex].player.getAlive())
+            if(currentPlayerIndex == 3)
+                StartCoroutine(EnemyTurn());
+            else
+                StartCoroutine(PlayerOneTurn());
+        else
+        {
+            updatePlayerButtons();
+            yield return new WaitForSeconds(1f);
+            Debug.Log("player " + currentPlayerIndex +  " turn");
+            BattleMenus.dialogueText.text = "Choose an action: ";
+            BattleMenus.MainHUD.SetActive(false);
+            BattleMenus.ChoiceHUD.SetActive(true);
+        //onAttackButton();  
+        }
+       
     }
     IEnumerator PlayerAttack(PlayerStats AttackingPlayer, EnemyStats DefendingEnemy, int enemyIndex)
     {
@@ -494,12 +505,26 @@ public class BattleSystem : NetworkBehaviour
         {
             //enemy turn
             //for now its just true but will change in the future
-            if(true)
+            switch(currentPlayerIndex) 
             {
+            case 0:
+                state = BattleState.PLAYER_TWO_TURN;
+                StartCoroutine(PlayerOneTurn());
+                break;
+            case 1:
+                state = BattleState.PLAYER_THREE_TURN;
+                StartCoroutine(PlayerOneTurn());
+                break;
+            case 2:
+                state = BattleState.PLAYER_FOUR_TURN;
+                StartCoroutine(PlayerOneTurn());
+                break;
+            case 3:
                 state = BattleState.ENEMY_ONE_TURN;
-                StartCoroutine(EnemyOneTurn());
-                
+                StartCoroutine(EnemyTurn());
+                break;
             }
+
             
         }
         
@@ -520,6 +545,17 @@ public class BattleSystem : NetworkBehaviour
         return false;
     }
 
+ bool AllPlayersAreDead()
+    {
+        //implement for loop
+        int count = 0;
+        for(int i = 0; i< playerGameObjects.Length ; i++)
+        {
+            if (!PlayerStats[i].player.getAlive()) count++;
+        }
+        if (count == playerCount) return true;
+        return false;
+    }
     private void Update()
     {
         /*

@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float movementSpeed;
     public NetworkObject netObj;
     public bool inBattle;
+  
     float speed;
     // Start is called before the first frame update
     void Start()
