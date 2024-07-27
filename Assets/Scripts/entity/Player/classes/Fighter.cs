@@ -14,7 +14,15 @@ public class Fighter : Player
         weapons.add(ref sword);
         weapons.add(ref axe);
         armor = new Entity("Medium Armor", "mediumArmor", gameObject);
-        Debug.Log("Weapons: " + weapons.find("sword").getName() + " and " + weapons.find("axe").getName() + "\nArmor: " + armor.getName());
+        //Debug.Log("Weapons: " + weapons.find("sword").getName() + " and " + weapons.find("axe").getName() + "\nArmor: " + armor.getName());
+        string skillName = "Shake Off The Pain";
+        SkillType type = SkillType.SELF_AID;
+        skillNames.add(ref skillName);
+        skillTypeList.add(ref type);
+        skillName = "Break Their Knees";
+        type = SkillType.SINGLE_HARM;
+        skillNames.add(ref skillName);
+        skillTypeList.add(ref type);
     }
 
     //TODO: Add functions based on skills; make them override generic player skills; maybe make it a skills class?

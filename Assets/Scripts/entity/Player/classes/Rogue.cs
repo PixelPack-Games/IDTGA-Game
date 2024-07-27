@@ -15,6 +15,14 @@ public class Rogue : Player
         weapons.add(ref dagger);
         weapons.add(ref bow);
         armor = new Entity("Light Armor", "lightArmor", gameObject);
+        string skillName = "Sneak Attack";
+        SkillType type = SkillType.SINGLE_HARM;
+        skillNames.add(ref skillName);
+        skillTypeList.add(ref type);
+        skillName = "Spray of Arrows";
+        type = SkillType.MULTI_HARM;
+        skillNames.add(ref skillName);
+        skillTypeList.add(ref type);
     }
 
     //TODO: Add functions based on skills; make them override generic player skills; maybe make it a skills class?

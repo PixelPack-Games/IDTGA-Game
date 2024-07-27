@@ -14,6 +14,8 @@ public class Player : Actor
     protected Entity armor; //amor this player has on
     protected Inventory inventory;
     protected string description; //class description
+    protected LinkedList<string> skillNames; //list of all skill names for this player
+    protected LinkedList<SkillType> skillTypeList; //list of all skill types (mirrors skill names)
 
     //Constructors
     public Player(string name, string id, GameObject gameObject, int maxHealth, int attack, int defense, int speed, int fleeRating) : base(name, id, gameObject, maxHealth, attack, defense, speed, fleeRating)
@@ -22,6 +24,8 @@ public class Player : Actor
         exp = 0;
         weapons = new LinkedList<Entity>();
         inventory = gameObject.GetComponent<PlayerInventory>().inventory.Container;
+        skillNames = new LinkedList<string>();
+        skillTypeList = new LinkedList<SkillType>();
     }
 
     public Player(string name, string id, GameObject gameObject, int maxHealth, int attack, int defense, int speed, int fleeRating, int level, int exp) : base(name, id, gameObject, maxHealth, attack, defense, speed, fleeRating)
@@ -39,6 +43,20 @@ public class Player : Actor
         serializer.SerializeValue(ref description);
         serializer.SerializeValue(ref weapons);
         serializer.SerializeValue(ref armor);
+        serializer.SerializeValue(ref skillNames);
+        serializer.SerializeValue(ref skillTypeList);
+
+        /*
+        int bogus = 0;
+
+        while (skillNames[bogus] != null)
+        {
+            string temp = skillNames[bogus];
+            serializer.SerializeValue(ref temp);
+            SkillType tempType = skillTypeList[bogus];
+            serializer.SerializeValue(ref tempType);
+        }
+        */
     }
 
     //Functions
@@ -193,4 +211,14 @@ public class Player : Actor
     {
         this.description = description;
     }
+}
+
+public enum SkillType
+{
+    NONE,
+    SINGLE_AID,
+    SINGLE_HARM,
+    MULIT_AID,
+    MULTI_HARM,
+    SELF_AID
 }
