@@ -156,6 +156,7 @@ public class BattleSystem : NetworkBehaviour
             //NEEDS THE SERVER TO UPDATE THE PLAYER POSITIONS
             playerGameObjects[i].transform.position = playerPositions[i].position;
             playerGameObjects[i].GetComponent<Network>().StartPositions(playerPositions[i].position);
+            playerGameObjects[i].GetComponent<Network>().networkInBattle = true;
             PlayerStats[i] = playerGameObjects[i].GetComponent<PlayerStats>();
             playerHUDlist[i].SetPlayerHUD(PlayerStats[i]);
             playerHUDlist[i].gameObject.SetActive(true);

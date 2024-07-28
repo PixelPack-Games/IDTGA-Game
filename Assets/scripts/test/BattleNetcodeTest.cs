@@ -29,9 +29,9 @@ public class BattleNetcodeTest : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && !network.inBattle)
+        if (Input.GetKeyDown(KeyCode.Space) && !network.networkInBattle)
         {
-            network.inBattle = true;
+            network.networkInBattle = true;
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
