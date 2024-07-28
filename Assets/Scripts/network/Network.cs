@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using TMPro;
 
 public class Network : NetworkBehaviour
 {
     public NetworkVariable<PlayerData> data;
     [SerializeField] public bool serverAuth;
-    public bool inBattle = false;
+    public  bool networkInBattle = false;
+
+    
     public BattleState state = 0;
     [SerializeField] Sprite[] sprites;
     [SerializeField] RuntimeAnimatorController[] renderers;
@@ -29,8 +32,8 @@ public class Network : NetworkBehaviour
 
         renderer.sprite = sprites[NetworkManager.Singleton.LocalClientId];
         animator.runtimeAnimatorController = renderers[NetworkManager.Singleton.LocalClientId];
-        playerCount++;
-        //Debug.Log("Server authority status: " + serverAuth);
+        playerCount++;;
+        Debug.Log("Server authority status: " + serverAuth);
     }
 
     private void Awake()
@@ -42,8 +45,9 @@ public class Network : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (inBattle)
+        if (networkInBattle)
         {
+
             return;
         }
 
@@ -72,7 +76,7 @@ public class Network : NetworkBehaviour
 
     public void updateBattleState(ref Player player, ref Enemy enemy, BattleState state)
     {
-        if (!inBattle)
+        if (!networkInBattle)
         {
             return;
         }
@@ -106,6 +110,42 @@ public class Network : NetworkBehaviour
         }
     }
 
+    public void StartPositions(Vector3 playerPos)
+    {
+        if(IsOwner)
+        {
+            PlayerData temp = new PlayerData()
+            {
+                inBattle = true,
+                pos = playerPos,
+                state = BattleState.START,
+            };
+
+            if(IsServer || !serverAuth)
+            {
+                Debug.Log("running server update");
+                data.Value = temp;
+            }
+            else
+            {
+                Debug.Log("running Client update");
+                transmitDataServerRpc(temp);
+            }
+        }
+        else
+        {
+            networkInBattle = true;
+            transform.position = playerPos;
+            state = BattleState.START;
+        }
+            
+                
+            
+
+
+        
+    }
+
     [ServerRpc]
     public void transmitDataServerRpc(PlayerData temp)
     {
@@ -125,9 +165,10 @@ public class Network : NetworkBehaviour
         {
             return;
         }
-         
+        
         //TODO: add interpolation for smoother connectivity
         data.Value = temp;
+        
     }
 }
 
@@ -135,6 +176,7 @@ public struct PlayerData : INetworkSerializable
 {
     private float x, y;
     public BattleState state;
+    public bool inBattle;
     public int playerHealth, enemyHeath; //used when battle state is in a player attack or an enemy attack
 
     internal Vector3 pos
@@ -151,6 +193,7 @@ public struct PlayerData : INetworkSerializable
     {
         serializer.SerializeValue(ref x);
         serializer.SerializeValue(ref y);
+        serializer.SerializeValue(ref inBattle);
         serializer.SerializeValue(ref state);
         serializer.SerializeValue(ref playerHealth);
     }
