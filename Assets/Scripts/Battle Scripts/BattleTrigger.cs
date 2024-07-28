@@ -10,7 +10,7 @@ public class BattleTrigger : NetworkBehaviour
 {
     public BattleSystem BattleSystem;
     public loadNextScene loadNextScene;
-    public PlayerMovement player_Movement;
+    public PlayerInput player_Input;
     public Network network;
     public Vector3 OverworldLocation;
     void Start()
@@ -22,7 +22,7 @@ public class BattleTrigger : NetworkBehaviour
     {
             loadNextScene = FindObjectOfType<loadNextScene>();
             BattleSystem = FindObjectOfType<BattleSystem>();
-            player_Movement = GetComponent<PlayerMovement>();
+            player_Input = GetComponent<PlayerInput>();
             // Find the loadNextScene script in the scene
             if (loadNextScene == null)
             {
@@ -50,7 +50,7 @@ public class BattleTrigger : NetworkBehaviour
         {
             if (IsOwner)
             {
-                OverworldLocation = player_Movement.gameObject.transform.position;
+                OverworldLocation = this.gameObject.transform.position;
                 checkIfEnemy(other);
                  PlayerData temp = new PlayerData()
                  {
@@ -81,7 +81,7 @@ public class BattleTrigger : NetworkBehaviour
         //DontDestroyOnLoad(this.gameObject);
         //DontDestroyOnLoad(other.gameObject);
         //make sure the player is inBattle now
-        player_Movement.inBattle = true;
+        player_Input.inBattle = true;
         
         //this gets the next scene from the build settings
     }
