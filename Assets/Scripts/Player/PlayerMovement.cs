@@ -7,69 +7,41 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Rigidbody2D player;
     public float movementSpeed;
-    public NetworkObject netObj;
-    public bool inBattle;
-    private Rigidbody2D player;
-    private SpriteRenderer sprite;
-    private Animator animator;
+    public SpriteRenderer sprite;
+    public Animator animator;
     private float speed;
-    // Start is called before the first frame update
-    void Start()
-    {
-        netObj = GetComponent<NetworkObject>();
-        if (netObj.IsSpawned == false)
-        {
-            netObj.Spawn();
-        }
+
+    void Start(){
         DontDestroyOnLoad(this.gameObject);
-        player = gameObject.GetComponent<Rigidbody2D>();
-        sprite = gameObject.GetComponent<SpriteRenderer>();
-        animator = gameObject.GetComponent<Animator>();
         speed = movementSpeed * 100 * Time.fixedDeltaTime;
-        
     }
-        // Update is called once per frame
-        void Update()
-        {
-        if (!inBattle)
-        {
-            if (Input.GetKey(KeyCode.A))
-            {
-                player.velocity = Vector2.left * speed;
-                animator.SetFloat("Velocity", 1);
-                if(!sprite.flipX){
-                    sprite.flipX = true;
-                }
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                player.velocity = Vector2.right * speed;
-                animator.SetFloat("Velocity", 1);
-                if(sprite.flipX){
-                    sprite.flipX = false;
-                }
-            }
-            else if (Input.GetKey(KeyCode.W))
-            {
-                player.velocity = Vector2.up * speed;
-                animator.SetFloat("Velocity", 1);
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                player.velocity = Vector2.down * speed;
-                animator.SetFloat("Velocity", 1);
-            }
-            else
-            {
-                player.velocity = Vector2.zero;
-                animator.SetFloat("Velocity", 0);
-            }
+    
+    public void moveUp(){
+        player.velocity = Vector2.up * speed;
+        animator.SetFloat("Velocity", 1);
+    }
+    public void moveLeft(){
+        player.velocity = Vector2.left * speed;
+        animator.SetFloat("Velocity", 1);
+        if(!sprite.flipX){
+            sprite.flipX = true;
         }
-        else
-        {
-            player.velocity = Vector2.zero;
-            animator.SetFloat("Velocity", 0);
+    }
+    public void moveDown(){
+        player.velocity = Vector2.down * speed;
+        animator.SetFloat("Velocity", 1);
+    }
+    public void moveRight(){
+        player.velocity = Vector2.right * speed;
+        animator.SetFloat("Velocity", 1);
+        if(sprite.flipX){
+            sprite.flipX = false;
         }
+    }
+    public void stopMovement(){
+        player.velocity = Vector2.zero;
+        animator.SetFloat("Velocity", 0);
     }
 }

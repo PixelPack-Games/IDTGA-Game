@@ -16,9 +16,11 @@ public class ConsumableObject : ItemObject
 
     public void UseItem(){
         if(HealthItem){
+            
             //restore health
         }
         if(ManaItem){
+
             //restore mana
         }
     }
