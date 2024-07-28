@@ -109,7 +109,7 @@ public class BattleSystem : NetworkBehaviour
     public int currentEnemyIndex;
     int attackedPlayerIndex;
     int playerCount;
-    public void StartBattle()
+    public void StartBattle(ref Collider2D enemyCollider)
     {
         ClientId = (int)NetworkManager.Singleton.LocalClientId;
         //gets a list of all the players
@@ -144,18 +144,19 @@ public class BattleSystem : NetworkBehaviour
         
 
         state = BattleState.START;
-        StartCoroutine(SetupBattle());
+        StartCoroutine(SetupBattle(enemyCollider));
     }
 
 //Sets up the instance of the player in their respective location with their HUD and stats
-   void AddPlayers(){
+   void AddPlayers(Collider2D enemyCollider){
         for(int i = 0; i < playerCount; i++) 
         {
             playerGameObjects[i].name = "Player_" + (i+1).ToString();
             playerGameObjects[i].GetComponent<PlayerMovement>().inBattle = true;
+            playerGameObjects[i].GetComponent<PlayerInput>().inBattle = true;
             //NEEDS THE SERVER TO UPDATE THE PLAYER POSITIONS
             playerGameObjects[i].transform.position = playerPositions[i].position;
-            playerGameObjects[i].GetComponent<Network>().StartPositions(playerPositions[i].position);
+            playerGameObjects[i].GetComponent<Network>().StartPositions(playerPositions[i].position, ref enemyCollider);
             playerGameObjects[i].GetComponent<Network>().networkInBattle = true;
             PlayerStats[i] = playerGameObjects[i].GetComponent<PlayerStats>();
             playerHUDlist[i].SetPlayerHUD(PlayerStats[i]);
@@ -206,7 +207,7 @@ public class BattleSystem : NetworkBehaviour
         
     }*/
 
-    IEnumerator SetupBattle()
+    IEnumerator SetupBattle(Collider2D enemyCollider)
     {
         //if(IsOwner)
         //{
@@ -215,7 +216,7 @@ public class BattleSystem : NetworkBehaviour
         //}
         
         
-        AddPlayers();
+        AddPlayers(enemyCollider);
 
 
         //BattleManager.Instance.player.SetActive(false);
@@ -276,11 +277,7 @@ public class BattleSystem : NetworkBehaviour
         BattleCam.gameObject.SetActive(false);
         OverworldCam.gameObject.SetActive(true);
         BattleUI.SetActive(false);
-<<<<<<< HEAD
-        PlayerStats[playerIndex].GetComponent<PlayerInput>().inBattle = false;
-=======
-        
->>>>>>> f2ba7890d7842870d433c9acbca683e653018ba1
+        PlayerStats[currentPlayerIndex].GetComponent<PlayerInput>().inBattle = false;
 
         for (int i = 0; i < enemyCount; i++)
         {
