@@ -11,7 +11,7 @@ public class Network : NetworkBehaviour
     public  bool networkInBattle = false;
 
     
-    public BattleState state = 0;
+    [SerializeField] private BattleState battleState = 0;
     [SerializeField] Sprite[] sprites;
     [SerializeField] RuntimeAnimatorController[] renderers;
     private static int playerCount = 0;
@@ -58,6 +58,25 @@ public class Network : NetworkBehaviour
             }
 
             gameObject.GetComponent<BattleTrigger>().triggerBattle(data.Value.enemyCollider);
+
+            PlayerData temp = new PlayerData()
+            {
+                pos = data.Value.pos,
+                inBattle = data.Value.inBattle,
+                state = data.Value.state,
+                enemyCollider = null
+            };
+
+            if (IsServer || !serverAuth)
+            {
+                data.Value = temp;
+            }
+            else
+            {
+                transmitDataServerRpc(temp);
+                //data.Value = temp;
+            }
+
             return;
         }
 
@@ -98,7 +117,7 @@ public class Network : NetworkBehaviour
         }
     }
 
-    public void updateBattleState(ref Player player, ref Enemy enemy, BattleState state)
+    public void updateBattleState(ref Player player, ref Enemy enemy, ref BattleState state)
     {
         if (!networkInBattle)
         {
@@ -123,6 +142,8 @@ public class Network : NetworkBehaviour
             {
                 transmitDataServerRpc(temp);
             }
+
+            //battleState = state;
         }
         else
         {
@@ -189,7 +210,6 @@ public class Network : NetworkBehaviour
         //TODO: add interpolation for smoother connectivity
         data.Value = temp;
         networkInBattle = data.Value.inBattle;
-        
     }
 }
 

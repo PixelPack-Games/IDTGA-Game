@@ -144,6 +144,8 @@ public class BattleSystem : NetworkBehaviour
         
 
         state = BattleState.START;
+
+        //network.updateBattleState(ref playerOneStats.player, ref enemyOneStats.enemy, state);
         StartCoroutine(SetupBattle(enemyCollider));
     }
 
@@ -169,13 +171,14 @@ public class BattleSystem : NetworkBehaviour
 
         Debug.Log("playerGameObjects length == " + playerCount );
         Debug.Log("Index: " + ClientId );
-    /*
-        playerGameObjects[ClientId].transform.position = playerPositions[ClientId].position;
-        PlayerStats[ClientId] = playerGameObjects[ClientId].GetComponent<PlayerStats>();
-        playerHUDlist[ClientId].SetPlayerHUD(PlayerStats[ClientId]);
-        playerHUDlist[ClientId].gameObject.SetActive(true);
-        playerHUDlist[ClientId].UpdatePlayerHPtext(PlayerStats[ClientId]);
-        */
+
+        /*
+            playerGameObjects[ClientId].transform.position = playerPositions[ClientId].position;
+            PlayerStats[ClientId] = playerGameObjects[ClientId].GetComponent<PlayerStats>();
+            playerHUDlist[ClientId].SetPlayerHUD(PlayerStats[ClientId]);
+            playerHUDlist[ClientId].gameObject.SetActive(true);
+            playerHUDlist[ClientId].UpdatePlayerHPtext(PlayerStats[ClientId]);
+            */
     }
 
     /*public void UpdateServer()
@@ -235,7 +238,12 @@ public class BattleSystem : NetworkBehaviour
         }
         BattleManager.Instance.enemy.SetActive(false);
 
-        
+        for (int bogus = 0; bogus < playerCount; bogus++)
+        {
+            playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref PlayerStats[bogus].player, ref allEnemyStats[0].enemy, ref state);
+        }
+
+
         //UI SETUP
         if (enemyCount == 1)
             BattleMenus.dialogueText.text = "A " + BattleManager.Instance.enemy.name + " approaches!";
@@ -248,6 +256,12 @@ public class BattleSystem : NetworkBehaviour
         
         yield return new WaitForSeconds(1f);
         state = BattleState.PLAYER_ONE_TURN;
+
+        for (int bogus = 0; bogus < playerCount; bogus++)
+        {
+            playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref PlayerStats[bogus].player, ref allEnemyStats[0].enemy, ref state);
+        }
+
         StartCoroutine(PlayerOneTurn());
         
     }
@@ -455,8 +469,13 @@ public class BattleSystem : NetworkBehaviour
                 state = BattleState.PLAYER_FOUR_TURN;
                 break;
             }
-        
-        if(PlayerStats[currentPlayerIndex] == null)
+
+        for (int bogus = 0; bogus < playerCount; bogus++)
+        {
+            playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref PlayerStats[currentPlayerIndex].player, ref allEnemyStats[0].enemy, ref state);
+        }
+
+        if (PlayerStats[currentPlayerIndex] == null)
         {
             if(currentPlayerIndex == 3)
                 StartCoroutine(EnemyTurn());
@@ -493,7 +512,12 @@ public class BattleSystem : NetworkBehaviour
 
         enemyHUDlist[enemyIndex].SetHP(DefendingEnemy.enemy.getCurrHealth());
         enemyHUDlist[enemyIndex].UpdateEnemyHPtext(allEnemyStats[enemyIndex]);
-        
+
+        for (int bogus = 0; bogus < playerCount; bogus++)
+        {
+            playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref AttackingPlayer.player, ref DefendingEnemy.enemy, ref state);
+        }
+
         if (AllEnemiesAreDead())
         {
             Debug.Log("All enemies are dead");
@@ -501,6 +525,12 @@ public class BattleSystem : NetworkBehaviour
 
             //for now its just win state
             state = BattleState.WON;
+
+            for (int bogus = 0; bogus < playerCount; bogus++)
+            {
+                playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref AttackingPlayer.player, ref DefendingEnemy.enemy, ref state);
+            }
+
             StartCoroutine(EndBattle());
         }
         else
@@ -527,7 +557,12 @@ public class BattleSystem : NetworkBehaviour
                 break;
             }
 
-            
+            for (int bogus = 0; bogus < playerCount; bogus++)
+            {
+                playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref AttackingPlayer.player, ref DefendingEnemy.enemy, ref state);
+            }
+
+
         }
         
         //give exp
