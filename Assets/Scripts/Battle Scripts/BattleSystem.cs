@@ -237,7 +237,7 @@ public class BattleSystem : NetworkBehaviour
         BattleCam.gameObject.SetActive(false);
         OverworldCam.gameObject.SetActive(true);
         BattleUI.SetActive(false);
-        PlayerStats[playerIndex].GetComponent<PlayerMovement>().inBattle = false;
+        PlayerStats[playerIndex].GetComponent<PlayerInput>().inBattle = false;
 
         for (int i = 0; i < enemyCount; i++)
         {

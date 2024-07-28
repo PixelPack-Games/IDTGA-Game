@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 2164255914052233654}
   - component: {fileID: 6146567063110024074}
   - component: {fileID: 5314960495624145534}
+  - component: {fileID: -3246700629756540938}
   m_Layer: 0
   m_Name: Mage
   m_TagString: Player
@@ -199,9 +200,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27d42560d94f83c4fadf8bb0f49ba6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 7700561346159239619}
   movementSpeed: 0.5
-  netObj: {fileID: 0}
-  inBattle: 0
+  sprite: {fileID: 2964101053229535075}
+  animator: {fileID: 7318536049444371658}
 --- !u!114 &3671407393005009142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2255694065
+  GlobalObjectIdHash: 145775045
   InScenePlacedSourceGlobalObjectIdHash: 145775045
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -236,6 +238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverAuth: 1
+  inBattle: 0
+  state: 0
 --- !u!114 &2164255914052233654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90dd1669498724d4d96cb73bc5189953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory: {fileID: 11400000, guid: ba391aef18194db419840aa8245becc2, type: 2}
+  inventory: {fileID: 11400000, guid: 902180c0ba788a547bea7fdc561113d0, type: 2}
   InventoryScreen: {fileID: 0}
   inventoryObjectName: InventoryScreen
 --- !u!114 &6146567063110024074
@@ -265,7 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BattleSystem: {fileID: 0}
   loadNextScene: {fileID: 0}
-  player_Movement: {fileID: 0}
+  player_Input: {fileID: 0}
   network: {fileID: 3840454863175440337}
   OverworldLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &5314960495624145534
@@ -289,6 +293,24 @@ MonoBehaviour:
   fleeRating: 5
   level: 1
   exp: 0
+--- !u!114 &-3246700629756540938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4985675561430363239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483d6756e26582544bd6e511bb685247, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  network: {fileID: 3840454863175440337}
+  playerMovement: {fileID: 2445215660976283849}
+  playerInventory: {fileID: 2164255914052233654}
+  networkObject: {fileID: 3671407393005009142}
+  inBattle: 0
+  isPaused: 0
 --- !u!1001 &4508743294126349731
 PrefabInstance:
   m_ObjectHideFlags: 0

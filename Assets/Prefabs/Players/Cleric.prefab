@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 3747303121726212795}
   - component: {fileID: 7991107295001564986}
   - component: {fileID: 4388376086504472633}
+  - component: {fileID: 2718315376526640742}
   m_Layer: 0
   m_Name: Cleric
   m_TagString: Player
@@ -199,9 +200,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27d42560d94f83c4fadf8bb0f49ba6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 896357032611825807}
   movementSpeed: 0.5
-  netObj: {fileID: 0}
-  inBattle: 0
+  sprite: {fileID: 374928241594432874}
+  animator: {fileID: 4326926376829520555}
 --- !u!114 &115639672407093543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2382980630
+  GlobalObjectIdHash: 891524370
   InScenePlacedSourceGlobalObjectIdHash: 891524370
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -236,6 +238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverAuth: 1
+  inBattle: 0
+  state: 0
 --- !u!114 &3747303121726212795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90dd1669498724d4d96cb73bc5189953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory: {fileID: 11400000, guid: ba391aef18194db419840aa8245becc2, type: 2}
+  inventory: {fileID: 11400000, guid: 902180c0ba788a547bea7fdc561113d0, type: 2}
   InventoryScreen: {fileID: 0}
   inventoryObjectName: InventoryScreen
 --- !u!114 &7991107295001564986
@@ -265,7 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BattleSystem: {fileID: 0}
   loadNextScene: {fileID: 0}
-  player_Movement: {fileID: 0}
+  player_Input: {fileID: 0}
   network: {fileID: 4180218400869563935}
   OverworldLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &4388376086504472633
@@ -289,6 +293,24 @@ MonoBehaviour:
   fleeRating: 5
   level: 1
   exp: 0
+--- !u!114 &2718315376526640742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7709439689641326611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483d6756e26582544bd6e511bb685247, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  network: {fileID: 4180218400869563935}
+  playerMovement: {fileID: 8066451475558753343}
+  playerInventory: {fileID: 3747303121726212795}
+  networkObject: {fileID: 115639672407093543}
+  inBattle: 0
+  isPaused: 0
 --- !u!1001 &7036725567133614044
 PrefabInstance:
   m_ObjectHideFlags: 0

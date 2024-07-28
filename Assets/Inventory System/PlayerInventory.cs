@@ -47,20 +47,6 @@ public class PlayerInventory : MonoBehaviour
             findInventoryScreen();
             return;
         }
-
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            Debug.Log("Inventory Opened");
-            InventoryScreen.SetActive(!InventoryScreen.activeSelf);
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            inventory.Save();
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            inventory.Load();
-        }
     }
     private void OnApplicationQuit()
     {
