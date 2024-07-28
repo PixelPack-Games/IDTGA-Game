@@ -9,16 +9,28 @@ public class Network : NetworkBehaviour
     [SerializeField] public bool serverAuth;
     public bool inBattle = false;
     public BattleState state = 0;
+    [SerializeField] Sprite[] sprites;
+    [SerializeField] RuntimeAnimatorController[] renderers;
+    private static int playerCount = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        Animator animator = GetComponent<Animator>();
+
         if (!IsOwner)
         {
+            renderer.sprite = sprites[playerCount];
+            animator.runtimeAnimatorController = renderers[playerCount];
+            playerCount++;
             return;
         }
 
-        Debug.Log("Server authority status: " + serverAuth);
+        renderer.sprite = sprites[NetworkManager.Singleton.LocalClientId];
+        animator.runtimeAnimatorController = renderers[NetworkManager.Singleton.LocalClientId];
+        playerCount++;
+        //Debug.Log("Server authority status: " + serverAuth);
     }
 
     private void Awake()
