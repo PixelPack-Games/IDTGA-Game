@@ -7,7 +7,7 @@ using TMPro;
 public class Network : NetworkBehaviour
 {
     public NetworkVariable<PlayerData> data;
-    [SerializeField] public bool serverAuth;
+    [SerializeField] public static bool serverAuth;
     public  bool networkInBattle = false;
 
     
@@ -45,7 +45,7 @@ public class Network : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (networkInBattle)
+        /*if (networkInBattle)
         {
             //transform.position = data.Value.pos;
             //networkInBattle = data.Value.inBattle;
@@ -78,7 +78,7 @@ public class Network : NetworkBehaviour
             }
 
             return;
-        }
+        }*/
 
         if (IsOwner)
         {
@@ -117,7 +117,7 @@ public class Network : NetworkBehaviour
         }
     }
 
-    public void updateBattleState(ref Player player, ref Enemy enemy, ref BattleState state)
+    /*public void updateBattleState(ref Player player, ref Enemy enemy, ref BattleState state)
     {
         if (!networkInBattle)
         {
@@ -184,8 +184,8 @@ public class Network : NetworkBehaviour
             transform.position = playerPos;
             state = BattleState.START;
             Debug.Log("")
-        }*/
-    }
+        }
+    }*/
 
     [ServerRpc]
     public void transmitDataServerRpc(PlayerData temp)
@@ -209,7 +209,7 @@ public class Network : NetworkBehaviour
         
         //TODO: add interpolation for smoother connectivity
         data.Value = temp;
-        networkInBattle = data.Value.inBattle;
+        //networkInBattle = data.Value.inBattle;
     }
 }
 

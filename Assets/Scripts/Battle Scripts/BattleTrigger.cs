@@ -60,7 +60,7 @@ public class BattleTrigger : NetworkBehaviour
                 {
                     //sceneIndex = loadNextScene.LoadNextLevel()
                 };
-                if (IsServer || !network.serverAuth)
+                if (IsServer || !Network.serverAuth)
                 {
                     network.data.Value = temp;
                 }
@@ -68,11 +68,11 @@ public class BattleTrigger : NetworkBehaviour
                 {
                     network.transmitDataServerRpc(temp);
                 }
-                BattleSystem.StartBattle(ref other);
+                BattleSystem.StartBattle();
             }
             else
             {
-                BattleSystem.StartBattle(ref other);
+                BattleSystem.StartBattle();
             }
         }
     }
