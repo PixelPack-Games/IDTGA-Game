@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
 
+
 public enum BattleState { 
     START,
     PLAYER_ONE_TURN,
@@ -127,8 +128,15 @@ public class BattleSystem : NetworkBehaviour
         
         //if (!IsOwner) return;
         BattleUI.SetActive(true);
-        //enemyCount = Random.Range(1,4);
-        enemyCount = 4;
+        if(BattleManager.Instance.enemy.GetComponent<EnemyStats>().Id == "Boss")
+        {
+            enemyCount = 1;
+        }
+        else
+        {
+            enemyCount = Random.Range(1,4);;
+        }
+        
         //this could be used to randomize the types of enemies in each battle
         enemyPrefabs = new GameObject[] { enemyOnePrefab, enemyTwoPrefab, enemyThreePrefab, enemyFourPrefab };
         //
@@ -265,8 +273,10 @@ public class BattleSystem : NetworkBehaviour
         {
             Debug.Log("Your party lost...");
             BattleMenus.dialogueText.text = "Your party lost...";
+            yield return new WaitForSeconds(3f);
+            NetworkManager.SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
         }
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         for(int i = 0; i < playerCount; i++)
         {
             PlayerStats[i].transform.position = playerOverworldPositions[i];
@@ -288,9 +298,6 @@ public class BattleSystem : NetworkBehaviour
     IEnumerator EnemyTurn()
     {
         //TODO: create some enemy ai logic
-        //for now it just attacks the player
-
-        //Skips dead enemy's turn
         currentEnemyIndex++;
         if(currentEnemyIndex == 4) currentEnemyIndex = 0;
         switch(currentEnemyIndex) 
@@ -309,6 +316,7 @@ public class BattleSystem : NetworkBehaviour
                 break;
             }
         Debug.Log("We in enemy turny");
+        //Skips dead enemy's turn
         if(allEnemyStats[currentEnemyIndex] == null)
         {
             if(currentEnemyIndex == 3)

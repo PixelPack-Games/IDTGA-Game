@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,17 +44,43 @@ public class BattleHUD : MonoBehaviour
 
     public void SetHP(int hp)
     {
-        hpSlider.value = hp;
+        
+        if(hp <= 0)
+        {
+            hpSlider.value = 0;
+        }
+        else
+        {
+            hpSlider.value = hp;
+        }
+    
         
     }
 
     public void UpdatePlayerHPtext(PlayerStats playerStats)
     {
-        hpText.text = playerStats.player.getCurrHealth() + "/" + playerStats.MaxHealth;
+        if(playerStats.player.getCurrHealth() <= 0)
+        {
+            hpText.text = 0 + "/" + playerStats.MaxHealth;
+        }
+        else
+        {
+            hpText.text = playerStats.player.getCurrHealth() + "/" + playerStats.MaxHealth;
+        }
+        
     }
 
     public void UpdateEnemyHPtext(EnemyStats enemyStats)
     {
-        hpText.text = enemyStats.enemy.getCurrHealth() + "/" + enemyStats.MaxHealth;
+        
+
+        if(enemyStats.enemy.getCurrHealth() <= 0)
+        {
+            hpText.text = 0 + "/" + enemyStats.MaxHealth;
+        }
+        else
+        {
+            hpText.text = enemyStats.enemy.getCurrHealth() + "/" + enemyStats.MaxHealth;
+        }
     }
 }

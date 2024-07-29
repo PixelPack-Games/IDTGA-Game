@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GuildHub.unity
     guid: 60a601eb9db896f41a084221349f0de2
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 853aa56a6654e1f4aabd904ef83df513
   m_configObjects: {}
