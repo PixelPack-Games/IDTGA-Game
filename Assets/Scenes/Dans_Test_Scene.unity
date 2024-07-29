@@ -31530,14 +31530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe2669cac51ee64c96406b2e7fcde76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOne: {fileID: 0}
-  playerTwo: {fileID: 0}
-  playerThree: {fileID: 0}
-  playerFour: {fileID: 0}
-  enemyOnePrefab: {fileID: 0}
-  enemyTwoPrefab: {fileID: 0}
-  enemyThreePrefab: {fileID: 0}
-  enemyFourPrefab: {fileID: 0}
+  player2OverworldPos: {fileID: 0}
   player1SpawnPoint: {fileID: 1584548281}
   player2SpawnPoint: {fileID: 724888467}
   player3SpawnPoint: {fileID: 932490242}
@@ -31548,15 +31541,6 @@ MonoBehaviour:
   enemy4SpawnPoint: {fileID: 1309780870}
   BattleSetup: {fileID: 0}
   state: 0
-  enemyPrefabs: []
-  enemyGameObjects: []
-  enemyPositions: []
-  playerGameObjects: []
-  playerPositions: []
-  PlayerStats: []
-  allEnemyStats: []
-  enemyHUDlist: []
-  playerHUDlist: []
   enemyCount: 0
   BattleCam: {fileID: 1203430610}
   OverworldCam: {fileID: 1604074517}
@@ -31571,8 +31555,10 @@ MonoBehaviour:
   enemyThreeHUD: {fileID: 985670737}
   enemyFourHUD: {fileID: 1456805664}
   loadNextScene: {fileID: 0}
-  BS_Network: {fileID: 1564931925}
+  network: {fileID: 0}
   ClientId: 0
+  currentPlayerIndex: 0
+  currentEnemyIndex: 0
 --- !u!4 &1564931924
 Transform:
   m_ObjectHideFlags: 0
@@ -31595,7 +31581,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1564931921}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be2d18e8916c6e943954f6f3cbf67629, type: 3}
   m_Name: 

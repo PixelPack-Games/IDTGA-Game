@@ -12,8 +12,17 @@ public class PlayerMovement : MonoBehaviour
     public SpriteRenderer sprite;
     public Animator animator;
     private float speed;
-
-    void Start(){
+    public NetworkObject netObj;
+    public bool inBattle;
+  
+    // Start is called before the first frame update
+    void Start()
+    {
+        netObj = GetComponent<NetworkObject>();
+        if (netObj.IsSpawned == false)
+        {
+            netObj.Spawn();
+        }
         DontDestroyOnLoad(this.gameObject);
         speed = movementSpeed * 100 * Time.fixedDeltaTime;
     }

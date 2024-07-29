@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using TMPro;
 
 public class Network : NetworkBehaviour
 {
     public NetworkVariable<PlayerData> data;
     [SerializeField] public bool serverAuth;
-    public bool inBattle = false;
-    public BattleState state = 0;
+    public  bool networkInBattle = false;
+
+    
+    [SerializeField] private BattleState battleState = 0;
     [SerializeField] Sprite[] sprites;
     [SerializeField] RuntimeAnimatorController[] renderers;
     private static int playerCount = 0;
@@ -29,8 +32,8 @@ public class Network : NetworkBehaviour
 
         renderer.sprite = sprites[NetworkManager.Singleton.LocalClientId];
         animator.runtimeAnimatorController = renderers[NetworkManager.Singleton.LocalClientId];
-        playerCount++;
-        //Debug.Log("Server authority status: " + serverAuth);
+        playerCount++;;
+        Debug.Log("Server authority status: " + serverAuth);
     }
 
     private void Awake()
@@ -42,17 +45,59 @@ public class Network : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (inBattle)
+        if (networkInBattle)
         {
+            //transform.position = data.Value.pos;
+            //networkInBattle = data.Value.inBattle;
+            //state = data.Value.state;
+            gameObject.GetComponent<PlayerInput>().inBattle = true;
+            
+            if (data.Value.enemyCollider == null)
+            {
+                return;
+            }
+
+            gameObject.GetComponent<BattleTrigger>().triggerBattle(data.Value.enemyCollider);
+
+            PlayerData temp = new PlayerData()
+            {
+                pos = data.Value.pos,
+                inBattle = data.Value.inBattle,
+                state = data.Value.state,
+                enemyCollider = null
+            };
+
+            if (IsServer || !serverAuth)
+            {
+                data.Value = temp;
+            }
+            else
+            {
+                transmitDataServerRpc(temp);
+                //data.Value = temp;
+            }
+
             return;
         }
 
         if (IsOwner)
         {
-            PlayerData temp = new PlayerData()
+
+            if (data.Value.inBattle)
             {
-                pos = transform.position,
-            };
+                Debug.Log("In a battle");
+                return;
+            }
+
+            PlayerData temp;
+
+            temp = new PlayerData()
+                {
+                    pos = transform.position,
+                    inBattle = data.Value.inBattle,
+                    state = data.Value.state,
+                    enemyCollider = data.Value.enemyCollider
+                };
 
             if (IsServer || !serverAuth)
             {
@@ -67,12 +112,14 @@ public class Network : NetworkBehaviour
         else
         {
             transform.position = data.Value.pos;
+            //networkInBattle = data.Value.inBattle;
+            //state = data.Value.state;
         }
     }
 
-    public void updateBattleState(ref Player player, ref Enemy enemy, BattleState state)
+    public void updateBattleState(ref Player player, ref Enemy enemy, ref BattleState state)
     {
-        if (!inBattle)
+        if (!networkInBattle)
         {
             return;
         }
@@ -95,6 +142,8 @@ public class Network : NetworkBehaviour
             {
                 transmitDataServerRpc(temp);
             }
+
+            //battleState = state;
         }
         else
         {
@@ -104,6 +153,38 @@ public class Network : NetworkBehaviour
             player.setCurrhealth(data.Value.playerHealth);
             enemy.setCurrhealth(data.Value.enemyHeath);
         }
+    }
+
+    public void StartPositions(Vector3 playerPos, ref Collider2D enemyCollider)
+    {
+        if (IsOwner)
+        {
+            PlayerData temp = new PlayerData()
+            {
+                inBattle = true,
+                pos = playerPos,
+                state = BattleState.START,
+                enemyCollider = enemyCollider
+            };
+
+            if (IsServer || !serverAuth)
+            {
+                Debug.Log("running server update");
+                data.Value = temp;
+            }
+            else
+            {
+                Debug.Log("running Client update");
+                transmitDataServerRpc(temp);
+            }
+        }
+        /*else
+        {
+            networkInBattle = true;
+            transform.position = playerPos;
+            state = BattleState.START;
+            Debug.Log("")
+        }*/
     }
 
     [ServerRpc]
@@ -125,9 +206,10 @@ public class Network : NetworkBehaviour
         {
             return;
         }
-         
+        
         //TODO: add interpolation for smoother connectivity
         data.Value = temp;
+        networkInBattle = data.Value.inBattle;
     }
 }
 
@@ -135,7 +217,9 @@ public struct PlayerData : INetworkSerializable
 {
     private float x, y;
     public BattleState state;
+    public bool inBattle;
     public int playerHealth, enemyHeath; //used when battle state is in a player attack or an enemy attack
+    public Collider2D enemyCollider;
 
     internal Vector3 pos
     {
@@ -151,7 +235,9 @@ public struct PlayerData : INetworkSerializable
     {
         serializer.SerializeValue(ref x);
         serializer.SerializeValue(ref y);
+        serializer.SerializeValue(ref inBattle);
         serializer.SerializeValue(ref state);
         serializer.SerializeValue(ref playerHealth);
+        //serializer.SerializeValue(ref enemyCollider);
     }
 }

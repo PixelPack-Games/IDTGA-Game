@@ -45,30 +45,34 @@ public class BattleTrigger : NetworkBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         //if (!IsOwner) return;
+        triggerBattle(other);
+    }
 
+    public void triggerBattle(Collider2D other)
+    {
         if (other.CompareTag("Enemy"))
         {
             if (IsOwner)
             {
                 OverworldLocation = this.gameObject.transform.position;
                 checkIfEnemy(other);
-                 PlayerData temp = new PlayerData()
-                 {
-                     //sceneIndex = loadNextScene.LoadNextLevel()
-                 };
-                 if (IsServer || !network.serverAuth)
-                 {
+                PlayerData temp = new PlayerData()
+                {
+                    //sceneIndex = loadNextScene.LoadNextLevel()
+                };
+                if (IsServer || !network.serverAuth)
+                {
                     network.data.Value = temp;
-                 }
-                 else
-                 {
-                     network.transmitDataServerRpc(temp);
-                 }
-                BattleSystem.StartBattle();
+                }
+                else
+                {
+                    network.transmitDataServerRpc(temp);
+                }
+                BattleSystem.StartBattle(ref other);
             }
             else
             {
-                BattleSystem.StartBattle();
+                BattleSystem.StartBattle(ref other);
             }
         }
     }

@@ -204,6 +204,8 @@ MonoBehaviour:
   movementSpeed: 0.5
   sprite: {fileID: 3804801633203485848}
   animator: {fileID: 4058970790410426054}
+  netObj: {fileID: 0}
+  inBattle: 0
 --- !u!114 &2209450030743346978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,8 +240,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverAuth: 1
-  inBattle: 0
-  state: 0
+  networkInBattle: 0
+  battleState: 0
+  sprites: []
+  renderers: []
 --- !u!114 &4318234795764664075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,7 +291,7 @@ MonoBehaviour:
   Name: Amir
   Id: player1
   MaxHealth: 10
-  attack: 12
+  attack: 11
   defense: 1
   speed: 1
   fleeRating: 5

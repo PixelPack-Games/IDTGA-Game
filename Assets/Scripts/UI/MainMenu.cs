@@ -15,6 +15,7 @@ public class MainMenu : NetworkBehaviour
         if (gameType == GameType.GAME_TYPE_HOST)
         {
             //SceneManager.LoadScene(sceneIndex);
+            
             NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }
         else if (gameType == GameType.GAME_TYPE_JOIN)
