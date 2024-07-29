@@ -6,34 +6,39 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private string sceneName;
+    public string pauseButtonName;
     private static GameObject pauseButton;
-    public void onPauseClick()
-    {
-        if (sceneName == default)
-        {
-            Debug.LogError("No scene name given in the Editor");
-            return;
-        }
+    void Start(){
 
+    }
+    public void activatePauseMenu(){
+        findPauseButton();
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
-
-        if (pauseButton == null)
-        {
-            pauseButton = gameObject;
-        }
-
-        gameObject.SetActive(false);
+        pauseButton.SetActive(false);
     }
 
-    public void onResumeClick()
+    public void deactivatePauseMenu()
     {
         SceneManager.UnloadSceneAsync(sceneName);
-
         if (pauseButton == null)
         {
-            return;
+            findPauseButton();
         }
-
         pauseButton.SetActive(true);
+    }
+
+    private void findPauseButton()
+    {
+        GameObject[] objects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
+
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if (!objects[i].name.Equals(pauseButtonName))
+            {
+                continue;
+            }
+
+            pauseButton = objects[i];
+        }
     }
 }

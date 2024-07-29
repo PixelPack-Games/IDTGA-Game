@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 6146567063110024074}
   - component: {fileID: 5314960495624145534}
   - component: {fileID: -3246700629756540938}
+  - component: {fileID: -797335437967873767}
   m_Layer: 0
   m_Name: Mage
   m_TagString: Player
@@ -240,6 +241,8 @@ MonoBehaviour:
   serverAuth: 1
   inBattle: 0
   state: 0
+  sprites: []
+  renderers: []
 --- !u!114 &2164255914052233654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,8 +311,24 @@ MonoBehaviour:
   network: {fileID: 3840454863175440337}
   playerMovement: {fileID: 2445215660976283849}
   playerInventory: {fileID: 2164255914052233654}
+  pauseButton: {fileID: 0}
   networkObject: {fileID: 3671407393005009142}
   inBattle: 0
+  isPaused: 0
+--- !u!114 &-797335437967873767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4985675561430363239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8081ed395ca568b4cbe3d85deeae04f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: 
+  pauseButtonName: 
   isPaused: 0
 --- !u!1001 &4508743294126349731
 PrefabInstance:
