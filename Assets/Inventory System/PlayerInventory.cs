@@ -18,14 +18,14 @@ public class PlayerInventory : MonoBehaviour
     {
         GameObject[] objects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
 
-        for (int bogus = 0; bogus < objects.Length; bogus++)
+        for (int i = 0; i < objects.Length; i++)
         {
-            if (!objects[bogus].name.Equals(inventoryObjectName))
+            if (!objects[i].name.Equals(inventoryObjectName))
             {
                 continue;
             }
 
-            InventoryScreen = objects[bogus];
+            InventoryScreen = objects[i];
         }
     }
 

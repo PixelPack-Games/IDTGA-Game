@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6275133678582525401}
   - component: {fileID: 5708877572469329244}
   - component: {fileID: 4958710881066885792}
-  - component: {fileID: 8888380883828827836}
+  - component: {fileID: 327887641959710156}
   m_Layer: 5
-  m_Name: Pause_Button_Prefab
+  m_Name: PauseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ RectTransform:
   m_GameObject: {fileID: 7261773095126428525}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.77902, y: 0.77902, z: 0.77902}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e3c9c2694605a8041a6980e0b6c52e92, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c08436b86575f96468743ece6504d921, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -120,8 +120,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5708877572469329244}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &8888380883828827836
+      m_Calls:
+      - m_Target: {fileID: 327887641959710156}
+        m_TargetAssemblyTypeName: PauseButtonManager, Assembly-CSharp
+        m_MethodName: pressPauseButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &327887641959710156
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,7 +142,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7261773095126428525}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8081ed395ca568b4cbe3d85deeae04f5, type: 3}
+  m_Script: {fileID: 11500000, guid: 712ab86da79c7c04a84286be0d60dda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Paused_Menu_Scene
