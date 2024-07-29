@@ -320,6 +320,7 @@ MonoBehaviour:
   playerMovement: {fileID: 5703956329067087907}
   playerInventory: {fileID: 6935687740155511212}
   pauseMenu: {fileID: 5620858336942414953}
+  animator: {fileID: 2083237450396086732}
   networkObject: {fileID: 2792182838015876899}
   inBattle: 0
   isPaused: 0
@@ -337,7 +338,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneName: Paused_Menu_Scene
   pauseButtonName: PauseButton
-  isPaused: 0
 --- !u!1001 &2335982384152966529
 PrefabInstance:
   m_ObjectHideFlags: 0
