@@ -16,11 +16,11 @@ public class InventoryObject : ScriptableObject
 
     public void AddItem(Item _item, int _amount)
     {
-        if (_item.buffs.Length > 0) //if not stackable
-        {
-            SetEmptySlot(_item, _amount);
-            return;
-        }
+        // if (_item.buffs.Length > 0) //if not stackable
+        // {
+        //     SetEmptySlot(_item, _amount);
+        //     return;
+        // }
 
         for (int i = 0; i < Container.Items.Length; i++)//if stackable
         {

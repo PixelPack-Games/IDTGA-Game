@@ -30,6 +30,9 @@ EditorBuildSettings:
     path: Assets/Scenes/test/test.unity
     guid: 47972b969e6319e45b6c8787ba107bd1
   - enabled: 1
+    path: Assets/Scenes/Paused_Menu_Scene.unity
+    guid: 7a072233134604e0fa07d4eea9744f6f
+  - enabled: 1
     path: Assets/Scenes/GuildHub.unity
     guid: 60a601eb9db896f41a084221349f0de2
   m_configObjects: {}

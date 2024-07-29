@@ -10,7 +10,7 @@ public class BattleTrigger : NetworkBehaviour
 {
     public BattleSystem BattleSystem;
     public loadNextScene loadNextScene;
-    public PlayerMovement player_Movement;
+    public PlayerInput player_Input;
     public Network network;
     public Vector3 OverworldLocation;
     void Start()
@@ -22,7 +22,7 @@ public class BattleTrigger : NetworkBehaviour
     {
             loadNextScene = FindObjectOfType<loadNextScene>();
             BattleSystem = FindObjectOfType<BattleSystem>();
-            player_Movement = GetComponent<PlayerMovement>();
+            player_Input = GetComponent<PlayerInput>();
             // Find the loadNextScene script in the scene
             if (loadNextScene == null)
             {
@@ -45,30 +45,34 @@ public class BattleTrigger : NetworkBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         //if (!IsOwner) return;
+        triggerBattle(other);
+    }
 
+    public void triggerBattle(Collider2D other)
+    {
         if (other.CompareTag("Enemy"))
         {
             if (IsOwner)
             {
-                OverworldLocation = player_Movement.gameObject.transform.position;
+                OverworldLocation = this.gameObject.transform.position;
                 checkIfEnemy(other);
-                 PlayerData temp = new PlayerData()
-                 {
-                     //sceneIndex = loadNextScene.LoadNextLevel()
-                 };
-                 if (IsServer || !network.serverAuth)
-                 {
+                PlayerData temp = new PlayerData()
+                {
+                    //sceneIndex = loadNextScene.LoadNextLevel()
+                };
+                if (IsServer || !network.serverAuth)
+                {
                     network.data.Value = temp;
-                 }
-                 else
-                 {
-                     network.transmitDataServerRpc(temp);
-                 }
-                BattleSystem.StartBattle();
+                }
+                else
+                {
+                    network.transmitDataServerRpc(temp);
+                }
+                BattleSystem.StartBattle(ref other);
             }
             else
             {
-                BattleSystem.StartBattle();
+                BattleSystem.StartBattle(ref other);
             }
         }
     }
@@ -81,7 +85,7 @@ public class BattleTrigger : NetworkBehaviour
         //DontDestroyOnLoad(this.gameObject);
         //DontDestroyOnLoad(other.gameObject);
         //make sure the player is inBattle now
-        player_Movement.inBattle = true;
+        player_Input.inBattle = true;
         
         //this gets the next scene from the build settings
     }

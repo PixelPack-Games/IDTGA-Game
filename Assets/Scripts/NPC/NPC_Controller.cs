@@ -6,8 +6,8 @@ using UnityEngine;
 public class NPC_Controller : MonoBehaviour
 {
     public GameObject DialogueScreen;
-    [TextArea(15, 20)]
-    public string dialogue;
+    [TextArea(3, 5)]
+    public string[] dialogue;
     // Start is called before the first frame update
     void Start()
     {

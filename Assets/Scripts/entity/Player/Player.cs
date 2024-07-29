@@ -12,7 +12,10 @@ public class Player : Actor
     private int level, exp; //level and exp values; when exp reaches 100 level increases by 1
     protected LinkedList<Entity> weapons; //list of weapons this player has; TODO: change Entity to a Weapon class when implemented
     protected Entity armor; //amor this player has on
+    protected Inventory inventory;
     protected string description; //class description
+    protected LinkedList<string> skillNames; //list of all skill names for this player
+    protected LinkedList<SkillType> skillTypeList; //list of all skill types (mirrors skill names)
 
     //Constructors
     public Player(string name, string id, GameObject gameObject, int maxHealth, int attack, int defense, int speed, int fleeRating) : base(name, id, gameObject, maxHealth, attack, defense, speed, fleeRating)
@@ -20,6 +23,9 @@ public class Player : Actor
         level = 1;
         exp = 0;
         weapons = new LinkedList<Entity>();
+        inventory = gameObject.GetComponent<PlayerInventory>().inventory.Container;
+        skillNames = new LinkedList<string>();
+        skillTypeList = new LinkedList<SkillType>();
     }
 
     public Player(string name, string id, GameObject gameObject, int maxHealth, int attack, int defense, int speed, int fleeRating, int level, int exp) : base(name, id, gameObject, maxHealth, attack, defense, speed, fleeRating)
@@ -28,7 +34,7 @@ public class Player : Actor
         this.exp = exp;
     }
 
-    //Implementtations
+    //Implementations
     public new void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         base.NetworkSerialize<T>(serializer);
@@ -37,6 +43,20 @@ public class Player : Actor
         serializer.SerializeValue(ref description);
         serializer.SerializeValue(ref weapons);
         serializer.SerializeValue(ref armor);
+        serializer.SerializeValue(ref skillNames);
+        serializer.SerializeValue(ref skillTypeList);
+
+        /*
+        int bogus = 0;
+
+        while (skillNames[bogus] != null)
+        {
+            string temp = skillNames[bogus];
+            serializer.SerializeValue(ref temp);
+            SkillType tempType = skillTypeList[bogus];
+            serializer.SerializeValue(ref tempType);
+        }
+        */
     }
 
     //Functions
@@ -113,6 +133,33 @@ public class Player : Actor
         Debug.Log(getName() + " is now level " + level);
     }
 
+    public virtual bool singleAidSkill(Player target)
+    {
+        return (target != null);
+    }
+
+    public virtual bool singleHarmSkill(Enemy target)
+    {
+        return (target != null);
+    }
+
+    public virtual void selfAidSkill()
+    {
+        
+    }
+
+    public virtual int multiHarmSkill(ref LinkedList<Enemy> enemies)
+    {
+        int bogus = 0;
+
+        while (enemies[bogus] != null)
+        {
+            bogus++;
+        }
+
+        return (bogus + 1);
+    }
+
     //Getters
     public int getLevel()
     {
@@ -164,4 +211,14 @@ public class Player : Actor
     {
         this.description = description;
     }
+}
+
+public enum SkillType
+{
+    NONE,
+    SINGLE_AID,
+    SINGLE_HARM,
+    MULIT_AID,
+    MULTI_HARM,
+    SELF_AID
 }

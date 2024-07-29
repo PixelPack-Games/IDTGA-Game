@@ -33,11 +33,11 @@ public class BattleNetcodeTest : MonoBehaviour
         {
             network.networkInBattle = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
+        /*else if (Input.GetKeyDown(KeyCode.Space))
         {
             network.updateBattleState(ref playerStats, ref enemy, ++network.state);
         }
 
-        Debug.Log("Current State: " + network.state);
+        Debug.Log("Current State: " + network.state);*/
     }
 }

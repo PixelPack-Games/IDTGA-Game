@@ -225,7 +225,7 @@ MonoBehaviour:
   Name: Training Dummy
   Id: enemy1
   MaxHealth: 10
-  attack: 3
+  attack: 2
   defense: 1
   speed: 1
   fleeRating: 1
@@ -23347,7 +23347,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inRange: 0
   interactKey: 101
-  waitTimeAfterInteraction: 0
   interactAction:
     m_PersistentCalls:
       m_Calls:
@@ -23363,6 +23362,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  inRangeNotification: {fileID: 0}
 --- !u!1 &718916076
 GameObject:
   m_ObjectHideFlags: 0
@@ -49315,7 +49315,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inRange: 0
   interactKey: 101
-  waitTimeAfterInteraction: 0
   interactAction:
     m_PersistentCalls:
       m_Calls:
@@ -49331,6 +49330,7 @@ MonoBehaviour:
           m_StringArgument: Door_Controller.OpenDoor
           m_BoolArgument: 0
         m_CallState: 2
+  inRangeNotification: {fileID: 0}
 --- !u!114 &1517855473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49779,6 +49779,7 @@ MonoBehaviour:
   ClientId: 0
   currentPlayerIndex: -1
   currentEnemyIndex: -1
+  isCoroutineRunning: 0
 --- !u!4 &1564931924
 Transform:
   m_ObjectHideFlags: 0
