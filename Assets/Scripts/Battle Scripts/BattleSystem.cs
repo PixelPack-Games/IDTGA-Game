@@ -109,6 +109,7 @@ public class BattleSystem : NetworkBehaviour
     public int currentEnemyIndex;
     int attackedPlayerIndex;
     int playerCount;
+    public bool isCoroutineRunning = false;
     public void StartBattle(ref Collider2D enemyCollider)
     {
         ClientId = (int)NetworkManager.Singleton.LocalClientId;
@@ -128,7 +129,7 @@ public class BattleSystem : NetworkBehaviour
         //if (!IsOwner) return;
         BattleUI.SetActive(true);
         //enemyCount = Random.Range(1,4);
-        enemyCount = 4;
+        enemyCount = 2;
         //this could be used to randomize the types of enemies in each battle
         enemyPrefabs = new GameObject[] { enemyOnePrefab, enemyTwoPrefab, enemyThreePrefab, enemyFourPrefab };
         //
@@ -172,46 +173,12 @@ public class BattleSystem : NetworkBehaviour
         Debug.Log("playerGameObjects length == " + playerCount );
         Debug.Log("Index: " + ClientId );
 
-        /*
-            playerGameObjects[ClientId].transform.position = playerPositions[ClientId].position;
-            PlayerStats[ClientId] = playerGameObjects[ClientId].GetComponent<PlayerStats>();
-            playerHUDlist[ClientId].SetPlayerHUD(PlayerStats[ClientId]);
-            playerHUDlist[ClientId].gameObject.SetActive(true);
-            playerHUDlist[ClientId].UpdatePlayerHPtext(PlayerStats[ClientId]);
-            */
     }
 
-    /*public void UpdateServer()
-    {
-        if (IsOwner)
-        {
-            
-            BattleData temp = new BattleData()
-            {
-                battleState = state,
-            };
-            //
-            if (IsServer || !BS_Network.serverAuth)
-            {
-                BS_Network.data.Value = temp;
-            }
-            else
-            {
-                //Update the server
-                BS_Network.transmitDataServerRpc(temp);
-                Debug.Log("Data sent to server");
-            }
-        }
-        else
-        {
-            //grab the correct info from the server
-           state = BS_Network.data.Value.battleState;
-        }
-        
-    }*/
 
     IEnumerator SetupBattle(Collider2D enemyCollider)
     {
+        isCoroutineRunning = true;
         //if(IsOwner)
         //{
             OverworldCam.gameObject.SetActive(false);
@@ -261,14 +228,15 @@ public class BattleSystem : NetworkBehaviour
         {
             playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref PlayerStats[bogus].player, ref allEnemyStats[0].enemy, ref state);
         }
-
-        StartCoroutine(PlayerOneTurn());
+        isCoroutineRunning = false;
+        //StartCoroutine(PlayerTurn());
         
     }
 
     
     IEnumerator EndBattle()
     {
+        isCoroutineRunning = true;
         if(state == BattleState.WON)
         {
             Debug.Log("Your party has won!");
@@ -291,7 +259,8 @@ public class BattleSystem : NetworkBehaviour
         BattleCam.gameObject.SetActive(false);
         OverworldCam.gameObject.SetActive(true);
         BattleUI.SetActive(false);
-        PlayerStats[currentPlayerIndex].GetComponent<PlayerInput>().inBattle = false;
+        for(int i = 0; i < playerCount; i++)
+            PlayerStats[i].GetComponent<PlayerInput>().inBattle = false;
 
         for (int i = 0; i < enemyCount; i++)
         {
@@ -302,13 +271,14 @@ public class BattleSystem : NetworkBehaviour
 
     IEnumerator EnemyTurn()
     {
+        isCoroutineRunning = true;
         //TODO: create some enemy ai logic
         //for now it just attacks the player
 
         //Skips dead enemy's turn
         currentEnemyIndex++;
         if(currentEnemyIndex == 4) currentEnemyIndex = 0;
-        switch(currentEnemyIndex) 
+        /*switch(currentEnemyIndex) 
             {
             case 0:
                 state = BattleState.ENEMY_ONE_TURN;
@@ -322,14 +292,23 @@ public class BattleSystem : NetworkBehaviour
             case 3:
                 state = BattleState.ENEMY_FOUR_TURN;
                 break;
-            }
+            }*/
         Debug.Log("We in enemy turny");
         if(allEnemyStats[currentEnemyIndex] == null)
         {
             if(currentEnemyIndex == 3)
-                StartCoroutine(PlayerOneTurn());
+            {
+                state = BattleState.PLAYER_ONE_TURN;
+                isCoroutineRunning = false;
+                //StartCoroutine(PlayerTurn());
+            }
+                
             else
-                StartCoroutine(EnemyTurn());
+            {
+                state += 1;
+                isCoroutineRunning = false;
+                //StartCoroutine(EnemyTurn());
+            } 
         }
         else if (!allEnemyStats[currentEnemyIndex].enemy.getAlive())
         {
@@ -337,12 +316,16 @@ public class BattleSystem : NetworkBehaviour
             if(currentEnemyIndex == 3)
             {
                 Debug.Log("player turn now ig on: enemy " + currentEnemyIndex);
-                StartCoroutine(PlayerOneTurn());
+                state = BattleState.PLAYER_ONE_TURN;
+                isCoroutineRunning = false;
+                //StartCoroutine(PlayerTurn());
                 
             }  
             else
             {
-                StartCoroutine(EnemyTurn());
+                state += 1;
+                isCoroutineRunning = false;
+                //StartCoroutine(EnemyTurn());
                 Debug.Log("emeney " + currentEnemyIndex);
             }
                 
@@ -364,7 +347,8 @@ public class BattleSystem : NetworkBehaviour
             if (AllPlayersAreDead())
             {
                 state = BattleState.LOST;
-                StartCoroutine(EndBattle());
+                isCoroutineRunning = false;
+                //StartCoroutine(EndBattle());
             }
             else
             {
@@ -372,19 +356,23 @@ public class BattleSystem : NetworkBehaviour
                 {
                 case 0:
                     state = BattleState.ENEMY_TWO_TURN;
-                    StartCoroutine(EnemyTurn());
+                    isCoroutineRunning = false;
+                    //StartCoroutine(EnemyTurn());
                     break;
                 case 1:
                     state = BattleState.ENEMY_THREE_TURN;
-                    StartCoroutine(EnemyTurn());
+                    isCoroutineRunning = false;
+                    //StartCoroutine(EnemyTurn());
                     break;
                 case 2:
                     state = BattleState.ENEMY_FOUR_TURN;
-                    StartCoroutine(EnemyTurn());
+                    isCoroutineRunning = false;
+                    //StartCoroutine(EnemyTurn());
                     break;
                 case 3:
                     state = BattleState.PLAYER_ONE_TURN;
-                    StartCoroutine(PlayerOneTurn());
+                    isCoroutineRunning = false;
+                    //StartCoroutine(PlayerTurn());
                     break;
                 }
             }
@@ -448,13 +436,15 @@ public class BattleSystem : NetworkBehaviour
         }
     }
 
-        IEnumerator PlayerOneTurn()
+        IEnumerator PlayerTurn()
     {
+        isCoroutineRunning = true;
         //SOMETHING HAS TO HAPPEN HERE TO FIND WHICH CHARACTER IS WHICH
+        Debug.Log(state);
         currentPlayerIndex++;
         if(currentPlayerIndex == 4) 
             currentPlayerIndex = 0;
-        switch(currentPlayerIndex) 
+        /*switch(currentPlayerIndex) 
             {
             case 0:
                 state = BattleState.PLAYER_ONE_TURN;
@@ -468,25 +458,48 @@ public class BattleSystem : NetworkBehaviour
             case 3:
                 state = BattleState.PLAYER_FOUR_TURN;
                 break;
-            }
+            }*/
 
         for (int bogus = 0; bogus < playerCount; bogus++)
         {
-            playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref PlayerStats[currentPlayerIndex].player, ref allEnemyStats[0].enemy, ref state);
+            //playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref PlayerStats[currentPlayerIndex].player, ref allEnemyStats[0].enemy, ref state);
         }
 
         if (PlayerStats[currentPlayerIndex] == null)
         {
             if(currentPlayerIndex == 3)
-                StartCoroutine(EnemyTurn());
+            {
+                state = BattleState.ENEMY_ONE_TURN;
+                isCoroutineRunning = false;
+                //StartCoroutine(EnemyTurn());
+            }
+
             else
-                StartCoroutine(PlayerOneTurn());
+            {
+                state += 1;
+                Debug.Log("next player turn.. state is: " + state);
+                isCoroutineRunning = false;
+                yield return new WaitForSeconds(1f);
+                //StartCoroutine(PlayerOneTurn());
+            }
+
         }   
         else if(!PlayerStats[currentPlayerIndex].player.getAlive())
+        {
             if(currentPlayerIndex == 3)
-                StartCoroutine(EnemyTurn());
+            {
+                state = BattleState.ENEMY_ONE_TURN;
+                isCoroutineRunning = false;
+                //StartCoroutine(EnemyTurn());
+            }
+                
             else
-                StartCoroutine(PlayerOneTurn());
+            {
+                state += 1;
+                isCoroutineRunning = false;
+                //StartCoroutine(PlayerOneTurn());
+            }
+        }   
         else
         {
             updatePlayerButtons();
@@ -531,29 +544,33 @@ public class BattleSystem : NetworkBehaviour
                 playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref AttackingPlayer.player, ref DefendingEnemy.enemy, ref state);
             }
 
-            StartCoroutine(EndBattle());
+            isCoroutineRunning = false;
+            //StartCoroutine(EndBattle());
         }
         else
         {
-            //enemy turn
-            //for now its just true but will change in the future
             switch(currentPlayerIndex) 
             {
             case 0:
+            
                 state = BattleState.PLAYER_TWO_TURN;
-                StartCoroutine(PlayerOneTurn());
+                isCoroutineRunning = false;
+                //StartCoroutine(PlayerOneTurn());
                 break;
             case 1:
                 state = BattleState.PLAYER_THREE_TURN;
-                StartCoroutine(PlayerOneTurn());
+                isCoroutineRunning = false;
+                //StartCoroutine(PlayerOneTurn());
                 break;
             case 2:
                 state = BattleState.PLAYER_FOUR_TURN;
-                StartCoroutine(PlayerOneTurn());
+                isCoroutineRunning = false;
+                //StartCoroutine(PlayerOneTurn());
                 break;
             case 3:
                 state = BattleState.ENEMY_ONE_TURN;
-                StartCoroutine(EnemyTurn());
+                isCoroutineRunning = false;
+                //StartCoroutine(EnemyTurn());
                 break;
             }
 
@@ -595,26 +612,35 @@ public class BattleSystem : NetworkBehaviour
     }
     private void Update()
     {
-        /*
-        if (state == BattleState.PLAYER_ONE_TURN)
+        if (!isCoroutineRunning)
         {
-            if (Input.GetKeyDown(KeyCode.E) && allEnemyStats[0].enemy.getAlive())
+            Debug.Log("running: " + state  );
+            switch (state)
             {
-                StartCoroutine(PlayerAttack(PlayerStats[playerIndex], allEnemyStats[0], 0));
-            }else if(Input.GetKeyDown(KeyCode.R) && allEnemyStats[1].enemy.getAlive() && allEnemyStats[1].enemy != null)
-            {
-                StartCoroutine(PlayerAttack(PlayerStats[playerIndex], allEnemyStats[1], 1));
-            }
-            else if (Input.GetKeyDown(KeyCode.T) && allEnemyStats[2].enemy.getAlive() && allEnemyStats[2].enemy != null)
-            {
-                StartCoroutine(PlayerAttack(PlayerStats[playerIndex], allEnemyStats[2], 2));
-            }
-            else if (Input.GetKeyDown(KeyCode.Y) && allEnemyStats[3].enemy.getAlive() && allEnemyStats[3].enemy != null)
-            {
-                StartCoroutine(PlayerAttack(PlayerStats[playerIndex], allEnemyStats[3], 3));
+                case BattleState.START:
+                    break;
+                case BattleState.PLAYER_ONE_TURN:
+                case BattleState.PLAYER_TWO_TURN:
+                case BattleState.PLAYER_THREE_TURN:
+                case BattleState.PLAYER_FOUR_TURN:
+                    
+                    StartCoroutine(PlayerTurn());
+                    //isCoroutineRunning = true;
+                    break;
+                case BattleState.ENEMY_ONE_TURN:
+                case BattleState.ENEMY_TWO_TURN:
+                case BattleState.ENEMY_THREE_TURN:
+                case BattleState.ENEMY_FOUR_TURN:
+                    StartCoroutine(EnemyTurn());
+                    //isCoroutineRunning = true;
+                    break;
+                case BattleState.WON:
+                case BattleState.LOST:
+                    StartCoroutine(EndBattle());
+                    //isCoroutineRunning = true;
+                    break;
             }
         }
-        */
     }
 }
 
