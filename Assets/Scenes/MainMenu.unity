@@ -935,6 +935,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1060168580}
+        m_TargetAssemblyTypeName: JoinCode, Assembly-CSharp
+        m_MethodName: storeJoinCode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 691153764}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
         m_MethodName: onClick
@@ -1185,6 +1197,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053065831}
   m_CullTransparentMesh: 1
+--- !u!1 &1060168579
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1060168581}
+  - component: {fileID: 1060168580}
+  m_Layer: 0
+  m_Name: JoinCodeStore
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1060168580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060168579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 432445def80f60040b21e3541d1f7566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joinCode: {fileID: 2981326}
+--- !u!4 &1060168581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060168579}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 393.93655, y: 396.5774, z: 1.2856888}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1115424999
 GameObject:
   m_ObjectHideFlags: 0
@@ -1331,6 +1388,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9da43e08e2ea5647a67d82bd74b03a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1159706080 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 118246143863740201, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
+  m_PrefabInstance: {fileID: 1463379070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1159706085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159706080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 432445def80f60040b21e3541d1f7566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joinCode: {fileID: 2981326}
 --- !u!1 &1248213140
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,7 +1702,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 118246143863740201, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1159706085}
   m_SourcePrefab: {fileID: 100100000, guid: c578663264b2b1e48aeda51c3f809337, type: 3}
 --- !u!1001 &1464459138
 PrefabInstance:
@@ -2731,3 +2809,4 @@ SceneRoots:
   - {fileID: 691153765}
   - {fileID: 1464459138}
   - {fileID: 1463379070}
+  - {fileID: 1060168581}

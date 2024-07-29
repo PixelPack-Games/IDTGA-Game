@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 6935687740155511212}
   - component: {fileID: 8408210474077196133}
   - component: {fileID: 5524161531234739900}
+  - component: {fileID: 8857949866106652372}
+  - component: {fileID: 5620858336942414953}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -199,9 +201,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27d42560d94f83c4fadf8bb0f49ba6b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 395031469272536629}
   movementSpeed: 0.5
-  netObj: {fileID: 0}
-  inBattle: 0
+  sprite: {fileID: 438827149838030192}
+  animator: {fileID: 2083237450396086732}
 --- !u!114 &2792182838015876899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,7 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 2309852277
-  InScenePlacedSourceGlobalObjectIdHash: 2352478760
+  InScenePlacedSourceGlobalObjectIdHash: 2309852277
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -260,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90dd1669498724d4d96cb73bc5189953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory: {fileID: 11400000, guid: 4eac3f409d94fe949ab3bb33abab2eee, type: 2}
+  inventory: {fileID: 11400000, guid: 902180c0ba788a547bea7fdc561113d0, type: 2}
   InventoryScreen: {fileID: 0}
   inventoryObjectName: InventoryScreen
 --- !u!114 &8408210474077196133
@@ -277,7 +280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BattleSystem: {fileID: 0}
   loadNextScene: {fileID: 0}
-  player_Movement: {fileID: 0}
+  player_Input: {fileID: 0}
   network: {fileID: 6085262697748536083}
   OverworldLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &5524161531234739900
@@ -301,6 +304,40 @@ MonoBehaviour:
   fleeRating: 5
   level: 1
   exp: 0
+--- !u!114 &8857949866106652372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614355206485977356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483d6756e26582544bd6e511bb685247, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  network: {fileID: 6085262697748536083}
+  playerMovement: {fileID: 5703956329067087907}
+  playerInventory: {fileID: 6935687740155511212}
+  pauseMenu: {fileID: 5620858336942414953}
+  networkObject: {fileID: 2792182838015876899}
+  inBattle: 0
+  isPaused: 0
+--- !u!114 &5620858336942414953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614355206485977356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8081ed395ca568b4cbe3d85deeae04f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: Paused_Menu_Scene
+  pauseButtonName: PauseButton
+  isPaused: 0
 --- !u!1001 &2335982384152966529
 PrefabInstance:
   m_ObjectHideFlags: 0

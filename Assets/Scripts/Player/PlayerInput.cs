@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerInput : MonoBehaviour
 {
     public Network network;
     public PlayerMovement playerMovement;
     public PlayerInventory playerInventory;
+    public PauseMenu pauseMenu;
     public NetworkObject networkObject;
     public bool inBattle;
     public bool isPaused;
+    private GameObject pauseButton;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +30,17 @@ public class PlayerInput : MonoBehaviour
     void Update()
     {
         if(network.IsOwner){
+            //Pause Menu Inputs
+            if (Input.GetKeyDown(KeyCode.Escape)){
+                if(!isPaused){
+                    pauseGame();
+                    return;
+                }
+                if(isPaused){
+                    unpauseGame();
+                    return;
+                }
+            }
             if (!inBattle && !isPaused){
                 //Inventory Inputs
                 if (Input.GetKeyDown(KeyCode.I)){
@@ -60,5 +74,13 @@ public class PlayerInput : MonoBehaviour
                 playerMovement.stopMovement();
             }
         }
+    }
+    public void pauseGame(){
+        pauseMenu.activatePauseMenu();
+        isPaused = true;
+    }
+    public void unpauseGame(){
+        pauseMenu.deactivatePauseMenu();
+        isPaused = false;
     }
 }
