@@ -134,7 +134,16 @@ public class BattleSystem : NetworkBehaviour
         Debug.Log(BattleUI.name);
         BattleUI.SetActive(true);
         //enemyCount = Random.Range(1,4);
-        enemyCount = 2;
+        if(BattleManager.Instance.enemy.GetComponent<EnemyStats>().Id == "Boss")
+        {
+            enemyCount = 1;
+        }
+        else
+        {
+            enemyCount = Random.Range(1,4);;
+        }
+
+
         //this could be used to randomize the types of enemies in each battle
         enemyPrefabs = new GameObject[] { enemyOnePrefab, enemyTwoPrefab, enemyThreePrefab, enemyFourPrefab };
         //
@@ -224,11 +233,6 @@ public class BattleSystem : NetworkBehaviour
         
         BattleManager.Instance.enemy.SetActive(false);
 
-        /*for (int bogus = 0; bogus < playerCount; bogus++)
-        {
-            playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref PlayerStats[bogus].player, ref allEnemyStats[0].enemy, ref state);
-        }*/
-
 
         //UI SETUP
         if (enemyCount == 1)
@@ -267,19 +271,28 @@ public class BattleSystem : NetworkBehaviour
         {
             Debug.Log("Your party lost...");
             BattleMenus.dialogueText.text = "Your party lost...";
+            yield return new WaitForSeconds(2f);
+            for(int i = 0; i< playerCount; i++)
+            {
+                //Destroy(playerGameObjects[i]);
+            }
+           NetworkManager.Singleton.Shutdown();
+            SceneManager.LoadScene("GameOverMenu");
         }
         yield return new WaitForSeconds(2f);
         for(int i = 0; i < playerCount; i++)
         {
             PlayerStats[i].transform.position = playerOverworldPositions[i];
             PlayerStats[i].GetComponent<PlayerMovement>().inBattle = false;
+            playerGameObjects[i].GetComponent<Network>().networkInBattle = false;
+            playerGameObjects[i].GetComponent<PlayerInput>().inBattle = false;
         }
         
         BattleCam.gameObject.SetActive(false);
         OverworldCam.gameObject.SetActive(true);
         BattleUI.SetActive(false);
-        for(int i = 0; i < playerCount; i++)
-            PlayerStats[i].GetComponent<PlayerInput>().inBattle = false;
+    
+            
 
         for (int i = 0; i < enemyCount; i++)
         {
@@ -689,7 +702,7 @@ public class BattleSystem : NetworkBehaviour
     {
         if (!isCoroutineRunning)
         {
-            Debug.Log("running: " + state  );
+            //Debug.Log("running: " + state  );
             switch (state)
             {
                 case BattleState.START:
