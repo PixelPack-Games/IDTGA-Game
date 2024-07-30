@@ -9,7 +9,6 @@ public class Network : NetworkBehaviour
     public NetworkVariable<PlayerData> data;
     [SerializeField] public static bool serverAuth;
     public  bool networkInBattle = false;
-
     
     [SerializeField] private BattleState battleState = 0;
     [SerializeField] Sprite[] sprites;
