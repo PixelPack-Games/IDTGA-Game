@@ -68,11 +68,11 @@ public class BattleTrigger : NetworkBehaviour
                 {
                     network.transmitDataServerRpc(temp);
                 }
-                BattleSystem.StartBattle();
+                BattleSystem.StartBattle(1);
             }
             else
             {
-                BattleSystem.StartBattle();
+                BattleSystem.StartBattle(1);
             }
         }
     }

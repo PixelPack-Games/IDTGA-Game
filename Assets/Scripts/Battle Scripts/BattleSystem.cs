@@ -114,7 +114,8 @@ public class BattleSystem : NetworkBehaviour
     int attackedPlayerIndex;
     int playerCount;
     public bool isCoroutineRunning = false;
-    public void StartBattle()
+    public bool battleEnding = false;
+    public void StartBattle(int enemies)
     {
         ClientId = (int)NetworkManager.Singleton.LocalClientId;
         //gets a list of all the players
@@ -137,6 +138,10 @@ public class BattleSystem : NetworkBehaviour
         if(BattleManager.Instance.enemy.GetComponent<EnemyStats>().Id == "Boss")
         {
             enemyCount = 1;
+        }
+        else if (enemies > 0)
+        {
+            enemyCount = enemies;
         }
         else
         {
@@ -175,7 +180,7 @@ public class BattleSystem : NetworkBehaviour
             //NEEDS THE SERVER TO UPDATE THE PLAYER POSITIONS
             if (IsOwner)
             {
-                sendBattleStartPositionsServerRpc(BattleManager.Instance.enemy.name, i, playerGameObjects[i].transform.position);
+                sendBattleStartPositionsServerRpc(BattleManager.Instance.enemy.name, i, playerGameObjects[i].transform.position, enemyCount);
             }
 
             playerGameObjects[i].transform.position = playerPositions[i].position;
@@ -259,7 +264,13 @@ public class BattleSystem : NetworkBehaviour
     
     IEnumerator EndBattle()
     {
+        if (battleEnding)
+        {
+            yield break;
+        }
         isCoroutineRunning = true;
+        battleEnding = true;
+        battleStarted = false;
         if(state == BattleState.WON)
         {
             Debug.Log("Your party has won!");
@@ -304,6 +315,7 @@ public class BattleSystem : NetworkBehaviour
     IEnumerator EnemyTurn()
     {
         isCoroutineRunning = true;
+        Debug.Log(state);
         //TODO: create some enemy ai logic
         //for now it just attacks the player
 
@@ -729,6 +741,11 @@ public class BattleSystem : NetworkBehaviour
                     //isCoroutineRunning = true;
                     break;
             }
+       }
+       if (state == BattleState.WON || state == BattleState.LOST && !battleEnding)
+        {
+            //StopAllCoroutines();
+            isCoroutineRunning = false;
         }
     }
 
@@ -911,13 +928,13 @@ public class BattleSystem : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void sendBattleStartPositionsServerRpc(string enemyName, int index, Vector3 pos)
+    private void sendBattleStartPositionsServerRpc(string enemyName, int index, Vector3 pos, int enemies)
     {
-        setBattleStartPositionsClientRpc(enemyName, index, pos);
+        setBattleStartPositionsClientRpc(enemyName, index, pos, enemies);
     }
 
     [ClientRpc]
-    private void setBattleStartPositionsClientRpc(string enemyName, int index, Vector3 pos)
+    private void setBattleStartPositionsClientRpc(string enemyName, int index, Vector3 pos, int enemies)
     {
         if (IsOwner)
         {
@@ -927,7 +944,7 @@ public class BattleSystem : NetworkBehaviour
         //Debug.Log(playerGameObjects[index]);
         //playerGameObjects[index].transform.position = playerPositions[index].position;
         BattleManager.Instance.enemy = GameObject.Find(enemyName);
-        StartBattle();
+        StartBattle(enemies);
         //NetworkManager.Singleton.LocalClient.PlayerObject.transform.position = playerPositions[index].position;
     }
 }
