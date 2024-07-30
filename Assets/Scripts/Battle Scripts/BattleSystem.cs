@@ -157,6 +157,7 @@ public class BattleSystem : NetworkBehaviour
 
 //Sets up the instance of the player in their respective location with their HUD and stats
    void AddPlayers(){
+    
         for(int i = 0; i < playerCount; i++) 
         {
             playerGameObjects[i].name = "Player_" + (i+1).ToString();
@@ -202,18 +203,25 @@ public class BattleSystem : NetworkBehaviour
 
         //BattleManager.Instance.player.SetActive(false);
         //Debug.Log("player set to inactive");
+ 
+            for (int i = 0; i < enemyCount; i++)
+            {
+                int k = i+1;
+                enemyGameObjects[i] = GameObject.Find("enemy_"+ k);
+                if(enemyGameObjects[i] == null)
+                {
+                    enemyGameObjects[i] = Instantiate(BattleManager.Instance.enemy, enemyPositions[i].position, Quaternion.identity);
+                }
+                    
+                enemyGameObjects[i].name = "enemy_" + (i+1).ToString();
+                allEnemyStats[i] = enemyGameObjects[i].GetComponent<EnemyStats>();
+                if (allEnemyStats[i] == null) Debug.Log($"{allEnemyStats[i]} is  null for some reason");
+                enemyHUDlist[i].gameObject.SetActive(true);
+                enemyHUDlist[i].SetEnemyHUD(allEnemyStats[i]);
+                enemyHUDlist[i].UpdateEnemyHPtext(allEnemyStats[i]);
+                BattleMenus.buttonList[i].SetActive(true);
+            }
         
-        for (int i = 0; i < enemyCount; i++)
-        {
-            enemyGameObjects[i] = Instantiate(BattleManager.Instance.enemy, enemyPositions[i].position, Quaternion.identity);
-            enemyGameObjects[i].name = "enemy_" + (i+1).ToString();
-            allEnemyStats[i] = enemyGameObjects[i].GetComponent<EnemyStats>();
-            if (allEnemyStats[i] == null) Debug.Log($"{allEnemyStats[i]} is  null for some reason");
-            enemyHUDlist[i].gameObject.SetActive(true);
-            enemyHUDlist[i].SetEnemyHUD(allEnemyStats[i]);
-            enemyHUDlist[i].UpdateEnemyHPtext(allEnemyStats[i]);
-            BattleMenus.buttonList[i].SetActive(true);
-        }
         BattleManager.Instance.enemy.SetActive(false);
 
         /*for (int bogus = 0; bogus < playerCount; bogus++)
@@ -304,6 +312,7 @@ public class BattleSystem : NetworkBehaviour
                 state = BattleState.ENEMY_FOUR_TURN;
                 break;
             }*/
+        
         Debug.Log("We in enemy turny");
         if(allEnemyStats[currentEnemyIndex] == null)
         {
@@ -320,6 +329,7 @@ public class BattleSystem : NetworkBehaviour
                 isCoroutineRunning = false;
                 //StartCoroutine(EnemyTurn());
             } 
+            updateBattleTest();
         }
         else if (!allEnemyStats[currentEnemyIndex].enemy.getAlive())
         {
@@ -339,7 +349,7 @@ public class BattleSystem : NetworkBehaviour
                 //StartCoroutine(EnemyTurn());
                 Debug.Log("emeney " + currentEnemyIndex);
             }
-                
+             updateBattleTest();   
         }
         else
         {
@@ -386,6 +396,8 @@ public class BattleSystem : NetworkBehaviour
                     //StartCoroutine(PlayerTurn());
                     break;
                 }
+                Debug.Log("UPDATED ENEMY PART OF SERVER");
+                updateBattleTest();
             }
         }
 
@@ -447,9 +459,44 @@ public class BattleSystem : NetworkBehaviour
         }
     }
 
+    void updateBattleTest()
+    {
+                int[] tempPlayerHealth = new int[playerCount];
+
+                for (int bogus = 0; bogus < playerCount; bogus++)
+                {
+                    tempPlayerHealth[bogus] = PlayerStats[bogus].player.getCurrHealth();
+                }
+
+                int[] tempEnemyHealth = new int[enemyCount];
+
+                for (int bogus = 0; bogus < enemyCount; bogus++)
+                {
+                    tempEnemyHealth[bogus] = allEnemyStats[bogus].enemy.getCurrHealth();
+                }
+
+                BattleNetwork temp = new BattleNetwork()
+                {
+                    playerHealths = tempPlayerHealth,
+                    enemyHealths = tempEnemyHealth,
+                    state = state,
+                    currentPlayerIndex = currentPlayerIndex,
+                    currentEnemyIndex = currentEnemyIndex,
+                    attackedPlayerIndex = attackedPlayerIndex,
+                    attackedEnemyIndex = attackedEnemyIndex,
+                    playerCount = playerCount,
+                    enemyCount = enemyCount,
+                    networkIsCoroutineRunning = isCoroutineRunning,
+                };
+
+
+                    sendBattleDataServerRpc(temp); 
+                    Debug.Log("UPDATED SERVER");
+    }
+
         IEnumerator PlayerTurn()
     {
-        if (!NetworkManager.Singleton.LocalClientId.Equals(currentPlayerIndex) && currentPlayerIndex < playerCount)
+        /*if (!NetworkManager.Singleton.LocalClientId.Equals(currentPlayerIndex) && currentPlayerIndex < playerCount)
         {
             Debug.Log("This player should not run player turn yet");
             isCoroutineRunning = false;
@@ -457,7 +504,7 @@ public class BattleSystem : NetworkBehaviour
             StopCoroutine(PlayerTurn());
             yield return null;
             //yield return new WaitForSeconds(1f);
-        }
+        }*/
 
         isCoroutineRunning = true;
         //SOMETHING HAS TO HAPPEN HERE TO FIND WHICH CHARACTER IS WHICH
@@ -503,13 +550,14 @@ public class BattleSystem : NetworkBehaviour
                 yield return new WaitForSeconds(1f);
                 //StartCoroutine(PlayerOneTurn());
             }
-
+            updateBattleTest();
         }   
         else if(!PlayerStats[currentPlayerIndex].player.getAlive())
         {
             if(currentPlayerIndex == 3)
             {
                 state = BattleState.ENEMY_ONE_TURN;
+                
                 isCoroutineRunning = false;
                 //StartCoroutine(EnemyTurn());
             }
@@ -518,46 +566,16 @@ public class BattleSystem : NetworkBehaviour
             {
                 state += 1;
 
-                int[] tempPlayerHealth = new int[playerCount];
-
-                for (int bogus = 0; bogus < playerCount; bogus++)
-                {
-                    tempPlayerHealth[bogus] = PlayerStats[bogus].player.getCurrHealth();
-                }
-
-                int[] tempEnemyHealth = new int[enemyCount];
-
-                for (int bogus = 0; bogus < enemyCount; bogus++)
-                {
-                    tempEnemyHealth[bogus] = allEnemyStats[bogus].enemy.getCurrHealth();
-                }
-
-                BattleNetwork temp = new BattleNetwork()
-                {
-                    playerHealths = tempPlayerHealth,
-                    enemyHealths = tempEnemyHealth,
-                    state = state,
-                    currentPlayerIndex = currentPlayerIndex,
-                    currentEnemyIndex = currentEnemyIndex,
-                    attackedPlayerIndex = attackedPlayerIndex,
-                    attackedEnemyIndex = attackedEnemyIndex,
-                    playerCount = playerCount,
-                    enemyCount = enemyCount
-                };
-
-                if (IsServer || !Network.serverAuth)
-                {
-                    battleNet.Value = temp;
-                }
-                else
-                {
-                    sendBattleDataServerRpc(temp);
-                }
+                //updateBattleTest();
                 isCoroutineRunning = false;
             }
+
+            updateBattleTest();
         }   
         else
         {
+            if(IsOwner)
+                updateBattleTest();
             updatePlayerButtons();
             yield return new WaitForSeconds(1f);
             Debug.Log("player " + currentPlayerIndex +  " turn");
@@ -592,7 +610,7 @@ public class BattleSystem : NetworkBehaviour
         {
             Debug.Log("All enemies are dead");
             //End battle
-
+            
             //for now its just win state
             state = BattleState.WON;
 
@@ -602,6 +620,7 @@ public class BattleSystem : NetworkBehaviour
             }*/
 
             isCoroutineRunning = false;
+            updateBattleTest();
             //StartCoroutine(EndBattle());
         }
         else
@@ -611,25 +630,24 @@ public class BattleSystem : NetworkBehaviour
             case 0:
             
                 state = BattleState.PLAYER_TWO_TURN;
-                isCoroutineRunning = false;
                 //StartCoroutine(PlayerOneTurn());
                 break;
             case 1:
                 state = BattleState.PLAYER_THREE_TURN;
-                isCoroutineRunning = false;
                 //StartCoroutine(PlayerOneTurn());
                 break;
             case 2:
                 state = BattleState.PLAYER_FOUR_TURN;
-                isCoroutineRunning = false;
                 //StartCoroutine(PlayerOneTurn());
                 break;
             case 3:
                 state = BattleState.ENEMY_ONE_TURN;
-                isCoroutineRunning = false;
                 //StartCoroutine(EnemyTurn());
                 break;
             }
+            isCoroutineRunning = false;
+            
+            updateBattleTest();
 
             /*for (int bogus = 0; bogus < playerCount; bogus++)
             {
@@ -765,6 +783,11 @@ public class BattleSystem : NetworkBehaviour
         {
             return;
         }
+        if (currentPlayerIndex >= playerCount)
+        {
+            return;
+        }
+
 
         if (currentPlayerIndex.Equals(ClientId))
         {
@@ -890,7 +913,7 @@ public class BattleSystem : NetworkBehaviour
 
         //Debug.Log(playerGameObjects[index]);
         //playerGameObjects[index].transform.position = playerPositions[index].position;
-        BattleManager.Instance.SetBattleData(NetworkManager.Singleton.LocalClient.PlayerObject.gameObject, GameObject.Find(enemyName), pos);
+        BattleManager.Instance.enemy = GameObject.Find(enemyName);
         StartBattle();
         //NetworkManager.Singleton.LocalClient.PlayerObject.transform.position = playerPositions[index].position;
     }
@@ -907,6 +930,7 @@ public struct BattleNetwork :INetworkSerializable
     //public BattleHUD[] playerHUD;
     //public BattleHUD[] enemyHUD;
     public BattleState state;
+    public bool networkIsCoroutineRunning;
     //public BattleMenus menu;
     //public GameObject ui;
     public int currentPlayerIndex, currentEnemyIndex, attackedPlayerIndex, attackedEnemyIndex;
@@ -922,5 +946,6 @@ public struct BattleNetwork :INetworkSerializable
         serializer.SerializeValue(ref currentEnemyIndex);
         serializer.SerializeValue(ref attackedPlayerIndex);
         serializer.SerializeValue(ref attackedEnemyIndex);
+        serializer.SerializeValue(ref networkIsCoroutineRunning);
     }
 }

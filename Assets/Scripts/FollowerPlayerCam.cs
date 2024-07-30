@@ -49,10 +49,9 @@ public class FollowPlayerCam : NetworkBehaviour
                 }*/
                 if(players.Length != 0)
                 {
-                    GameObject playerObj = players[players.Length-1].transform.root.gameObject;
-                    Debug.Log("Player[" + (players.Length-1) + "] name: " + playerObj.name);
-                    player  = players[players.Length-1];
-                    battleSystem.ClientId = players.Length-1;
+                    GameObject playerObj = players[(int)NetworkManager.Singleton.LocalClientId].transform.root.gameObject;
+                    Debug.Log("Player[" + ((int)NetworkManager.Singleton.LocalClientId) + "] name: " + playerObj.name);
+                    player  = players[(int)NetworkManager.Singleton.LocalClientId];
                     isAttached = true;
                 }
                 
