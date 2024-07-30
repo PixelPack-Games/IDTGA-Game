@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 using UnityEngine.UI;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
+using System.Runtime.CompilerServices;
 
 public enum BattleState { 
     START,
@@ -24,6 +25,8 @@ public enum BattleState {
 public enum MenuState { START, PLAYER_OPTIONS, PLAYER_ATTACK, ENEMY_ACTION}
 public class BattleSystem : NetworkBehaviour
 {
+    public NetworkVariable<BattleNetwork> battleNet;
+    private static bool battleStarted;
     GameObject playerOne;
     GameObject playerTwo;
     GameObject playerThree;
@@ -107,10 +110,11 @@ public class BattleSystem : NetworkBehaviour
     public int ClientId;
     public int currentPlayerIndex;
     public int currentEnemyIndex;
+    public int attackedEnemyIndex;
     int attackedPlayerIndex;
     int playerCount;
     public bool isCoroutineRunning = false;
-    public void StartBattle(ref Collider2D enemyCollider)
+    public void StartBattle()
     {
         ClientId = (int)NetworkManager.Singleton.LocalClientId;
         //gets a list of all the players
@@ -124,9 +128,10 @@ public class BattleSystem : NetworkBehaviour
         currentPlayerIndex = -1;
         currentEnemyIndex = -1;
 
-        
-        
+
+
         //if (!IsOwner) return;
+        Debug.Log(BattleUI.name);
         BattleUI.SetActive(true);
         //enemyCount = Random.Range(1,4);
         enemyCount = 2;
@@ -147,20 +152,27 @@ public class BattleSystem : NetworkBehaviour
         state = BattleState.START;
 
         //network.updateBattleState(ref playerOneStats.player, ref enemyOneStats.enemy, state);
-        StartCoroutine(SetupBattle(enemyCollider));
+        StartCoroutine(SetupBattle());
     }
 
 //Sets up the instance of the player in their respective location with their HUD and stats
-   void AddPlayers(Collider2D enemyCollider){
+   void AddPlayers(){
+    
         for(int i = 0; i < playerCount; i++) 
         {
             playerGameObjects[i].name = "Player_" + (i+1).ToString();
             playerGameObjects[i].GetComponent<PlayerMovement>().inBattle = true;
             playerGameObjects[i].GetComponent<PlayerInput>().inBattle = true;
             //NEEDS THE SERVER TO UPDATE THE PLAYER POSITIONS
+            if (IsOwner)
+            {
+                sendBattleStartPositionsServerRpc(BattleManager.Instance.enemy.name, i, playerGameObjects[i].transform.position);
+            }
+
             playerGameObjects[i].transform.position = playerPositions[i].position;
-            playerGameObjects[i].GetComponent<Network>().StartPositions(playerPositions[i].position, ref enemyCollider);
-            playerGameObjects[i].GetComponent<Network>().networkInBattle = true;
+
+            //playerGameObjects[i].GetComponent<Network>().StartPositions(playerPositions[i].position, ref enemyCollider);
+            //playerGameObjects[i].GetComponent<Network>().networkInBattle = true;
             PlayerStats[i] = playerGameObjects[i].GetComponent<PlayerStats>();
             playerHUDlist[i].SetPlayerHUD(PlayerStats[i]);
             playerHUDlist[i].gameObject.SetActive(true);
@@ -176,7 +188,7 @@ public class BattleSystem : NetworkBehaviour
     }
 
 
-    IEnumerator SetupBattle(Collider2D enemyCollider)
+    IEnumerator SetupBattle()
     {
         isCoroutineRunning = true;
         //if(IsOwner)
@@ -186,29 +198,36 @@ public class BattleSystem : NetworkBehaviour
         //}
         
         
-        AddPlayers(enemyCollider);
+        AddPlayers();
 
 
         //BattleManager.Instance.player.SetActive(false);
         //Debug.Log("player set to inactive");
+ 
+            for (int i = 0; i < enemyCount; i++)
+            {
+                int k = i+1;
+                enemyGameObjects[i] = GameObject.Find("enemy_"+ k);
+                if(enemyGameObjects[i] == null)
+                {
+                    enemyGameObjects[i] = Instantiate(BattleManager.Instance.enemy, enemyPositions[i].position, Quaternion.identity);
+                }
+                    
+                enemyGameObjects[i].name = "enemy_" + (i+1).ToString();
+                allEnemyStats[i] = enemyGameObjects[i].GetComponent<EnemyStats>();
+                if (allEnemyStats[i] == null) Debug.Log($"{allEnemyStats[i]} is  null for some reason");
+                enemyHUDlist[i].gameObject.SetActive(true);
+                enemyHUDlist[i].SetEnemyHUD(allEnemyStats[i]);
+                enemyHUDlist[i].UpdateEnemyHPtext(allEnemyStats[i]);
+                BattleMenus.buttonList[i].SetActive(true);
+            }
         
-        for (int i = 0; i < enemyCount; i++)
-        {
-            enemyGameObjects[i] = Instantiate(BattleManager.Instance.enemy, enemyPositions[i].position, Quaternion.identity);
-            enemyGameObjects[i].name = "enemy_" + (i+1).ToString();
-            allEnemyStats[i] = enemyGameObjects[i].GetComponent<EnemyStats>();
-            if (allEnemyStats[i] == null) Debug.Log($"{allEnemyStats[i]} is  null for some reason");
-            enemyHUDlist[i].gameObject.SetActive(true);
-            enemyHUDlist[i].SetEnemyHUD(allEnemyStats[i]);
-            enemyHUDlist[i].UpdateEnemyHPtext(allEnemyStats[i]);
-            BattleMenus.buttonList[i].SetActive(true);
-        }
         BattleManager.Instance.enemy.SetActive(false);
 
-        for (int bogus = 0; bogus < playerCount; bogus++)
+        /*for (int bogus = 0; bogus < playerCount; bogus++)
         {
             playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref PlayerStats[bogus].player, ref allEnemyStats[0].enemy, ref state);
-        }
+        }*/
 
 
         //UI SETUP
@@ -224,10 +243,10 @@ public class BattleSystem : NetworkBehaviour
         yield return new WaitForSeconds(1f);
         state = BattleState.PLAYER_ONE_TURN;
 
-        for (int bogus = 0; bogus < playerCount; bogus++)
+        /*for (int bogus = 0; bogus < playerCount; bogus++)
         {
             playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref PlayerStats[bogus].player, ref allEnemyStats[0].enemy, ref state);
-        }
+        }*/
         isCoroutineRunning = false;
         //StartCoroutine(PlayerTurn());
         
@@ -293,6 +312,7 @@ public class BattleSystem : NetworkBehaviour
                 state = BattleState.ENEMY_FOUR_TURN;
                 break;
             }*/
+        
         Debug.Log("We in enemy turny");
         if(allEnemyStats[currentEnemyIndex] == null)
         {
@@ -309,6 +329,7 @@ public class BattleSystem : NetworkBehaviour
                 isCoroutineRunning = false;
                 //StartCoroutine(EnemyTurn());
             } 
+            updateBattleTest();
         }
         else if (!allEnemyStats[currentEnemyIndex].enemy.getAlive())
         {
@@ -328,7 +349,7 @@ public class BattleSystem : NetworkBehaviour
                 //StartCoroutine(EnemyTurn());
                 Debug.Log("emeney " + currentEnemyIndex);
             }
-                
+             updateBattleTest();   
         }
         else
         {
@@ -375,6 +396,8 @@ public class BattleSystem : NetworkBehaviour
                     //StartCoroutine(PlayerTurn());
                     break;
                 }
+                Debug.Log("UPDATED ENEMY PART OF SERVER");
+                updateBattleTest();
             }
         }
 
@@ -436,8 +459,53 @@ public class BattleSystem : NetworkBehaviour
         }
     }
 
+    void updateBattleTest()
+    {
+                int[] tempPlayerHealth = new int[playerCount];
+
+                for (int bogus = 0; bogus < playerCount; bogus++)
+                {
+                    tempPlayerHealth[bogus] = PlayerStats[bogus].player.getCurrHealth();
+                }
+
+                int[] tempEnemyHealth = new int[enemyCount];
+
+                for (int bogus = 0; bogus < enemyCount; bogus++)
+                {
+                    tempEnemyHealth[bogus] = allEnemyStats[bogus].enemy.getCurrHealth();
+                }
+
+                BattleNetwork temp = new BattleNetwork()
+                {
+                    playerHealths = tempPlayerHealth,
+                    enemyHealths = tempEnemyHealth,
+                    state = state,
+                    currentPlayerIndex = currentPlayerIndex,
+                    currentEnemyIndex = currentEnemyIndex,
+                    attackedPlayerIndex = attackedPlayerIndex,
+                    attackedEnemyIndex = attackedEnemyIndex,
+                    playerCount = playerCount,
+                    enemyCount = enemyCount,
+                    networkIsCoroutineRunning = isCoroutineRunning,
+                };
+
+
+                    sendBattleDataServerRpc(temp); 
+                    Debug.Log("UPDATED SERVER");
+    }
+
         IEnumerator PlayerTurn()
     {
+        /*if (!NetworkManager.Singleton.LocalClientId.Equals(currentPlayerIndex) && currentPlayerIndex < playerCount)
+        {
+            Debug.Log("This player should not run player turn yet");
+            isCoroutineRunning = false;
+            //StopAllCoroutines();
+            StopCoroutine(PlayerTurn());
+            yield return null;
+            //yield return new WaitForSeconds(1f);
+        }*/
+
         isCoroutineRunning = true;
         //SOMETHING HAS TO HAPPEN HERE TO FIND WHICH CHARACTER IS WHICH
         Debug.Log(state);
@@ -460,10 +528,10 @@ public class BattleSystem : NetworkBehaviour
                 break;
             }*/
 
-        for (int bogus = 0; bogus < playerCount; bogus++)
-        {
+        //for (int bogus = 0; bogus < playerCount; bogus++)
+        //{
             //playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref PlayerStats[currentPlayerIndex].player, ref allEnemyStats[0].enemy, ref state);
-        }
+        //}
 
         if (PlayerStats[currentPlayerIndex] == null)
         {
@@ -482,13 +550,14 @@ public class BattleSystem : NetworkBehaviour
                 yield return new WaitForSeconds(1f);
                 //StartCoroutine(PlayerOneTurn());
             }
-
+            updateBattleTest();
         }   
         else if(!PlayerStats[currentPlayerIndex].player.getAlive())
         {
             if(currentPlayerIndex == 3)
             {
                 state = BattleState.ENEMY_ONE_TURN;
+                
                 isCoroutineRunning = false;
                 //StartCoroutine(EnemyTurn());
             }
@@ -496,12 +565,17 @@ public class BattleSystem : NetworkBehaviour
             else
             {
                 state += 1;
+
+                //updateBattleTest();
                 isCoroutineRunning = false;
-                //StartCoroutine(PlayerOneTurn());
             }
+
+            updateBattleTest();
         }   
         else
         {
+            if(IsOwner)
+                updateBattleTest();
             updatePlayerButtons();
             yield return new WaitForSeconds(1f);
             Debug.Log("player " + currentPlayerIndex +  " turn");
@@ -514,6 +588,7 @@ public class BattleSystem : NetworkBehaviour
     }
     IEnumerator PlayerAttack(PlayerStats AttackingPlayer, EnemyStats DefendingEnemy, int enemyIndex)
     {
+        attackedEnemyIndex = enemyIndex;
         Debug.Log("Player Attacks!");
         BattleMenus.dialogueText.text = AttackingPlayer.Name + " attacks " + DefendingEnemy.Name;
         //deal damage
@@ -526,25 +601,26 @@ public class BattleSystem : NetworkBehaviour
         enemyHUDlist[enemyIndex].SetHP(DefendingEnemy.enemy.getCurrHealth());
         enemyHUDlist[enemyIndex].UpdateEnemyHPtext(allEnemyStats[enemyIndex]);
 
-        for (int bogus = 0; bogus < playerCount; bogus++)
+        /*for (int bogus = 0; bogus < playerCount; bogus++)
         {
             playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref AttackingPlayer.player, ref DefendingEnemy.enemy, ref state);
-        }
+        }*/
 
         if (AllEnemiesAreDead())
         {
             Debug.Log("All enemies are dead");
             //End battle
-
+            
             //for now its just win state
             state = BattleState.WON;
 
-            for (int bogus = 0; bogus < playerCount; bogus++)
+            /*for (int bogus = 0; bogus < playerCount; bogus++)
             {
                 playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref AttackingPlayer.player, ref DefendingEnemy.enemy, ref state);
-            }
+            }*/
 
             isCoroutineRunning = false;
+            updateBattleTest();
             //StartCoroutine(EndBattle());
         }
         else
@@ -554,30 +630,29 @@ public class BattleSystem : NetworkBehaviour
             case 0:
             
                 state = BattleState.PLAYER_TWO_TURN;
-                isCoroutineRunning = false;
                 //StartCoroutine(PlayerOneTurn());
                 break;
             case 1:
                 state = BattleState.PLAYER_THREE_TURN;
-                isCoroutineRunning = false;
                 //StartCoroutine(PlayerOneTurn());
                 break;
             case 2:
                 state = BattleState.PLAYER_FOUR_TURN;
-                isCoroutineRunning = false;
                 //StartCoroutine(PlayerOneTurn());
                 break;
             case 3:
                 state = BattleState.ENEMY_ONE_TURN;
-                isCoroutineRunning = false;
                 //StartCoroutine(EnemyTurn());
                 break;
             }
+            isCoroutineRunning = false;
+            
+            updateBattleTest();
 
-            for (int bogus = 0; bogus < playerCount; bogus++)
+            /*for (int bogus = 0; bogus < playerCount; bogus++)
             {
                 playerGameObjects[bogus].GetComponent<Network>().updateBattleState(ref AttackingPlayer.player, ref DefendingEnemy.enemy, ref state);
-            }
+            }*/
 
 
         }
@@ -610,7 +685,7 @@ public class BattleSystem : NetworkBehaviour
         if (count == playerCount) return true;
         return false;
     }
-    private void Update()
+    private void LateUpdate()
     {
         if (!isCoroutineRunning)
         {
@@ -623,7 +698,8 @@ public class BattleSystem : NetworkBehaviour
                 case BattleState.PLAYER_TWO_TURN:
                 case BattleState.PLAYER_THREE_TURN:
                 case BattleState.PLAYER_FOUR_TURN:
-                    
+
+                    battleStarted = true;
                     StartCoroutine(PlayerTurn());
                     //isCoroutineRunning = true;
                     break;
@@ -642,5 +718,234 @@ public class BattleSystem : NetworkBehaviour
             }
         }
     }
+
+    private void Awake()
+    {
+        NetworkVariableWritePermission perm = Network.serverAuth ? NetworkVariableWritePermission.Server : NetworkVariableWritePermission.Owner;
+        battleNet = new NetworkVariable<BattleNetwork>(writePerm: perm);
+
+        //Initial Variable Init
+        int[] tempPlayerHealth = new int[playerCount];
+
+        for (int bogus = 0; bogus < playerCount; bogus++)
+        {
+            tempPlayerHealth[bogus] = PlayerStats[bogus].player.getCurrHealth();
+        }
+
+        int[] tempEnemyHealth = new int[enemyCount];
+
+        for (int bogus = 0; bogus < enemyCount; bogus++)
+        {
+            tempEnemyHealth[bogus] = allEnemyStats[bogus].enemy.getCurrHealth();
+        }
+
+        BattleNetwork temp = new BattleNetwork()
+        {
+            //players = playerGameObjects,
+            playerHealths = tempPlayerHealth,
+            //enemies = enemyGameObjects,
+            enemyHealths = tempEnemyHealth,
+            //playerHUD = playerHUDlist,
+            //enemyHUD = enemyHUDlist,
+            state = state,
+            //menu = BattleMenus,
+            //ui = BattleUI,
+            currentPlayerIndex = currentPlayerIndex,
+            currentEnemyIndex = currentEnemyIndex,
+            attackedPlayerIndex = attackedPlayerIndex,
+            attackedEnemyIndex = attackedEnemyIndex,
+            playerCount = playerCount,
+            enemyCount = enemyCount
+        };
+
+        if (IsServer || !Network.serverAuth)
+        {
+            battleNet.Value = temp;
+        }
+        else
+        {
+            sendBattleDataServerRpc(temp);
+        }
+    }
+
+    private void Update()
+    {
+        if (!isCoroutineRunning)
+        {
+            Debug.Log("No coroutine is running");
+        }
+        if (playerCount == 1)
+        {
+            return;
+        }
+
+        if (!battleStarted)
+        {
+            return;
+        }
+        if (currentPlayerIndex >= playerCount)
+        {
+            return;
+        }
+
+
+        if (currentPlayerIndex.Equals(ClientId))
+        {
+            int[] tempPlayerHealth = new int[playerCount];
+
+            for (int bogus = 0; bogus < playerCount; bogus++)
+            {
+                tempPlayerHealth[bogus] = PlayerStats[bogus].player.getCurrHealth();
+            }
+
+            int[] tempEnemyHealth = new int[enemyCount];
+
+            for (int bogus = 0; bogus < enemyCount; bogus++)
+            {
+                tempEnemyHealth[bogus] = allEnemyStats[bogus].enemy.getCurrHealth();
+            }
+
+            BattleNetwork temp = new BattleNetwork()
+            {
+                //players = playerGameObjects,
+                playerHealths = tempPlayerHealth,
+                //enemies = enemyGameObjects,
+                enemyHealths = tempEnemyHealth,
+                //playerHUD = playerHUDlist,
+                //enemyHUD = enemyHUDlist,
+                state = state,
+                //menu = BattleMenus,
+                //ui = BattleUI,
+                currentPlayerIndex = currentPlayerIndex,
+                currentEnemyIndex = currentEnemyIndex,
+                attackedPlayerIndex = attackedPlayerIndex,
+                attackedEnemyIndex = attackedEnemyIndex,
+                playerCount = playerCount,
+                enemyCount = enemyCount
+            };
+
+            if (IsServer || !Network.serverAuth && !IsClient)
+            {
+                Debug.Log("Server is updating");
+                battleNet.Value = temp;
+            }
+            else
+            {
+                Debug.Log("Client is updating");
+                sendBattleDataServerRpc(temp);
+            }
+
+            //sendBattleDataServerRpc(temp);
+        }
+        else
+        {
+            //playerGameObjects = battleNet.Value.players;
+            for (int bogus = 0; bogus < battleNet.Value.playerCount; bogus++)
+            {
+                PlayerStats[bogus].player.setCurrhealth(battleNet.Value.playerHealths[bogus]);
+            }
+
+            for (int bogus = 0; bogus < battleNet.Value.enemyCount; bogus++)
+            {
+                allEnemyStats[bogus].enemy.setCurrhealth(battleNet.Value.enemyHealths[bogus]);
+            }
+
+            //enemyGameObjects = battleNet.Value.enemies;
+            //playerHUDlist = battleNet.Value.playerHUD;
+            //enemyHUDlist = battleNet.Value.enemyHUD;
+            state = battleNet.Value.state;
+            //BattleMenus = battleNet.Value.menu;
+            //BattleUI = battleNet.Value.ui;
+            currentPlayerIndex = battleNet.Value.currentPlayerIndex;
+            currentEnemyIndex = battleNet.Value.currentEnemyIndex;
+            attackedPlayerIndex = battleNet.Value.attackedPlayerIndex;
+            attackedEnemyIndex = battleNet.Value.attackedEnemyIndex;
+            //playerCount = battleNet.Value.playerCount;
+            //enemyCount = battleNet.Value.enemyCount;
+            enemyHUDlist[attackedEnemyIndex].SetHP(allEnemyStats[attackedEnemyIndex].enemy.getCurrHealth());
+            enemyHUDlist[attackedEnemyIndex].UpdateEnemyHPtext(allEnemyStats[attackedEnemyIndex]);
+            playerHUDlist[attackedPlayerIndex].SetHP(PlayerStats[attackedPlayerIndex].player.getCurrHealth());
+
+            if (AllEnemiesAreDead())
+            {
+                Debug.Log("All enemies are dead");
+                state = BattleState.WON;
+                isCoroutineRunning = false;
+            }
+            else if (AllPlayersAreDead())
+            {
+                state = BattleState.LOST;
+                isCoroutineRunning = false;
+            }
+        }
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    private void sendBattleDataServerRpc(BattleNetwork temp)
+    {
+        sendBattleDataClientRpc(temp);
+    }
+
+    [ClientRpc]
+    private void sendBattleDataClientRpc(BattleNetwork temp)
+    {
+        if (!IsOwner)
+        {
+            return;
+        }
+
+        battleNet.Value = temp;
+    }
+
+    [ServerRpc]
+    private void sendBattleStartPositionsServerRpc(string enemyName, int index, Vector3 pos)
+    {
+        setBattleStartPositionsClientRpc(enemyName, index, pos);
+    }
+
+    [ClientRpc]
+    private void setBattleStartPositionsClientRpc(string enemyName, int index, Vector3 pos)
+    {
+        if (IsOwner)
+        {
+            return;
+        }
+
+        //Debug.Log(playerGameObjects[index]);
+        //playerGameObjects[index].transform.position = playerPositions[index].position;
+        BattleManager.Instance.enemy = GameObject.Find(enemyName);
+        StartBattle();
+        //NetworkManager.Singleton.LocalClient.PlayerObject.transform.position = playerPositions[index].position;
+    }
 }
 
+public struct BattleNetwork :INetworkSerializable
+{
+    //public GameObject[] players;
+    public int[] playerHealths;
+    public int playerCount;
+    //public GameObject[] enemies;
+    public int[] enemyHealths;
+    public int enemyCount;
+    //public BattleHUD[] playerHUD;
+    //public BattleHUD[] enemyHUD;
+    public BattleState state;
+    public bool networkIsCoroutineRunning;
+    //public BattleMenus menu;
+    //public GameObject ui;
+    public int currentPlayerIndex, currentEnemyIndex, attackedPlayerIndex, attackedEnemyIndex;
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        serializer.SerializeValue(ref playerHealths);
+        serializer.SerializeValue(ref enemyHealths);
+        serializer.SerializeValue(ref playerCount);
+        serializer.SerializeValue(ref enemyCount);
+        serializer.SerializeValue(ref state);
+        serializer.SerializeValue(ref currentPlayerIndex);
+        serializer.SerializeValue(ref currentEnemyIndex);
+        serializer.SerializeValue(ref attackedPlayerIndex);
+        serializer.SerializeValue(ref attackedEnemyIndex);
+        serializer.SerializeValue(ref networkIsCoroutineRunning);
+    }
+}

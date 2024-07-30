@@ -31536,6 +31536,8 @@ MonoBehaviour:
   ClientId: 0
   currentPlayerIndex: 0
   currentEnemyIndex: 0
+  attackedEnemyIndex: 0
+  isCoroutineRunning: 0
 --- !u!4 &1564931924
 Transform:
   m_ObjectHideFlags: 0
@@ -31823,6 +31825,8 @@ GameObject:
   - component: {fileID: 1604074517}
   - component: {fileID: 1604074516}
   - component: {fileID: 1604074519}
+  - component: {fileID: 1604074520}
+  - component: {fileID: 1604074521}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -31938,6 +31942,43 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1604074520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604074515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2571866012
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &1604074521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604074515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c3e3bfa9488df04e980d58ec49147c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vcam: {fileID: 278586571}
+  player: {fileID: 0}
+  FollowTarget: {fileID: 0}
+  isAttached: 0
 --- !u!1 &1632064170
 GameObject:
   m_ObjectHideFlags: 0
